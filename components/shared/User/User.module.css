@@ -1,0 +1,30 @@
+.item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+
+  &[data-interactive='true'] {
+    &:hover .username,
+    &:focus .username {
+      color: var(--primary);
+    }
+  }
+
+  .data {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    align-items: flex-start;
+
+    .username {
+      font-size: 0.85rem;
+      font-weight: 600;
+      transition: color 0.2s ease-in-out;
+    }
+
+    .location {
+      font-size: 0.75rem;
+      color: var(--gray-500);
+    }
+  }
+}
