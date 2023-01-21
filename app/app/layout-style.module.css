@@ -29,6 +29,7 @@
 
 .sidebar {
   display: none;
+  padding: 0;
 
   @media (min-width: 768px) {
     display: initial;

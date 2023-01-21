@@ -2,6 +2,7 @@ import type { ReactNode } from 'react'
 
 import style from './layout-style.module.css'
 import Header from 'components/shared/Header'
+import Sidebar from 'components/shared/Sidebar'
 
 type AppLayoutProps = {
   children: ReactNode
@@ -10,7 +11,9 @@ type AppLayoutProps = {
 export default function AppLayout({ children }: AppLayoutProps) {
   return (
     <div className={style.container}>
-      <nav className={style.sidebar}>sidebar</nav>
+      <nav className={style.sidebar}>
+        <Sidebar />
+      </nav>
       <section className={style.content_container}>
         <header className={style.header}>
           <Header />
