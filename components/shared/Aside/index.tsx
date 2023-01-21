@@ -2,7 +2,7 @@ import Send from 'remixicon-react/SendPlaneLineIcon'
 import Notification from 'remixicon-react/NotificationLineIcon'
 import Menu from 'remixicon-react/MenuLineIcon'
 
-import Avatar from 'components/shared/Avatar'
+import User from 'components/shared/User'
 import Section from './Section'
 
 import styles from './Aside.module.css'
@@ -49,13 +49,13 @@ export default function Aside() {
 
       <Section title="Suggestions for you" className={styles.suggestions_container}>
         <div className={styles.suggestions}>
-          <button className={styles.item}>
-            <Avatar size="md" src="https://i.pinimg.com/236x/ab/38/69/ab38691fb2e67fa2553f77042a128f3c.jpg" alt="afa" />
-
-            <div className={styles.data}>
-              <strong className={styles.username}>Anghelina</strong>
-              <span className={styles.location}>Ukraine</span>
-            </div>
+          <button>
+            <User
+              avatar="https://i.pinimg.com/236x/ab/38/69/ab38691fb2e67fa2553f77042a128f3c.jpg"
+              name="Anghelina"
+              location="Ukraine"
+              interactive
+            />
           </button>
         </div>
       </Section>
