@@ -20,6 +20,7 @@
   padding: 0.65rem;
   border: 1px solid var(--gray-200);
   position: relative;
+  transition: color 0.2s ease-in-out, border-color 0.2s ease-in-out;
 
   &[data-notify='true'] {
     @keyframes pulse {
@@ -50,6 +51,12 @@
       animation: pulse 1s infinite;
     }
   }
+
+  &:hover,
+  &:focus {
+    color: var(--primary);
+    border-color: var(--primary);
+  }
 }
 
 .trending_grid {
@@ -66,12 +73,19 @@
     position: relative;
     aspect-ratio: 1/1;
     cursor: pointer;
+    overflow: hidden;
 
     img {
       width: 100%;
       height: 100%;
       object-fit: cover;
       border-radius: inherit;
+      transition: transform 0.2s ease-in-out;
+    }
+
+    &:hover img,
+    &:focus img {
+      transform: scale(1.1);
     }
   }
 }
@@ -99,12 +113,18 @@
         .username {
           font-size: 0.85rem;
           font-weight: 600;
+          transition: color 0.2s ease-in-out;
         }
 
         .location {
           font-size: 0.75rem;
           color: var(--gray-500);
         }
+      }
+
+      &:hover .username,
+      &:focus .username {
+        color: var(--primary);
       }
     }
   }

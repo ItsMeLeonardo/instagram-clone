@@ -24,23 +24,23 @@ export default function Aside() {
 
       <Section title="Trending feeds">
         <div className={styles.trending_grid}>
-          <button>
-            <picture className={styles.item}>
+          <button className={styles.item}>
+            <picture>
               <img src="https://i.pinimg.com/236x/7f/05/71/7f0571fb0e693ced5da9b80fbd9adcf7.jpg" alt="afafkal" />
             </picture>
           </button>
-          <button>
-            <picture className={styles.item}>
+          <button className={styles.item}>
+            <picture>
               <img src="https://i.pinimg.com/236x/22/29/8b/22298b7a73407463bb3b7283f0c7714d.jpg" alt="afafkal" />
             </picture>
           </button>
-          <button>
-            <picture className={styles.item}>
+          <button className={styles.item}>
+            <picture>
               <img src="https://i.pinimg.com/236x/be/73/04/be7304e5b045af5c870115ec9d7d3707.jpg" alt="afafkal" />
             </picture>
           </button>
-          <button>
-            <picture className={styles.item}>
+          <button className={styles.item}>
+            <picture>
               <img src="https://i.pinimg.com/236x/d3/db/d7/d3dbd793e070f2966f54a45908b7749f.jpg" alt="afafkal" />
             </picture>
           </button>
