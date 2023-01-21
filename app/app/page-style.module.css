@@ -34,6 +34,10 @@
 .stories {
   display: flex;
   justify-content: space-between;
+  gap: 1rem;
+  width: 100%;
+  overflow: auto;
+  padding: 0.25rem;
 
   .story {
     display: flex;

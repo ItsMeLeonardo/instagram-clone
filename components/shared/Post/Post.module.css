@@ -48,6 +48,14 @@
         border-radius: 0.5rem;
         transition: background-color 0.2s ease-in-out;
 
+        .label {
+          display: none;
+
+          @media (min-width: 768px) {
+            display: block;
+          }
+        }
+
         &:hover,
         &:focus {
           background-color: var(--gray-100);
@@ -57,15 +65,22 @@
 
     .description {
       font-size: 0.875rem;
-      max-width: 90%;
+
+      @media (min-width: 768px) {
+        max-width: 90%;
+      }
     }
   }
 }
 
 .comment {
   display: flex;
-  gap: 1rem;
+  gap: 0.5rem;
   align-items: center;
+
+  @media (min-width: 768px) {
+    gap: 1rem;
+  }
 
   .comment_input {
     flex-grow: 1;
@@ -98,6 +113,7 @@
         padding: 0.25rem;
         border-radius: 50%;
         transition: color 0.2s ease-in-out;
+        position: relative;
 
         &:hover,
         &:focus,
@@ -108,6 +124,8 @@
         input {
           position: absolute;
           opacity: 0;
+          width: 0;
+          height: 0;
           z-index: -1;
         }
       }
