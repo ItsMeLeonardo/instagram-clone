@@ -8,7 +8,7 @@
   }
 
   @media (min-width: 1024px) {
-    grid-template-columns: 1fr 2fr 1fr;
+    grid-template-columns: 1fr 2fr 280px;
   }
   @media (min-width: 1200px) {
     grid-template-columns: 280px 1fr 280px;
@@ -51,6 +51,7 @@
 
 .aside {
   display: none;
+  padding-block: 0;
 
   @media (min-width: 1024px) {
     display: initial;

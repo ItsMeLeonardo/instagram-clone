@@ -13,6 +13,7 @@
 .logo {
   width: 100%;
   background-size: contain;
+  height: var(--header-h);
 }
 
 .header {
@@ -128,5 +129,5 @@
 
 .footer {
   width: 100%;
-  margin-top: 2rem;
+  margin-top: 1.5rem;
 }
