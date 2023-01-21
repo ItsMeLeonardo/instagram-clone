@@ -19,5 +19,11 @@ body {
   background: var(--bg);
 }
 
+button {
+  cursor: pointer;
+  background: transparent;
+  border: none;
+}
+
 @media (prefers-color-scheme: dark) {
 }

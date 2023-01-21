@@ -1,0 +1,65 @@
+/*
+- mobile 425px and below
+- tablet 768px and below
+- desktop 1024px and below
+- widescreen desktop 1200px and below
+*/
+
+/* .is_hidden_mobile_down, */
+/* .is_hidden_tablet_down, */
+/* .is_hidden_desktop_down, */
+/* .is_hidden_widescreen_down */
+.is_hidden_mobile_up,
+.is_hidden_tablet_up,
+.is_hidden_desktop_up,
+.is_hidden_widescreen_up {
+  display: none;
+}
+
+.is_hidden_mobile_up {
+  @media (max-width: 425px) {
+    display: block;
+  }
+}
+
+.is_hidden_mobile_down {
+  @media (max-width: 425px) {
+    display: none;
+  }
+}
+
+.is_hidden_tablet_up {
+  @media (max-width: 768px) {
+    display: initial;
+  }
+}
+
+.is_hidden_tablet_down {
+  @media (max-width: 768px) {
+    display: none;
+  }
+}
+
+.is_hidden_desktop_up {
+  @media (max-width: 1024px) {
+    display: initial;
+  }
+}
+
+.is_hidden_desktop_down {
+  @media (max-width: 1024px) {
+    display: none;
+  }
+}
+
+.is_hidden_widescreen_up {
+  @media (max-width: 1200px) {
+    display: initial;
+  }
+}
+
+.is_hidden_widescreen_down {
+  @media (max-width: 1200px) {
+    display: none;
+  }
+}

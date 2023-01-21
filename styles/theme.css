@@ -175,8 +175,9 @@
   --text: var(--gray-800);
   --text-muted: var(--gray-300);
   --bg: var(--gray-100);
+  --bg-content: white;
 
-  --main-linear-gradient: linear-gradient(45deg, #405de6, #5851db, #833ab4, #c13584, #e1306c, #fd1d1d);
+  --main-linear-gradient: linear-gradient(to right top, #fa7c36, #ff654c, #ff4f65, #ff3d7f, #f2359b);
 
   --main-radial-gradient: radial-gradient(
     circle at 30% 107%,
@@ -186,4 +187,7 @@
     #d6249f 60%,
     #285aeb 90%
   );
+
+  --max-w-content: 700px;
+  --header-h: 60px;
 }
