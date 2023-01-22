@@ -16,7 +16,14 @@ export default function Login() {
   return (
     <section className={styles.container}>
       <form className={styles.form} onSubmit={handleSubmit}>
-        <h1 className={styles.title}>Sign in</h1>
+        <h1 className={styles.title}>Sign up</h1>
+        <label className={styles.formField}>
+          <span className={styles.label}>email</span>
+          <div className={styles.input}>
+            <input type="email" id="email" />
+          </div>
+        </label>
+
         <label className={styles.formField}>
           <span className={styles.label}>Username</span>
           <div className={styles.input}>
@@ -34,9 +41,9 @@ export default function Login() {
           Login
         </button>
         <div className={styles.footer}>
-          <span className={styles.text}>{"Don't have an account?"}</span>
-          <Link href="/register">
-            <span className={styles.link}>Sign up</span>
+          <span className={styles.text}>{'Already have an account?'}</span>
+          <Link href="/login">
+            <span className={styles.link}>Sign in</span>
           </Link>
         </div>
       </form>

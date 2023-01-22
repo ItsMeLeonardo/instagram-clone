@@ -171,6 +171,7 @@
   --info: var(--azure-500);
   --light: var(--gray-50);
   --dark: var(--gray-900);
+  --black: hsl(252, 30%, 10%);
 
   --text: var(--gray-800);
   --text-muted: var(--gray-300);
