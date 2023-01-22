@@ -34,11 +34,11 @@
 
     .options {
       display: flex;
-      gap: 0.5rem;
+
       margin-top: 0.5rem;
 
       .button {
-        padding: 0.5rem 1rem;
+        padding: 0.5rem;
         flex-grow: 1;
         display: flex;
         align-items: center;
@@ -48,11 +48,22 @@
         border-radius: 0.5rem;
         transition: background-color 0.2s ease-in-out;
 
-        .label {
-          display: none;
+        @media (min-width: 768px) {
+          padding: 0.5rem 1rem;
+        }
 
-          @media (min-width: 768px) {
-            display: block;
+        .label {
+          display: flex;
+          gap: 0.25rem;
+          font-size: 12px;
+          align-items: center;
+
+          .word {
+            display: none;
+
+            @media (min-width: 768px) {
+              display: block;
+            }
           }
         }
 

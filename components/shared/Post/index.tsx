@@ -2,7 +2,7 @@ import Options from 'remixicon-react/MoreFillIcon'
 import Heart from 'remixicon-react/Heart3LineIcon'
 import Comment from 'remixicon-react/Chat1LineIcon'
 import Share from 'remixicon-react/ShareLineIcon'
-import Bookmark from 'remixicon-react/BookMarkLineIcon'
+import Bookmark from 'remixicon-react/BookmarkLineIcon'
 import Attachment from 'remixicon-react/Attachment2Icon'
 import ImageIcon from 'remixicon-react/ImageLineIcon'
 
@@ -44,25 +44,37 @@ export default function Post(props: PostProps) {
             <span className={styles.icon}>
               <Heart size="20" />
             </span>
-            <span className={styles.label}>28.5k Like</span>
+            <span className={styles.label}>
+              <span className={styles.quantity}>28.5k</span>
+              <span className={styles.word}>Like</span>
+            </span>
           </button>
           <button className={styles.button}>
             <span className={styles.icon}>
               <Comment size="20" />
             </span>
-            <span className={styles.label}>33 Comment</span>
+            <span className={styles.label}>
+              <span className={styles.quantity}>33</span>
+              <span className={styles.word}>Comment</span>
+            </span>
           </button>
           <button className={styles.button}>
             <span className={styles.icon}>
               <Share size="20" />
             </span>
-            <span className={styles.label}>134 Share</span>
+            <span className={styles.label}>
+              <span className={styles.quantity}>134</span>
+              <span className={styles.word}>Share</span>
+            </span>
           </button>
           <button className={styles.button}>
             <span className={styles.icon}>
               <Bookmark size="20" />
             </span>
-            <span className={styles.label}>16 Saved</span>
+            <span className={styles.label}>
+              <span className={styles.quantity}>16</span>
+              <span className={styles.word}>Saved</span>
+            </span>
           </button>
         </div>
 
