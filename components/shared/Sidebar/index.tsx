@@ -3,9 +3,6 @@ import NextLink from 'next/link'
 import Logout from 'remixicon-react/LogoutBoxRLineIcon'
 
 import Avatar from 'components/shared/Avatar'
-import SidebarItem from './SidebarItem'
-
-import { SIDEBAR_ITEMS } from './utils/data'
 
 import styles from './Sidebar.module.css'
 import SidebarItemList from './SidebarItemList'
