@@ -4,18 +4,17 @@ import Comment from 'remixicon-react/Chat1LineIcon'
 import Share from 'remixicon-react/ShareLineIcon'
 import Bookmark from 'remixicon-react/BookMarkLineIcon'
 import Attachment from 'remixicon-react/Attachment2Icon'
-import Emotion from 'remixicon-react/EmotionHappyLineIcon'
 import ImageIcon from 'remixicon-react/ImageLineIcon'
 
 import User from 'components/shared/User'
 import Avatar from 'components/shared/Avatar'
+import styles from './Post.module.css'
+import EmojiButton from './EmojiButton'
 
 export type PostProps = {
   user?: string
   postImage: string
 }
-
-import styles from './Post.module.css'
 
 export default function Post(props: PostProps) {
   const { postImage } = props
@@ -84,9 +83,7 @@ export default function Post(props: PostProps) {
               <input type="file" />
             </label>
 
-            <button className={styles.button}>
-              <Emotion size="20" />
-            </button>
+            <EmojiButton />
 
             <label className={styles.button}>
               <ImageIcon size="20" />
