@@ -27,6 +27,12 @@
   }
 }
 
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
 .sidebar,
 .aside {
   height: 100vh;
