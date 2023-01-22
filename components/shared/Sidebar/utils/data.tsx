@@ -10,6 +10,7 @@ import Messages from 'remixicon-react/Chat3LineIcon'
 import MessagesActive from 'remixicon-react/Chat3FillIcon'
 import Settings from 'remixicon-react/Settings3LineIcon'
 import SettingsActive from 'remixicon-react/Settings3FillIcon'
+import Plus from 'remixicon-react/AddLineIcon'
 
 export type SidebarItem = {
   label: string
@@ -17,7 +18,7 @@ export type SidebarItem = {
   href: string
   iconActive?: ReactNode
 }
-export const SIDEBAR_ITEMS = [
+export const SIDEBAR_ITEMS: SidebarItem[] = [
   {
     label: 'Feed',
     icon: <Home />,
@@ -35,6 +36,38 @@ export const SIDEBAR_ITEMS = [
     icon: <Favorite />,
     iconActive: <FavoriteActive />,
     href: '/app/favorite',
+  },
+  {
+    label: 'Messages',
+    icon: <Messages />,
+    iconActive: <MessagesActive />,
+    href: '/app/settings',
+  },
+  {
+    label: 'Settings',
+    icon: <Settings />,
+    iconActive: <SettingsActive />,
+    href: '/app/settings',
+  },
+]
+
+export const MOBILE_NAVBAR_ITEMS: SidebarItem[] = [
+  {
+    label: 'Feed',
+    icon: <Home />,
+    iconActive: <HomeActive />,
+    href: '/app',
+  },
+  {
+    label: 'Explore',
+    icon: <Explore />,
+    iconActive: <ExploreActive />,
+    href: '/app/explore',
+  },
+  {
+    label: 'add',
+    icon: <Plus size="20" />,
+    href: '/app',
   },
   {
     label: 'Messages',

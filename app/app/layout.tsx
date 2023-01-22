@@ -4,12 +4,13 @@ import style from './layout-style.module.css'
 import Header from 'components/shared/Header'
 import Sidebar from 'components/shared/Sidebar'
 import Aside from 'components/shared/Aside'
+import MobileNavbar from 'components/shared/Sidebar/MobileNavbar'
 
 type AppLayoutProps = {
   children: ReactNode
 }
 
-export default function AppLayout({ children, ...rest }: AppLayoutProps) {
+export default function AppLayout({ children }: AppLayoutProps) {
   return (
     <div className={style.container}>
       <nav className={style.sidebar}>
@@ -24,6 +25,7 @@ export default function AppLayout({ children, ...rest }: AppLayoutProps) {
       <aside className={style.aside}>
         <Aside />
       </aside>
+      <MobileNavbar />
     </div>
   )
 }

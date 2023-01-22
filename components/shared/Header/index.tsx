@@ -22,9 +22,7 @@ export default function Header() {
         <span className={styles.icon}>
           <Plus size="16" />
         </span>
-        <Hidden mobileDown>
-          <span>Create new post</span>
-        </Hidden>
+        <span>Create new post</span>
       </button>
     </div>
   )

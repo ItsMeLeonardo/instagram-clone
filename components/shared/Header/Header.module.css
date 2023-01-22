@@ -33,7 +33,6 @@
 .search_input {
   position: relative;
   width: 100%;
-  max-width: 320px;
   background: var(--gray-50);
   border-radius: 99px;
 
@@ -44,6 +43,10 @@
 
   &:focus-within .icon:first-child {
     color: var(--primary);
+  }
+
+  @media (min-width: 768px) {
+    max-width: 320px;
   }
 
   @media (min-width: 1200px) {
@@ -78,7 +81,6 @@
 }
 
 .button {
-  display: flex;
   align-items: center;
   gap: 0.5rem;
   border: none;
@@ -91,14 +93,12 @@
   position: relative;
   transition: background 0.2s ease-in-out;
   z-index: 1;
-  margin: auto;
-
-  @media (min-width: 425px) {
-    height: auto;
-  }
+  display: none;
+  height: auto;
 
   @media (min-width: 768px) {
     padding: 0.8rem 1.5rem;
+    display: flex;
   }
 
   * {

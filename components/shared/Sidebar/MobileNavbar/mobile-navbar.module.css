@@ -1,0 +1,15 @@
+.container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100vw;
+  background: var(--bg-content);
+  position: fixed;
+  bottom: 0;
+  padding: 0.5rem 1rem;
+  height: var(--navbar-mobile-h);
+
+  @media (min-width: 768px) {
+    display: none;
+  }
+}
