@@ -1,7 +1,6 @@
 import MagnifyingGlass from 'remixicon-react/SearchLineIcon'
 import Microphone from 'remixicon-react/Mic2LineIcon'
 import Plus from 'remixicon-react/AddLineIcon'
-import Hidden from 'components/shared/Hidden'
 
 import styles from './Header.module.css'
 
