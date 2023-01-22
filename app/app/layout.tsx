@@ -9,7 +9,7 @@ type AppLayoutProps = {
   children: ReactNode
 }
 
-export default function AppLayout({ children }: AppLayoutProps) {
+export default function AppLayout({ children, ...rest }: AppLayoutProps) {
   return (
     <div className={style.container}>
       <nav className={style.sidebar}>

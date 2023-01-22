@@ -3,10 +3,12 @@ import NextLink from 'next/link'
 import Logout from 'remixicon-react/LogoutBoxRLineIcon'
 
 import Avatar from 'components/shared/Avatar'
-
-import styles from './Sidebar.module.css'
+import SidebarItem from './SidebarItem'
 
 import { SIDEBAR_ITEMS } from './utils/data'
+
+import styles from './Sidebar.module.css'
+import SidebarItemList from './SidebarItemList'
 
 export default function Sidebar() {
   return (
@@ -46,17 +48,7 @@ export default function Sidebar() {
         </header>
       </div>
       <div className={styles.navbar}>
-        {SIDEBAR_ITEMS.map(({ href, icon, iconActive, label }, index) => {
-          const active = index === 0
-
-          return (
-            <a key={label} href={href} className={styles.nav_item} data-active={active}>
-              <span className={styles.icon}>{active ? iconActive : icon}</span>
-
-              <span className={styles.label}>{label}</span>
-            </a>
-          )
-        })}
+        <SidebarItemList />
       </div>
 
       <footer className={styles.footer}>

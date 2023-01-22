@@ -28,24 +28,24 @@ export const SIDEBAR_ITEMS = [
     label: 'Explore',
     icon: <Explore />,
     iconActive: <ExploreActive />,
-    href: '/',
+    href: '/app/explore',
   },
   {
     label: 'Favorite',
     icon: <Favorite />,
     iconActive: <FavoriteActive />,
-    href: '/',
+    href: '/app/favorite',
   },
   {
     label: 'Messages',
     icon: <Messages />,
     iconActive: <MessagesActive />,
-    href: '/',
+    href: '/app/settings',
   },
   {
     label: 'Settings',
     icon: <Settings />,
     iconActive: <SettingsActive />,
-    href: '/',
+    href: '/app/settings',
   },
 ]

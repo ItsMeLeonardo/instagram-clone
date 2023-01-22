@@ -24,9 +24,6 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  @media (min-width: 768px) {
-    margin-top: 2rem;
-  }
 
   .data {
     .username {
@@ -84,7 +81,6 @@
   justify-content: center;
 }
 
-.nav_item,
 .logout {
   width: 100%;
   display: flex;
