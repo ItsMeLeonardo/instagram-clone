@@ -2,9 +2,11 @@
   width: 100%;
 
   padding: 0.5rem;
+  padding-top: 0;
 
   @media (min-width: 768px) {
     padding: 1rem;
+    padding-top: 0;
   }
 
   border-bottom: 1px solid var(--gray-200);
@@ -12,8 +14,8 @@
 
 .logo {
   width: 100%;
-  background-size: contain;
   height: var(--header-h);
+  display: flex;
 }
 
 .header {

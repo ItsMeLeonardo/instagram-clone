@@ -1,3 +1,5 @@
+import NextLink from 'next/link'
+
 import Logout from 'remixicon-react/LogoutBoxRLineIcon'
 
 import Avatar from 'components/shared/Avatar'
@@ -10,7 +12,11 @@ export default function Sidebar() {
   return (
     <>
       <div className={styles.container}>
-        <div className={styles.logo}>Logo</div>
+        <NextLink href="/app">
+          <picture className={styles.logo}>
+            <img src="/logo.svg" alt="" />
+          </picture>
+        </NextLink>
         <header className={styles.header}>
           <Avatar
             src="https://i.pinimg.com/236x/3a/72/58/3a72584976987b1458c7330eb5638966.jpg"

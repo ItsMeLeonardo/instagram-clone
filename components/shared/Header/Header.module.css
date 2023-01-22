@@ -3,7 +3,7 @@
   display: flex;
   max-width: var(--max-w-content);
   margin: 0 auto;
-  gap: 1rem;
+  gap: 0.5rem;
   align-items: center;
   justify-content: space-between;
   height: var(--header-h);
@@ -11,6 +11,7 @@
 
   @media (min-width: 768px) {
     padding: 0 1rem;
+    gap: 1rem;
   }
 }
 
@@ -86,7 +87,7 @@
   white-space: nowrap;
   border-radius: 999px;
   font-size: 12px;
-  padding: 0.5rem;
+  padding: 0.8rem;
   position: relative;
   transition: background 0.2s ease-in-out;
   z-index: 1;
@@ -94,7 +95,10 @@
 
   @media (min-width: 425px) {
     height: auto;
-    padding: 0.5rem 1rem;
+  }
+
+  @media (min-width: 768px) {
+    padding: 0.8rem 1.5rem;
   }
 
   * {
