@@ -1,17 +1,23 @@
 'use client'
 
+import { useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 
 import { request } from 'lib/shared/request'
 
+import { logger } from 'utils/shared/logs'
+
 import type { FormEvent } from 'react'
 
 import styles from './styles.module.css'
-import { logger } from 'utils/shared/logs'
+import Button from 'components/shared/Button'
 
 export default function Login() {
   const router = useRouter()
+
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState(false)
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -24,16 +30,22 @@ export default function Login() {
       headers: { 'Content-Type': 'application/json' },
     }
 
+    setLoading(true)
+
     request('/api/auth/login', options)
       .then((response) => response.json())
-      .then((data) => {
-        if (data) {
-          router.push('/app')
-        } else {
-          logger.error('Login failed')
-        }
+      .then(() => {
+        router.push('/app')
       })
-      .catch((err) => logger.error(err))
+      .catch((err) => {
+        setError(true)
+        logger.error(err)
+
+        setTimeout(() => {
+          setError(false)
+        }, 3000)
+      })
+      .finally(() => setLoading(false))
   }
 
   return (
@@ -53,9 +65,12 @@ export default function Login() {
             <input type="password" id="password" />
           </div>
         </label>
-        <button className={styles.submit} type="submit">
+
+        <Button color="gradient" fullWidth type="submit" loading={loading}>
           Login
-        </button>
+        </Button>
+        {error && <span className={styles.error}>Invalid username or password</span>}
+
         <div className={styles.footer}>
           <span className={styles.text}>{"Don't have an account?"}</span>
           <Link href="/register">

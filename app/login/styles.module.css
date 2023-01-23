@@ -72,6 +72,12 @@
   }
 }
 
+.error {
+  color: var(--danger);
+  font-size: 0.85rem;
+  margin: 1rem 0;
+}
+
 .submit {
   width: 100%;
   padding: 1rem 0.5rem;

@@ -6,7 +6,7 @@ import button from './button.module.css'
 
 export type Props = {
   type?: 'button' | 'submit' | 'reset'
-  color?: ThemeColor
+  color?: ThemeColor | 'gradient'
   loading?: boolean
   border?: boolean
   rounded?: boolean
@@ -49,7 +49,7 @@ export default function Button(props: Props) {
         {children}
       </span>
       {loading && <Loader color="light" size={24} />}
-      {iconRight && <span className={button.iconRight}>{iconRight}</span>}
+      {iconRight && !loading && <span className={button.iconRight}>{iconRight}</span>}
     </>
   )
 
@@ -63,8 +63,8 @@ export default function Button(props: Props) {
 
   if (to) {
     return (
-      <NextLink href={to}>
-        <span {...genericProps}>{child}</span>
+      <NextLink href={to} {...genericProps}>
+        {child}
       </NextLink>
     )
   }
