@@ -1,11 +1,10 @@
 import NextLink from 'next/link'
 
-import Logout from 'remixicon-react/LogoutBoxRLineIcon'
-
 import Avatar from 'components/shared/Avatar'
 
 import styles from './Sidebar.module.css'
 import SidebarItemList from './SidebarItemList'
+import LogoutItem from './Logout'
 
 export default function Sidebar() {
   return (
@@ -49,12 +48,7 @@ export default function Sidebar() {
       </div>
 
       <footer className={styles.footer}>
-        <button className={styles.logout}>
-          <span className={styles.icon}>
-            <Logout />
-          </span>
-          <span className={styles.label}>Logout</span>
-        </button>
+        <LogoutItem />
       </footer>
     </>
   )

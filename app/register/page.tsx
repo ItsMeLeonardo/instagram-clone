@@ -8,9 +8,6 @@ import styles from './styles.module.css'
 export default function Login() {
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    const username = event.currentTarget.username.value
-    const password = event.currentTarget.password.value
-    console.log({ username, password })
   }
 
   return (

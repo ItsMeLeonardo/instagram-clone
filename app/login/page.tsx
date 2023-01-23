@@ -1,16 +1,39 @@
 'use client'
 
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+
+import { request } from 'lib/shared/request'
+
 import type { FormEvent } from 'react'
 
 import styles from './styles.module.css'
+import { logger } from 'utils/shared/logs'
 
 export default function Login() {
+  const router = useRouter()
+
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     const username = event.currentTarget.username.value
     const password = event.currentTarget.password.value
-    console.log({ username, password })
+
+    const options = {
+      method: 'POST',
+      body: JSON.stringify({ username, password }),
+      headers: { 'Content-Type': 'application/json' },
+    }
+
+    request('/api/auth/login', options)
+      .then((response) => response.json())
+      .then((data) => {
+        if (data) {
+          router.push('/app')
+        } else {
+          logger.error('Login failed')
+        }
+      })
+      .catch((err) => logger.error(err))
   }
 
   return (
