@@ -8,35 +8,34 @@ import ImageIcon from 'remixicon-react/ImageLineIcon'
 
 import User from 'components/shared/User'
 import Avatar from 'components/shared/Avatar'
-import styles from './Post.module.css'
 import EmojiButton from './EmojiButton'
+import { timeAgo } from 'utils/shared/date-time'
 
-export type PostProps = {
-  user?: string
-  postImage: string
-}
+import type { Post } from 'types/post'
+
+import styles from './Post.module.css'
+import Tag from './Tag'
+
+export type PostProps = Post
 
 export default function Post(props: PostProps) {
-  const { postImage } = props
+  const { createdAt, description, photos, stats, user, tags } = props
+  const { comment, like, saved_post } = stats
+
+  const userDescription = `${user.location} - ${timeAgo(createdAt)}`
   return (
     <section className={styles.post}>
       <header className={styles.header}>
         <a href="/">
-          <User
-            avatar="https://i.pinimg.com/236x/ab/38/69/ab38691fb2e67fa2553f77042a128f3c.jpg"
-            name="Anghelina"
-            location="Ukraine"
-            interactive
-          />
+          <User avatar={user.avatar} name={user.username} description={userDescription} interactive />
         </a>
-
         <button className={styles.options}>
           <Options />
         </button>
       </header>
       <div className={styles.body}>
         <picture className={styles.image}>
-          <img src={postImage} alt="post" />
+          <img src={photos[0]} alt={description} />
         </picture>
 
         <div className={styles.options}>
@@ -45,7 +44,7 @@ export default function Post(props: PostProps) {
               <Heart size="20" />
             </span>
             <span className={styles.label}>
-              <span className={styles.quantity}>28.5k</span>
+              <span className={styles.quantity}>{like}</span>
               <span className={styles.word}>Like</span>
             </span>
           </button>
@@ -54,7 +53,7 @@ export default function Post(props: PostProps) {
               <Comment size="20" />
             </span>
             <span className={styles.label}>
-              <span className={styles.quantity}>33</span>
+              <span className={styles.quantity}>{comment}</span>
               <span className={styles.word}>Comment</span>
             </span>
           </button>
@@ -72,15 +71,19 @@ export default function Post(props: PostProps) {
               <Bookmark size="20" />
             </span>
             <span className={styles.label}>
-              <span className={styles.quantity}>16</span>
+              <span className={styles.quantity}>{saved_post}</span>
               <span className={styles.word}>Saved</span>
             </span>
           </button>
         </div>
 
-        <p className={styles.description}>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod. Quisquam, quod. Quisquam, quod.
-        </p>
+        <p className={styles.description}>{description}</p>
+
+        <div className={styles.tag_container}>
+          {tags.map(({ id, name }) => (
+            <Tag key={id} name={name} />
+          ))}
+        </div>
       </div>
 
       <footer className={styles.comment}>

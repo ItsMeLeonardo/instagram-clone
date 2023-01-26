@@ -2,9 +2,11 @@ import Play from 'remixicon-react/PlayFillIcon'
 import AddIcon from 'remixicon-react/AddFillIcon'
 
 import Avatar from 'components/shared/Avatar'
+import Post from 'components/shared/Post'
+
+import { getPosts } from 'service/client/post'
 
 import styles from './page-style.module.css'
-import Post from 'components/shared/Post'
 
 type Story = {
   id: string
@@ -45,7 +47,9 @@ const DATA = [
   },
 ]
 
-export default function page() {
+export default async function page() {
+  const posts = await getPosts()
+
   return (
     <div className={styles.container}>
       <section className={styles.section}>
@@ -89,12 +93,9 @@ export default function page() {
         </header>
 
         <aside className={styles.posts}>
-          <Post postImage="https://images.unsplash.com/photo-1545569341-9eb8b30979d9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NXx8amFwYW58ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60" />
-
-          <Post postImage="https://images.unsplash.com/photo-1480796927426-f609979314bd?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8amFwYW58ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60" />
-          <Post postImage="https://images.unsplash.com/photo-1492571350019-22de08371fd3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NHx8amFwYW58ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60" />
-          <Post postImage="https://images.unsplash.com/photo-1526481280693-3bfa7568e0f3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Nnx8amFwYW58ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60" />
-          <Post postImage="https://images.unsplash.com/photo-1542051841857-5f90071e7989?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8OHx8amFwYW58ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60" />
+          {posts.map((post) => (
+            <Post key={post.id} {...post} />
+          ))}
         </aside>
       </section>
     </div>

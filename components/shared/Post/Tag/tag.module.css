@@ -1,0 +1,13 @@
+.tag {
+  color: var(--text-muted);
+  font-size: 0.8em;
+  font-weight: 400;
+  cursor: pointer;
+  padding: 0.25rem;
+
+  transition: text-decoration 0.2s ease-in-out;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}

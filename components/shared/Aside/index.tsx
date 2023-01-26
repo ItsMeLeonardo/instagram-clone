@@ -53,7 +53,7 @@ export default function Aside() {
             <User
               avatar="https://i.pinimg.com/236x/ab/38/69/ab38691fb2e67fa2553f77042a128f3c.jpg"
               name="Anghelina"
-              location="Ukraine"
+              description="Ukraine"
               interactive
             />
           </button>
