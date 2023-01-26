@@ -5,7 +5,9 @@ export interface User {
   email: string
   location: string
   avatar: string
-  createdAt: string
+  createdAt: string | Date
   name: string
   lastName: string
 }
+
+export type ClientUser = Omit<User, 'password'>

@@ -1,7 +1,6 @@
 import { db } from 'lib/server/persistence'
 import { PostDto } from './dto'
 import type { Post } from 'types/post'
-// import { postAdapter } from './adapter'
 
 class PostService {
   async getPostById(id: number) {
@@ -60,7 +59,7 @@ class PostService {
     return newPost
   }
 
-  postListAdapter(posts: Awaited<ReturnType<typeof this.getBbListPosts>>): Post[] {
+  private postListAdapter(posts: Awaited<ReturnType<typeof this.getBbListPosts>>): Post[] {
     return posts.map((post) => {
       return {
         id: post.post_id,

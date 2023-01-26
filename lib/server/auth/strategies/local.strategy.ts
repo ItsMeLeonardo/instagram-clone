@@ -5,16 +5,16 @@ const credentials = {
 
 import { Strategy as LocalStrategy } from 'passport-local'
 
-function validate(username: string, password: string) {
-  return username === credentials.username && password === credentials.password
-}
+import authService from 'service/server/auth'
 
-export const localStrategy = new LocalStrategy({ passReqToCallback: true }, (req, username, password, done) => {
-  const isValid = validate(username, password)
-
-  if (!isValid) {
-    done(null, false)
-  } else {
-    done(null, { username })
+export const localStrategy = new LocalStrategy(
+  { passReqToCallback: true, usernameField: 'email' },
+  async (req, email, password, done) => {
+    try {
+      const user = await authService.login({ email, password })
+      done(null, user)
+    } catch (error) {
+      done(error)
+    }
   }
-})
+)

@@ -21,12 +21,12 @@ export default function Login() {
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    const username = event.currentTarget.username.value
+    const email = event.currentTarget.email.value
     const password = event.currentTarget.password.value
 
     const options = {
       method: 'POST',
-      body: JSON.stringify({ username, password }),
+      body: JSON.stringify({ email, password }),
       headers: { 'Content-Type': 'application/json' },
     }
 
@@ -53,9 +53,9 @@ export default function Login() {
       <form className={styles.form} onSubmit={handleSubmit}>
         <h1 className={styles.title}>Sign in</h1>
         <label className={styles.formField}>
-          <span className={styles.label}>Username</span>
+          <span className={styles.label}>Email</span>
           <div className={styles.input}>
-            <input type="text" id="username" />
+            <input type="email" id="email" />
           </div>
         </label>
 
@@ -69,7 +69,7 @@ export default function Login() {
         <Button color="gradient" fullWidth type="submit" loading={loading}>
           Login
         </Button>
-        {error && <span className={styles.error}>Invalid username or password</span>}
+        {error && <span className={styles.error}>Invalid email or password</span>}
 
         <div className={styles.footer}>
           <span className={styles.text}>{"Don't have an account?"}</span>

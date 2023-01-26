@@ -18,14 +18,15 @@ handler.use(auth).post(authProvider.authenticate('local', { session: false }), (
     return
   }
   try {
-    const { username } = user
-    const token = generateToken({ sub: username })
+    const { email, id } = user
+    const token = generateToken({ sub: id.toString(), email })
 
     setCookie('auth_token', token, { req, res })
 
     res.json({ user, token })
   } catch (error) {
     logger.error(error)
+    res.status(500).json({ message: 'Internal server error' })
   }
 })
 

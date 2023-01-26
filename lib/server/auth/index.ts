@@ -3,13 +3,10 @@ import passport from 'passport'
 import { localStrategy } from './strategies/local.strategy'
 
 import type { NextApiRequest } from 'next'
-
-type User = {
-  username: string
-}
+import type { AuthRequestUser } from 'service/server/auth'
 
 export type AuthRequest = {
-  user?: User
+  user?: AuthRequestUser
 } & NextApiRequest
 
 export * from './token'
