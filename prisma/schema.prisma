@@ -1,0 +1,114 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model comment {
+  comment_id Int      @id @default(autoincrement())
+  comment    Json
+  created_at DateTime @default(now()) @db.Timestamp(6)
+  user_id    Int      @default(autoincrement())
+  post_id    Int      @default(autoincrement())
+  post       post     @relation(fields: [post_id], references: [post_id], onDelete: NoAction, onUpdate: NoAction, map: "post_fkey")
+  user       user     @relation(fields: [user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "user_fkey")
+}
+
+model follow {
+  follow_id                     Int      @id @default(autoincrement())
+  user_id                       Int      @default(autoincrement())
+  follower_id                   Int      @default(autoincrement())
+  created_at                    DateTime @default(now()) @db.Timestamp(6)
+  user_follow_follower_idTouser user     @relation("follow_follower_idTouser", fields: [follower_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "follower_fkey")
+  user_follow_user_idTouser     user     @relation("follow_user_idTouser", fields: [user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "user_fkey")
+}
+
+model like {
+  like_id    Int      @id @default(autoincrement())
+  user_id    Int      @default(autoincrement())
+  post_id    Int      @default(autoincrement())
+  created_at DateTime @default(now()) @db.Timestamp(6)
+  post       post     @relation(fields: [post_id], references: [post_id], onDelete: NoAction, onUpdate: NoAction, map: "post_fkey")
+  user       user     @relation(fields: [user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "user_fkey")
+}
+
+model photo {
+  photo_id  Int    @id @default(autoincrement())
+  photo_url String @db.VarChar(255)
+  post_id   Int    @default(autoincrement())
+  post      post   @relation(fields: [post_id], references: [post_id], onDelete: NoAction, onUpdate: NoAction, map: "post_fkey")
+}
+
+model post {
+  post_id     Int          @id(map: "posts_pkey") @default(autoincrement())
+  description String       @db.VarChar(500)
+  created_at  DateTime     @default(now()) @db.Timestamp(6)
+  user_id     Int          @default(autoincrement())
+  photos      String[]     @db.VarChar(255)
+  comment     comment[]
+  like        like[]
+  photo       photo[]
+  user        user         @relation(fields: [user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "user_fkey")
+  post_tag    post_tag[]
+  saved_post  saved_post[]
+}
+
+model post_tag {
+  post_tag_id Int  @id @default(autoincrement())
+  post_id     Int  @default(autoincrement())
+  tag_id      Int  @default(autoincrement())
+  post        post @relation(fields: [post_id], references: [post_id], onDelete: NoAction, onUpdate: NoAction, map: "post_fkey")
+  tag         tag  @relation(fields: [tag_id], references: [tag_id], onDelete: NoAction, onUpdate: NoAction, map: "tag_fkey")
+}
+
+model saved {
+  saved_id   Int          @id @default(autoincrement())
+  user_id    Int          @default(autoincrement())
+  created_at DateTime     @default(now()) @db.Timestamp(6)
+  user       user         @relation(fields: [user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "user_fkey")
+  saved_post saved_post[]
+}
+
+model saved_post {
+  saved_post_id Int   @id @default(autoincrement())
+  saved_id      Int   @default(autoincrement())
+  post_id       Int   @default(autoincrement())
+  post          post  @relation(fields: [post_id], references: [post_id], onDelete: NoAction, onUpdate: NoAction, map: "post_fkey")
+  saved         saved @relation(fields: [saved_id], references: [saved_id], onDelete: NoAction, onUpdate: NoAction, map: "saved_fkey")
+}
+
+model story {
+  story_id   Int      @id @default(autoincrement())
+  photo      String   @db.VarChar(255)
+  created_at DateTime @default(now()) @db.Timestamp(6)
+  user_id    Int      @default(autoincrement())
+  user       user     @relation(fields: [user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "user_fkey")
+}
+
+model tag {
+  tag_id   Int        @id @default(autoincrement())
+  name     String     @db.VarChar(50)
+  post_tag post_tag[]
+}
+
+model user {
+  user_id                         Int       @id @default(autoincrement())
+  username                        String    @db.VarChar(50)
+  password                        String    @db.VarChar(50)
+  email                           String    @db.VarChar(50)
+  location                        String    @db.VarChar(50)
+  avatar                          String    @db.VarChar(255)
+  created_at                      DateTime  @default(now()) @db.Timestamp(6)
+  name                            String    @default("") @db.VarChar(100)
+  lastname                        String    @default("") @db.VarChar(100)
+  comment                         comment[]
+  follow_follow_follower_idTouser follow[]  @relation("follow_follower_idTouser")
+  follow_follow_user_idTouser     follow[]  @relation("follow_user_idTouser")
+  like                            like[]
+  post                            post[]
+  saved                           saved[]
+  story                           story[]
+}
