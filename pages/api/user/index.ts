@@ -1,4 +1,4 @@
-import base from 'lib/shared/middleware/common'
+import base from 'lib/server/middleware/common'
 
 import userService from 'service/server/user/service'
 
