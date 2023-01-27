@@ -177,6 +177,7 @@
   --text-muted: var(--gray-500);
   --bg: var(--gray-100);
   --bg-content: white;
+  --loader-bg: var(--gray-100);
 
   --main-linear-gradient: linear-gradient(to right top, #fa7c36, #ff654c, #ff4f65, #ff3d7f, #f2359b);
 

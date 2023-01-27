@@ -2,13 +2,16 @@
 import Avatar from 'components/shared/Avatar'
 import styles from './header.module.css'
 import { useUser } from 'lib/client/user/useUser'
+import LoaderHeader from './Loader'
 
 export default function SidebarHeader() {
   // const data = use(promise)
 
-  const { user } = useUser()
+  const { user, loading } = useUser()
 
-  if (!user) return null
+  if (loading || !user) {
+    return <LoaderHeader />
+  }
 
   return (
     <header className={styles.header}>

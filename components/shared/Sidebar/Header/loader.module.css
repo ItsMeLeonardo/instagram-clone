@@ -6,19 +6,17 @@
   align-items: center;
 
   .data {
-    text-align: center;
-    .username {
-      font-size: 0.85rem;
-      font-weight: 600;
-      margin-bottom: 0.125rem;
-      text-align: center;
-    }
+    margin-top: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
 
+    .username,
     .location {
-      font-size: 0.7rem;
-      font-weight: 400;
-      text-align: center;
-      color: var(--gray-400);
+      height: 14px;
+      width: 100px;
+      border-radius: 0.5rem;
+      background: var(--loader-bg);
     }
   }
 
@@ -32,11 +30,14 @@
       display: flex;
       flex-direction: column;
       align-items: center;
+      gap: 0.5rem;
 
       .value {
-        font-size: 0.75rem;
-        font-weight: 600;
-        margin-bottom: 0.25rem;
+        display: block;
+        height: 14px;
+        width: 30px;
+        border-radius: 0.5rem;
+        background: var(--loader-bg);
       }
 
       .label {
