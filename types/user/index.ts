@@ -14,5 +14,3 @@ export type UserDetail = User & {
   followers: number
   following: number
 }
-
-export type ClientUser = Omit<User, 'password'>
