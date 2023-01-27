@@ -1,11 +1,13 @@
 import { NextResponse } from 'next/server'
 import { request as fetch } from 'lib/shared/request'
 
-import type { NextRequest } from 'next/server'
 import { logger } from 'utils/shared/logs'
+import { COOKIE_TOKEN_KEY } from 'config'
+
+import type { NextRequest } from 'next/server'
 
 export async function middleware(request: NextRequest) {
-  const authToken = request.cookies.get('auth_token')
+  const authToken = request.cookies.get(COOKIE_TOKEN_KEY)
 
   try {
     if (!authToken) {
