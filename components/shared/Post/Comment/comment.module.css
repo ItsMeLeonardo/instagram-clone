@@ -1,0 +1,81 @@
+.comment {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+
+  @media (min-width: 768px) {
+    gap: 1rem;
+  }
+
+  .form {
+    width: 100%;
+  }
+
+  .comment_input {
+    flex-grow: 1;
+    position: relative;
+
+    .input {
+      width: 100%;
+      padding: 0.8rem 1.25rem;
+      padding-right: 120px;
+      border-radius: 999px;
+      border: var(--gray-100) 1px solid;
+      background: var(--gray-50);
+      font-size: 14px;
+    }
+
+    .options {
+      position: absolute;
+      top: 0;
+      height: 100%;
+      right: 0.35rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+
+      .button,
+      .submit {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        padding: 0.25rem;
+        border-radius: 50%;
+        transition: color 0.2s ease-in-out;
+        position: relative;
+
+        &:hover,
+        &:focus,
+        &:focus-within {
+          color: var(--primary);
+        }
+
+        input {
+          position: absolute;
+          opacity: 0;
+          width: 0;
+          height: 0;
+          z-index: -1;
+        }
+      }
+
+      .submit {
+        background: var(--main-linear-gradient);
+        color: white;
+        padding: 0.5rem;
+        transition: box-shadow 0.2s ease-in-out, transform 0.2s ease-in-out;
+
+        &:hover,
+        &:focus {
+          color: white;
+          box-shadow: 0 0 0.75rem color-mod(var(--primary) a(0.5));
+        }
+
+        &:active {
+          transform: scale(0.95);
+        }
+      }
+    }
+  }
+}

@@ -6,6 +6,7 @@
   align-items: center;
 
   .data {
+    text-align: center;
     .username {
       font-size: 0.85rem;
       font-weight: 600;
