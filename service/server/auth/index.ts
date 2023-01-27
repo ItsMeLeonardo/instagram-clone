@@ -4,24 +4,12 @@ import { UserNotFoundError, InvalidPasswordError } from './erros'
 export type AuthRequestUser = {
   id: number
   email: string
-  password: string
 }
 
 class Auth {
-  private async getUserByEmail(email: string): Promise<AuthRequestUser | null> {
+  async login({ email, password }: { email: string; password: string }) {
     const user = await db.user.findUnique({ where: { email } })
 
-    if (!user) return null
-
-    return {
-      id: user.user_id,
-      email: user.email,
-      password: user.password,
-    }
-  }
-
-  async login({ email, password }: { email: string; password: string }) {
-    const user = await this.getUserByEmail(email)
     if (!user) {
       throw new UserNotFoundError()
     }
@@ -30,7 +18,10 @@ class Auth {
       throw new InvalidPasswordError()
     }
 
-    return user
+    return {
+      id: user.user_id,
+      email: user.email,
+    }
   }
   // async logout() {}
   async register() {}

@@ -1,11 +1,28 @@
 import { db } from 'lib/server/persistence'
 import type { UserDto } from '../dto'
-import type { User } from 'types/user'
+import type { UserDetail } from 'types/user'
 class UserService {
   private async getUserByIdDb(id: number) {
     const user = await db.user.findUnique({
       where: {
         user_id: id,
+      },
+      select: {
+        avatar: true,
+        username: true,
+        user_id: true,
+        email: true,
+        location: true,
+        created_at: true,
+        lastname: true,
+        name: true,
+        _count: {
+          select: {
+            post: true,
+            follow_follow_follower_idTouser: true,
+            follow_follow_user_idTouser: true,
+          },
+        },
       },
     })
 
@@ -37,7 +54,7 @@ class UserService {
     return newUser
   }
 
-  private userByIdAdapter(user: Awaited<ReturnType<typeof this.getUserByIdDb>>): User | null {
+  private userByIdAdapter(user: Awaited<ReturnType<typeof this.getUserByIdDb>>): UserDetail | null {
     if (!user) return null
 
     return {
@@ -49,7 +66,9 @@ class UserService {
       createdAt: user.created_at,
       lastName: user.lastname,
       name: user.name,
-      password: user.password,
+      followers: user._count.follow_follow_follower_idTouser,
+      following: user._count.follow_follow_user_idTouser,
+      posts: user._count.post,
     }
   }
 }
