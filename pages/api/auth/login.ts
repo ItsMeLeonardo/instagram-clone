@@ -2,7 +2,7 @@ import { setCookie } from 'cookies-next'
 import nextConnect from 'next-connect'
 
 import { COOKIE_TOKEN_KEY } from 'config'
-import authMiddleware from 'lib/server/auth/middleware'
+import authMiddlewarePassport from 'lib/server/auth/middleware'
 import authProvider, { generateToken } from 'lib/server/auth'
 import { logger } from 'utils/shared/logs'
 
@@ -11,7 +11,7 @@ import type { AuthRequest } from 'lib/server/auth'
 
 const handler = nextConnect<AuthRequest, NextApiResponse>()
 
-handler.use(authMiddleware).post(authProvider.authenticate('local', { session: false }), (req, res) => {
+handler.use(authMiddlewarePassport).post(authProvider.authenticate('local', { session: false }), (req, res) => {
   const { user } = req
 
   if (!user) {

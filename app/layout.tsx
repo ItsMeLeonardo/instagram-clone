@@ -1,8 +1,16 @@
-import { ReactNode } from "react";
+import AuthProvider from 'components/Auth/AuthProvider'
 
-import "styles/globals.css";
+import type { Session } from 'next-auth'
+import type { ReactNode } from 'react'
 
-export default function RootLayout({ children }: { children: ReactNode }) {
+import 'styles/globals.css'
+
+type RootLayoutProps = {
+  children: ReactNode
+  session: Session
+} & Record<string, unknown>
+
+export default function RootLayout({ children, session }: RootLayoutProps) {
   return (
     <html>
       <head lang="en">
@@ -10,7 +18,9 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Instagram Clone</title>
       </head>
-      <body>{children}</body>
+      <body>
+        <AuthProvider session={session}>{children}</AuthProvider>
+      </body>
     </html>
-  );
+  )
 }

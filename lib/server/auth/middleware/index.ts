@@ -1,7 +1,10 @@
 import nextConnect from 'next-connect'
-
 import authProvider from 'lib/server/auth'
 
-const authMiddleware = nextConnect().use(authProvider.initialize())
+import { withNextAuth } from './with-next-auth'
 
-export default authMiddleware
+const authMiddlewarePassport = nextConnect().use(authProvider.initialize())
+
+export const authMiddleware = withNextAuth
+
+export default authMiddlewarePassport
