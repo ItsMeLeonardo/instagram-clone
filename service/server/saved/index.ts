@@ -39,6 +39,7 @@ class SavedService {
     return savedPosts.map((savedPost) => {
       return {
         id: savedPost.saved_id,
+        title: savedPost.title,
         userId: savedPost.user_id,
         createdAt: savedPost.created_at,
         postNumber: savedPost._count.saved_post,

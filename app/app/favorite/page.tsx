@@ -2,7 +2,6 @@
 import { use } from 'react'
 
 import { getSavedPosts } from 'service/client/saved'
-import { timeAgo } from 'utils/shared/date-time'
 
 import styles from './page-favorite.module.css'
 import Button from 'components/shared/Button'
@@ -36,9 +35,8 @@ export default function Favorite() {
         <button className={styles.button}>+ new collection</button>
       </header>
       <div className={styles.grid}>
-        {savedList.map(({ id, savedPosts, createdAt }) => {
+        {savedList.map(({ id, savedPosts, title }) => {
           const [{ post }] = savedPosts
-          const title = timeAgo(createdAt)
 
           return (
             <picture key={id} className={styles.item}>

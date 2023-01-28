@@ -1,5 +1,6 @@
 export type SavedList = {
   id: number
+  title: string
   userId: number
   createdAt: string | Date
   postNumber: number

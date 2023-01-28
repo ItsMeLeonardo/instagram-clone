@@ -72,6 +72,14 @@
       transition: opacity 0.3s;
     }
   }
+
+  .item[data-loader='true'] {
+    background: var(--bg-content);
+
+    &::before {
+      opacity: 0;
+    }
+  }
 }
 
 .empty_list {
