@@ -11,7 +11,7 @@ export default function Header() {
         <span className={styles.icon} data-icon-left>
           <MagnifyingGlass size="16" />
         </span>
-        <input className={styles.input} type="search" placeholder="search" />
+        <input className={styles.input} type="search" placeholder="Find someone" />
         <button className={styles.icon} data-icon-right data-icon-button>
           <Microphone size="16" />
         </button>
