@@ -23,7 +23,7 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
     label: 'Feed',
     icon: <Home />,
     iconActive: <HomeActive />,
-    href: '/app',
+    href: '/app/feed/latest',
   },
   {
     label: 'Explore',
@@ -56,7 +56,7 @@ export const MOBILE_NAVBAR_ITEMS: SidebarItem[] = [
     label: 'Feed',
     icon: <Home />,
     iconActive: <HomeActive />,
-    href: '/app',
+    href: '/app/feed/latest',
   },
   {
     label: 'Explore',
@@ -67,7 +67,7 @@ export const MOBILE_NAVBAR_ITEMS: SidebarItem[] = [
   {
     label: 'add',
     icon: <Plus size="20" />,
-    href: '/app',
+    href: '/app/feed/latest',
   },
   {
     label: 'Messages',

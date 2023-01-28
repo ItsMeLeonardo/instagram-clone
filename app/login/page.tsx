@@ -38,7 +38,7 @@ export default function Login() {
     signIn('credentials', {
       email,
       password,
-      callbackUrl: '/app',
+      callbackUrl: '/app/feed/latest',
       redirect: false,
     })
       .then((result) => {
@@ -46,7 +46,7 @@ export default function Login() {
           handleError(result.error)
         }
         if (result?.ok) {
-          router.push('/app')
+          router.push('/app/feed/latest')
         }
       })
       .catch(handleError)

@@ -1,0 +1,32 @@
+.item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+
+  .avatar {
+    --size: 2.5rem;
+    width: var(--size);
+    height: var(--size);
+    border-radius: 50%;
+    background: var(--loader-bg);
+  }
+
+  .data {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    align-items: flex-start;
+
+    .username {
+      height: 16px;
+      background: var(--loader-bg);
+      width: 60px;
+    }
+
+    .location {
+      height: 12px;
+      background: var(--loader-bg);
+      width: 120px;
+    }
+  }
+}

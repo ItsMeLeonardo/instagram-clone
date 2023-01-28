@@ -10,7 +10,7 @@ export default function Sidebar() {
   return (
     <>
       <div className={styles.container}>
-        <NextLink href="/app">
+        <NextLink href="/app/feed/latest">
           <picture className={styles.logo}>
             <img src="/logo.svg" alt="" />
           </picture>

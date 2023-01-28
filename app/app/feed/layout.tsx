@@ -1,12 +1,14 @@
 import Play from 'remixicon-react/PlayFillIcon'
 import AddIcon from 'remixicon-react/AddFillIcon'
-
 import Avatar from 'components/shared/Avatar'
-import Post from 'components/shared/Post'
 
-import { getPosts } from 'service/client/post'
+import type { ReactNode } from 'react'
 
-import styles from './page-style.module.css'
+import styles from './feed-layout.module.css'
+
+type LayoutProps = {
+  children: ReactNode
+}
 
 type Story = {
   id: string
@@ -47,9 +49,7 @@ const DATA = [
   },
 ]
 
-export default async function page() {
-  const posts = await getPosts()
-
+export default function layout({ children }: LayoutProps) {
   return (
     <div className={styles.container}>
       <section className={styles.section}>
@@ -80,24 +80,7 @@ export default async function page() {
         </aside>
       </section>
 
-      <section className={`${styles.section} ${styles.feed}`}>
-        <header className={styles.header}>
-          <h3 className={styles.title}>Feeds</h3>
-
-          <div className={styles.filters}>
-            <button className={styles.button}>Latest</button>
-            <button className={styles.button} data-active={true}>
-              Popular
-            </button>
-          </div>
-        </header>
-
-        <aside className={styles.posts}>
-          {posts.map((post) => (
-            <Post key={post.id} {...post} />
-          ))}
-        </aside>
-      </section>
+      {children}
     </div>
   )
 }

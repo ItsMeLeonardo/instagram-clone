@@ -12,7 +12,7 @@ export default function Page() {
         <Button to="/login" icon={<Login />}>
           Login
         </Button>
-        <Button color="gradient" icon={<Home />} to="/app">
+        <Button color="gradient" icon={<Home />} to="/app/feed/latest">
           Home
         </Button>
       </div>
