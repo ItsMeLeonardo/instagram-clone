@@ -1,6 +1,6 @@
 import { db } from 'lib/server/persistence'
 import { PostDto } from './dto'
-import type { Post } from 'types/post'
+import type { ExplorePost, Post } from 'types/post'
 
 class PostService {
   async getPostById(id: number) {
@@ -49,6 +49,29 @@ class PostService {
   async getPosts() {
     const posts = await this.getBbListPosts()
     return this.postListAdapter(posts)
+  }
+
+  async getExplorePosts(): Promise<ExplorePost[]> {
+    const posts = await db.post.findMany({
+      select: {
+        post_id: true,
+        photos: true,
+        description: true,
+        _count: {
+          select: {
+            comment: true,
+            like: true,
+          },
+        },
+      },
+    })
+    return posts.map((post) => ({
+      comments: post._count.comment,
+      likes: post._count.like,
+      id: post.post_id,
+      photos: post.photos,
+      description: post.description,
+    }))
   }
 
   async createPost(post: PostDto) {

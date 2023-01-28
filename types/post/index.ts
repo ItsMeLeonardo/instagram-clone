@@ -19,9 +19,10 @@ type PostStats = {
 
 type UserPost = Pick<User, 'avatar' | 'username' | 'location' | 'id'>
 
-/* {
-  username: string
-  avatar: string
-  location: string
+export type ExplorePost = {
+  id: number
+  photos: string[]
+  comments: number
+  likes: number
+  description: string
 }
- */
