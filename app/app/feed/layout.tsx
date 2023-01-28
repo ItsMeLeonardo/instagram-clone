@@ -2,6 +2,8 @@ import Play from 'remixicon-react/PlayFillIcon'
 import AddIcon from 'remixicon-react/AddFillIcon'
 import Avatar from 'components/shared/Avatar'
 
+import storyService from 'service/server/story'
+
 import type { ReactNode } from 'react'
 
 import styles from './feed-layout.module.css'
@@ -10,46 +12,9 @@ type LayoutProps = {
   children: ReactNode
 }
 
-type Story = {
-  id: string
-  name: string
-  avatar: string
-}
+export default async function layout({ children }: LayoutProps) {
+  const stories = await storyService.getStories()
 
-const DATA = [
-  {
-    id: '1',
-    name: 'Perdana',
-    avatar: 'https://i.pinimg.com/236x/c8/0f/97/c80f971dca149720d06b5e134e6b4a7d.jpg',
-  },
-  {
-    id: '2',
-    name: 'Anna',
-    avatar: 'https://i.pinimg.com/236x/31/81/d9/3181d9e80494f5d14e65f9aecb07c792.jpg',
-  },
-  {
-    id: '3',
-    name: 'Vera',
-    avatar: 'https://i.pinimg.com/236x/3a/72/58/3a72584976987b1458c7330eb5638966.jpg',
-  },
-  {
-    id: '4',
-    name: 'Vera',
-    avatar: 'https://i.pinimg.com/236x/7f/05/71/7f0571fb0e693ced5da9b80fbd9adcf7.jpg',
-  },
-  {
-    id: '5',
-    name: 'Vera',
-    avatar: 'https://i.pinimg.com/236x/22/29/8b/22298b7a73407463bb3b7283f0c7714d.jpg',
-  },
-  {
-    id: '6',
-    name: 'Anna',
-    avatar: 'https://i.pinimg.com/236x/31/81/d9/3181d9e80494f5d14e65f9aecb07c792.jpg',
-  },
-]
-
-export default function layout({ children }: LayoutProps) {
   return (
     <div className={styles.container}>
       <section className={styles.section}>
@@ -70,11 +35,11 @@ export default function layout({ children }: LayoutProps) {
 
             <span className={styles.label}>Add story</span>
           </button>
-          {DATA.map((story: Story) => (
-            <button key={story.id} className={styles.story}>
-              <Avatar size="lg" bordered src={story.avatar} alt={story.name} />
+          {stories.map(({ user, id }) => (
+            <button key={id} className={styles.story}>
+              <Avatar size="lg" bordered src={user.avatar} alt={user.username} />
 
-              <span className={styles.label}>{story.name}</span>
+              <span className={styles.label}>{user.username}</span>
             </button>
           ))}
         </aside>
