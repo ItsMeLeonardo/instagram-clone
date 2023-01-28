@@ -41,7 +41,7 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
     label: 'Messages',
     icon: <Messages />,
     iconActive: <MessagesActive />,
-    href: '/app/settings',
+    href: '/app/messages',
   },
   {
     label: 'Settings',
@@ -73,7 +73,7 @@ export const MOBILE_NAVBAR_ITEMS: SidebarItem[] = [
     label: 'Messages',
     icon: <Messages />,
     iconActive: <MessagesActive />,
-    href: '/app/settings',
+    href: '/app/messages',
   },
   {
     label: 'Settings',
