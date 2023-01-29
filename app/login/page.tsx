@@ -71,7 +71,7 @@ export default function Login() {
           </div>
         </label>
 
-        <Button color="gradient" fullWidth type="submit" loading={loading}>
+        <Button color="gradient" rounded="sm" fullWidth type="submit" loading={loading}>
           Login
         </Button>
         {error && <span className={styles.error}>Invalid email or password</span>}

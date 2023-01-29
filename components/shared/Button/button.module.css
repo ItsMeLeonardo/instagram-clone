@@ -3,7 +3,6 @@
   align-items: center;
   gap: 0.5rem;
   padding: 0.75rem 1.75rem;
-  border-radius: 1rem;
   cursor: pointer;
   font-weight: bold;
   transition: opacity 0.3s ease-in;
@@ -106,6 +105,27 @@
   &[data-border='true'] {
     border: 1px solid var(--btn-color);
     background: transparent;
+  }
+
+  &[data-rounded='true'],
+  &[data-rounded='md'] {
+    border-radius: 0.75rem;
+  }
+
+  &[data-rounded='full'] {
+    border-radius: 100rem;
+  }
+
+  &[data-rounded='none'] {
+    border-radius: 0;
+  }
+
+  &[data-rounded='sm'] {
+    border-radius: 0.5rem;
+  }
+
+  &[data-rounded='lg'] {
+    border-radius: 1rem;
   }
 }
 

@@ -13,7 +13,7 @@ export default function ComingSoon() {
         <img src="/assets/emoji/smiling-face-with-smiling-eyes.webp" alt="face in clouds" />
       </picture>
 
-      <Button color="gradient" to="/app/feed/latest" icon={<BackIcon />}>
+      <Button color="gradient" rounded="lg" to="/app/feed/latest" icon={<BackIcon />}>
         Go back
       </Button>
     </section>

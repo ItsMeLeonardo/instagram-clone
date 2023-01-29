@@ -4,7 +4,7 @@
   align-items: center;
   .back_button {
     background: var(--bg-content);
-    height: 1rem;
+    height: 2rem;
     color: var(--text);
     border-radius: 0.25rem;
     aspect-ratio: 1/1;

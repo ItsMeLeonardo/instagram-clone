@@ -23,7 +23,7 @@ export default function page() {
           </span>
           <span className={styles.label}>Change password</span>
         </Link>
-        <button className={styles.button}>
+        <button className={styles.button} disabled>
           <span className={styles.icon}>
             <Notification />
           </span>

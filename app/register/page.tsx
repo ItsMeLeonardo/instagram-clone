@@ -4,6 +4,7 @@ import Link from 'next/link'
 import type { FormEvent } from 'react'
 
 import styles from './styles.module.css'
+import Button from 'components/shared/Button'
 
 export default function Login() {
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
@@ -34,9 +35,10 @@ export default function Login() {
             <input type="password" id="password" />
           </div>
         </label>
-        <button className={styles.submit} type="submit">
+
+        <Button color="gradient" rounded="sm" fullWidth type="submit">
           Login
-        </button>
+        </Button>
         <div className={styles.footer}>
           <span className={styles.text}>{'Already have an account?'}</span>
           <Link href="/login">

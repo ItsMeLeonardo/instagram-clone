@@ -49,7 +49,7 @@ export default function Page() {
         <Link href="/app/settings" className={styles.back_button}>
           <BackIcon />
         </Link>
-        <h1>Edit Profile</h1>
+        <h1>Change password</h1>
       </header>
       <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
         <header className={styles.avatar_section}>

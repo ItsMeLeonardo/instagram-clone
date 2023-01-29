@@ -9,7 +9,7 @@ export type Props = {
   color?: ThemeColor | 'gradient'
   loading?: boolean
   border?: boolean
-  rounded?: boolean
+  rounded?: boolean | 'full' | 'sm' | 'md' | 'lg'
   children: ReactNode
   icon?: ReactNode
   iconRight?: ReactNode
@@ -31,6 +31,7 @@ export default function Button(props: Props) {
     to,
     disabled,
     fullWidth,
+    rounded,
     ...buttonProps
   } = props
 
@@ -40,6 +41,7 @@ export default function Button(props: Props) {
     className: button.btn,
     'data-disabled': disabled,
     'data-full-width': fullWidth,
+    'data-rounded': rounded,
   }
 
   const child = (
