@@ -1,0 +1,21 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  height: 55px;
+  width: 100%;
+
+  .label {
+    height: 14px;
+    width: 50px;
+    background: var(--bg-content);
+    border-radius: 0.25rem;
+  }
+
+  .input {
+    height: 37px;
+    width: 100%;
+    background: var(--bg-content);
+    border-radius: 0.75rem;
+  }
+}

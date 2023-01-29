@@ -1,7 +1,9 @@
+import { forwardRef } from 'react'
+import PasswordInput from './PasswordInput'
+
 import type { InputHTMLAttributes } from 'react'
 
 import styles from './form-field.module.css'
-import PasswordInput from './PasswordInput'
 
 export type FormFieldProps = {
   label: string
@@ -9,7 +11,7 @@ export type FormFieldProps = {
   error?: boolean
 } & InputHTMLAttributes<HTMLInputElement>
 
-export default function FormField(props: FormFieldProps) {
+const FormField = forwardRef<HTMLInputElement, FormFieldProps>((props, ref) => {
   const { label, helperText, error, disabled, type, ...inputProps } = props
 
   return (
@@ -17,13 +19,14 @@ export default function FormField(props: FormFieldProps) {
       <span className={styles.label}>{label}</span>
 
       {type === 'password' ? (
-        <PasswordInput />
+        <PasswordInput ref={ref} />
       ) : (
         <div className={styles.input_container}>
-          <input className={styles.input} type={type} disabled={disabled} {...inputProps} />
+          <input className={styles.input} type={type} ref={ref} disabled={disabled} {...inputProps} />
         </div>
       )}
       {helperText && <span className={styles.helperText}>{helperText}</span>}
     </label>
   )
-}
+})
+export default FormField

@@ -1,0 +1,70 @@
+.header {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  .back_button {
+    background: var(--bg-content);
+    height: 1rem;
+    color: var(--text);
+    border-radius: 0.25rem;
+    aspect-ratio: 1/1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.2s ease-in-out;
+    &:hover {
+      color: var(--primary);
+    }
+  }
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.avatar_section {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+
+  .data {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+
+    .username {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .location {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+  }
+}
+
+.avatar_section {
+  margin-bottom: 1rem;
+  display: flex;
+}
+
+.grid {
+  display: grid;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+
+  @media (min-width: 768px) {
+    width: 100%;
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.submit_label {
+  font-size: 14px;
+  font-weight: 500;
+}
