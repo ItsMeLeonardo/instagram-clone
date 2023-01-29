@@ -1,8 +1,6 @@
 import Play from 'remixicon-react/PlayFillIcon'
-import AddIcon from 'remixicon-react/AddFillIcon'
-import Avatar from 'components/shared/Avatar'
-
 import storyService from 'service/server/story'
+import Story from 'components/shared/Story'
 
 import type { ReactNode } from 'react'
 
@@ -13,7 +11,11 @@ type LayoutProps = {
 }
 
 export default async function layout({ children }: LayoutProps) {
-  const stories = await storyService.getStories()
+  const serverStories = await storyService.getStories()
+  const stories = serverStories.map((story) => ({
+    ...story,
+    createdAt: story.createdAt.toString(),
+  }))
 
   return (
     <div className={styles.container}>
@@ -29,20 +31,7 @@ export default async function layout({ children }: LayoutProps) {
           </button>
         </header>
 
-        <aside className={styles.stories}>
-          <button className={styles.story}>
-            <Avatar bordered size="lg" icon={<AddIcon size="28" />} alt="afkajf" />
-
-            <span className={styles.label}>Add story</span>
-          </button>
-          {stories.map(({ user, id }) => (
-            <button key={id} className={styles.story}>
-              <Avatar size="lg" bordered src={user.avatar} alt={user.username} />
-
-              <span className={styles.label}>{user.username}</span>
-            </button>
-          ))}
-        </aside>
+        <Story stories={stories} />
       </section>
 
       {children}

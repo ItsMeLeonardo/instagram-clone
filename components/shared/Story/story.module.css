@@ -1,0 +1,69 @@
+.stories {
+  display: flex;
+  gap: 1rem;
+  width: 100%;
+  overflow: auto;
+  padding: 0.25rem;
+
+  .story {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+
+    .label {
+      font-size: 0.75rem;
+      margin: 0;
+      color: var(--gray-700);
+    }
+  }
+}
+
+.story_modal {
+  height: 90vh;
+  aspect-ratio: 9/16;
+  border-radius: 1rem;
+  background-color: var(--gray-100);
+  position: relative;
+
+  .header {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    display: flex;
+    align-items: center;
+    color: white;
+    text-shadow: 0 0 0.25rem black;
+    gap: 0.5rem;
+    font-size: 14px;
+    font-weight: 600;
+    z-index: 10;
+  }
+
+  .photo {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    border-radius: inherit;
+    object-fit: cover;
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 100%;
+      background: linear-gradient(
+        180deg,
+        rgba(0, 0, 0, 0.75) -25%,
+        rgba(0, 0, 0, 0) 25%,
+        rgba(0, 0, 0, 0) 75%,
+        rgba(0, 0, 0, 0.5) 100%
+      );
+      border-radius: inherit;
+    }
+  }
+}

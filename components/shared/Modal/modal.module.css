@@ -1,0 +1,13 @@
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: color-mod(var(--black) alpha(0.15));
+  backdrop-filter: blur(95px);
+  z-index: var(--modal-z-index);
+  cursor: pointer;
+  display: grid;
+  place-content: center;
+}
