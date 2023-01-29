@@ -1,5 +1,5 @@
 'use client'
-import { useEffect, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import debounce from 'just-debounce'
 
 import MagnifyingGlass from 'remixicon-react/SearchLineIcon'
