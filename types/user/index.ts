@@ -15,6 +15,13 @@ export type UserDetail = User & {
   following: number
 }
 
+export type UserFindResult = {
+  id: number
+  username: string
+  avatar: string
+  email: string
+}
+
 export type UserDto = {
   name: string
   email: string

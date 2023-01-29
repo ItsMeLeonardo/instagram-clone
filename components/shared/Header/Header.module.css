@@ -30,56 +30,6 @@
   }
 }
 
-.search_input {
-  position: relative;
-  width: 100%;
-  background: var(--gray-50);
-  border-radius: 99px;
-
-  &:focus-within {
-    outline: 2px solid var(--primary);
-    outline-offset: 2px;
-  }
-
-  &:focus-within .icon:first-child {
-    color: var(--primary);
-  }
-
-  @media (min-width: 768px) {
-    max-width: 320px;
-  }
-
-  @media (min-width: 1200px) {
-    max-width: 420px;
-  }
-
-  .input {
-    padding: 0.8rem 0.5rem 0.8rem 2.5rem;
-    width: 100%;
-    border: none;
-    background: transparent;
-    font-size: 14px;
-    &:focus {
-      outline: none;
-    }
-  }
-
-  .icon {
-    position: absolute;
-    height: 100%;
-    aspect-ratio: 1;
-    top: 0;
-
-    &[data-icon-left] {
-      left: 0;
-    }
-
-    &[data-icon-right] {
-      right: 0;
-    }
-  }
-}
-
 .button {
   align-items: center;
   gap: 0.5rem;

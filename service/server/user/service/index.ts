@@ -1,6 +1,6 @@
 import { db } from 'lib/server/persistence'
 import type { UserDto } from '../dto'
-import type { UserDetail } from 'types/user'
+import type { UserDetail, UserFindResult } from 'types/user'
 class UserService {
   private async getUserByIdDb(id: number) {
     const user = await db.user.findUnique({
@@ -44,6 +44,43 @@ class UserService {
       },
     })
     return users
+  }
+
+  async findUser(keyword: string): Promise<UserFindResult[]> {
+    const users = await db.user.findMany({
+      where: {
+        OR: [
+          {
+            username: {
+              contains: keyword,
+            },
+          },
+          {
+            name: {
+              contains: keyword,
+            },
+          },
+          {
+            lastname: {
+              contains: keyword,
+            },
+          },
+        ],
+      },
+      select: {
+        avatar: true,
+        username: true,
+        user_id: true,
+        email: true,
+      },
+      take: 10,
+    })
+    return users.map((user) => ({
+      id: user.user_id,
+      username: user.username,
+      avatar: user.avatar,
+      email: user.email,
+    }))
   }
 
   async createUser(user: UserDto) {
