@@ -1,9 +1,8 @@
 'use client'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import debounce from 'just-debounce'
 
 import MagnifyingGlass from 'remixicon-react/SearchLineIcon'
-import Microphone from 'remixicon-react/Mic2LineIcon'
 import User from 'components/shared/User'
 
 import { findUser } from 'service/client/user'
@@ -12,31 +11,14 @@ import type { UserFindResult } from 'types/user'
 
 import styles from './search-input.module.css'
 import Loader from 'components/shared/Loader'
+import MicInput from 'components/shared/MicInput'
 
 export default function SearchInput() {
   const [results, setResults] = useState<UserFindResult[] | null>(null)
   const [loading, setLoading] = useState(false)
+  const inputRef = useRef<HTMLInputElement>(null)
 
-  useEffect(() => {
-    const emptyResults = results && results.length === 0
-    let timeout: ReturnType<typeof setTimeout>
-
-    if (emptyResults) {
-      timeout = setTimeout(() => {
-        setResults(null)
-      }, 2000)
-    }
-
-    return () => {
-      clearTimeout(timeout)
-    }
-  }, [results])
-
-  const handleSearch = debounce((e) => {
-    const event = e as Event
-    const input = event.target as HTMLInputElement
-    const keyword = input.value
-
+  const handleSearch = debounce((keyword: string) => {
     if (keyword.trim().length === 0) {
       setResults(null)
       return
@@ -62,10 +44,25 @@ export default function SearchInput() {
         <span className={styles.icon} data-icon-left>
           <MagnifyingGlass size="16" />
         </span>
-        <input className={styles.input} onInput={handleSearch} placeholder="Find someone" />
-        <button className={styles.icon} data-icon-right data-icon-button>
-          {loading ? <Loader size={20} /> : <Microphone size="16" />}
-        </button>
+        <input
+          ref={inputRef}
+          className={styles.input}
+          onInput={(e) => handleSearch(e.currentTarget.value)}
+          placeholder="Find someone"
+        />
+        <div className={styles.icon} data-icon-right data-icon-button>
+          {loading ? (
+            <Loader size={20} />
+          ) : (
+            <MicInput
+              onResult={(transcript) => {
+                if (!inputRef.current) return
+                inputRef.current.value = transcript
+                handleSearch(transcript)
+              }}
+            />
+          )}
+        </div>
       </label>
 
       {results && (
