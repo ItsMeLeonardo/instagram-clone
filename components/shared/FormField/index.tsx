@@ -19,7 +19,7 @@ const FormField = forwardRef<HTMLInputElement, FormFieldProps>((props, ref) => {
       <span className={styles.label}>{label}</span>
 
       {type === 'password' ? (
-        <PasswordInput ref={ref} />
+        <PasswordInput ref={ref} {...inputProps} />
       ) : (
         <div className={styles.input_container}>
           <input className={styles.input} type={type} ref={ref} disabled={disabled} {...inputProps} />

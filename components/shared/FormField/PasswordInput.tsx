@@ -17,7 +17,7 @@ const PasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>((props, r
   return (
     <div className={styles.input_container}>
       <input className={styles.input} ref={ref} type={show ? 'text' : 'password'} autoComplete="off" {...props} />
-      <button className={styles.icon}>
+      <button type="button" className={styles.icon}>
         {show ? <EyeOffIcon size={20} onClick={toggleShow} /> : <EyeIcon size={20} onClick={toggleShow} />}
       </button>
     </div>
