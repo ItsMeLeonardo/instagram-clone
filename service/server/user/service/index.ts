@@ -52,15 +52,18 @@ class UserService {
           {
             username: {
               contains: keyword,
+              mode: 'insensitive',
             },
           },
           {
             name: {
               contains: keyword,
+              mode: 'insensitive',
             },
           },
           {
             lastname: {
+              mode: 'insensitive',
               contains: keyword,
             },
           },
