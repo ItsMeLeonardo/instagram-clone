@@ -9,3 +9,9 @@ export class InvalidPasswordError extends Error {
     super('Invalid password')
   }
 }
+
+export class UserAlreadyExistsError extends Error {
+  constructor() {
+    super('User already exists')
+  }
+}

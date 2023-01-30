@@ -1,6 +1,5 @@
 import { db } from 'lib/server/persistence'
-import type { UserDto } from '../dto'
-import type { UserDetail, UserFindResult } from 'types/user'
+import type { UserFindResult, UserDetail } from 'types/user'
 class UserService {
   private async getUserByIdDb(id: number) {
     const user = await db.user.findUnique({
@@ -81,14 +80,6 @@ class UserService {
       avatar: user.avatar,
       email: user.email,
     }))
-  }
-
-  async createUser(user: UserDto) {
-    const newUser = await db.user.create({
-      data: user,
-    })
-
-    return newUser
   }
 
   private userByIdAdapter(user: Awaited<ReturnType<typeof this.getUserByIdDb>>): UserDetail | null {

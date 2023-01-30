@@ -5,8 +5,8 @@ export interface User {
   location: string
   avatar: string
   createdAt: string | Date
-  name: string
-  lastName: string
+  name?: string
+  lastName?: string
 }
 
 export type UserDetail = User & {
@@ -20,13 +20,4 @@ export type UserFindResult = {
   username: string
   avatar: string
   email: string
-}
-
-export type UserDto = {
-  name: string
-  email: string
-  avatar: string
-  username: string
-  lastName: string
-  location: string
 }
