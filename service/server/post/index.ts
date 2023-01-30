@@ -1,7 +1,10 @@
 import { db } from 'lib/server/persistence'
-import { PostDto } from './dto'
-import type { ExplorePost, Post } from 'types/post'
 
+import { PostDto, postSchema } from './dto'
+import type { ExplorePost, Post } from 'types/post'
+import { InvalidPostError } from './errors'
+
+import tagService from 'service/server/tag'
 class PostService {
   async getPostById(id: number) {
     const post = await db.post.findUnique({
@@ -74,9 +77,30 @@ class PostService {
     }))
   }
 
-  async createPost(post: PostDto) {
+  async createPost(postDto: PostDto) {
+    const { success } = postSchema.safeParse(postDto)
+
+    if (!success) {
+      throw new InvalidPostError()
+    }
+
+    const tags = await tagService.upsertTags(postDto.tags)
+
+    const post = {
+      description: postDto.description,
+      user_id: postDto.userId,
+      photos: postDto.photos,
+    }
+
     const newPost = await db.post.create({
-      data: post,
+      data: {
+        ...post,
+        post_tag: {
+          create: tags.map((tag) => ({
+            tag_id: tag.id,
+          })),
+        },
+      },
     })
 
     return newPost
