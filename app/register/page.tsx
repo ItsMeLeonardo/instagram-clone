@@ -1,44 +1,61 @@
 'use client'
-
+import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import type { FormEvent } from 'react'
+import { useEffect, useState } from 'react'
+import { useForm, SubmitHandler } from 'react-hook-form'
+
+import Button from 'components/shared/Button'
+import FormField from 'components/shared/FormField'
+import { registerUser } from 'service/client/auth'
+import { useUser } from 'lib/client/user/useUser'
+
+import type { UserToRegister } from 'service/client/auth'
 
 import styles from './styles.module.css'
-import Button from 'components/shared/Button'
 
 export default function Login() {
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
+  const { register, handleSubmit } = useForm<UserToRegister>()
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+
+  const router = useRouter()
+  const { user } = useUser()
+
+  useEffect(() => {
+    if (user) {
+      router.push('/app/feed/latest')
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  const onSubmit: SubmitHandler<UserToRegister> = async (data) => {
+    setLoading(true)
+    const result = await registerUser(data)
+    setLoading(false)
+    if (typeof result === 'string') {
+      setError(result)
+      return
+    }
+
+    router.push(`/login?email=${result.email}`)
   }
 
   return (
     <section className={styles.container}>
-      <form className={styles.form} onSubmit={handleSubmit}>
+      <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
         <h1 className={styles.title}>Sign up</h1>
-        <label className={styles.formField}>
-          <span className={styles.label}>email</span>
-          <div className={styles.input}>
-            <input type="email" id="email" />
-          </div>
-        </label>
 
-        <label className={styles.formField}>
-          <span className={styles.label}>Username</span>
-          <div className={styles.input}>
-            <input type="text" id="username" />
-          </div>
-        </label>
+        <FormField label="email" type="email" {...register('email', { required: 'Email is required' })} />
+        <FormField label="username" type="text" {...register('username', { required: 'Username is required' })} />
+        <FormField label="password" type="password" {...register('password', { required: 'Password is required' })} />
 
-        <label className={styles.formField}>
-          <span className={styles.label}>Password</span>
-          <div className={styles.input}>
-            <input type="password" id="password" />
-          </div>
-        </label>
-
-        <Button color="gradient" rounded="sm" fullWidth type="submit">
-          Login
+        <Button color="gradient" rounded="sm" fullWidth type="submit" loading={loading}>
+          Register
         </Button>
+
+        {error && <span className={styles.error}>{error}</span>}
+
         <div className={styles.footer}>
           <span className={styles.text}>{'Already have an account?'}</span>
           <Link href="/login">

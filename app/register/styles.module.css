@@ -13,18 +13,20 @@
   max-width: 1100px;
   margin: 0 auto;
   padding: 0 1rem;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .form {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
   width: 100%;
   max-width: 500px;
   margin: 0 auto;
   padding: 0 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
 .formField {
@@ -70,6 +72,12 @@
       width: 100%;
     }
   }
+}
+
+.error {
+  color: var(--danger);
+  font-size: 0.85rem;
+  margin: 1rem 0;
 }
 
 .submit {

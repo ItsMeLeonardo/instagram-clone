@@ -2,6 +2,7 @@
   width: 100vw;
   min-height: 100vh;
   display: grid;
+  overflow-x: hidden;
 
   @media (min-width: 768px) {
     grid-template-columns: 1fr 3fr;

@@ -1,10 +1,7 @@
 'use client'
-
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
-
-// import { request } from 'lib/shared/request'
+import { useRouter, useSearchParams } from 'next/navigation'
 
 import { logger } from 'utils/shared/logs'
 
@@ -13,9 +10,14 @@ import type { FormEvent } from 'react'
 import styles from './styles.module.css'
 import Button from 'components/shared/Button'
 import { signIn } from 'next-auth/react'
+import { useUser } from 'lib/client/user/useUser'
+import FormField from 'components/shared/FormField'
 
 export default function Login() {
   const router = useRouter()
+  const searchParams = useSearchParams()
+  const emailRef = useRef<HTMLInputElement>(null)
+  const { user } = useUser()
 
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(false)
@@ -53,23 +55,28 @@ export default function Login() {
       .finally(() => setLoading(false))
   }
 
+  useEffect(() => {
+    if (user) {
+      router.push('/app/feed/latest')
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  useEffect(() => {
+    const email = searchParams.get('email')
+    if (email && emailRef.current) {
+      emailRef.current.focus()
+      emailRef.current.value = email
+    }
+  }, [searchParams])
+
   return (
     <section className={styles.container}>
       <form className={styles.form} onSubmit={handleSubmit}>
         <h1 className={styles.title}>Sign in</h1>
-        <label className={styles.formField}>
-          <span className={styles.label}>Email</span>
-          <div className={styles.input}>
-            <input type="email" id="email" />
-          </div>
-        </label>
 
-        <label className={styles.formField}>
-          <span className={styles.label}>Password</span>
-          <div className={styles.input}>
-            <input type="password" id="password" />
-          </div>
-        </label>
+        <FormField id="email" label="email" type="email" ref={emailRef} required />
+        <FormField id="password" label="password" type="password" required />
 
         <Button color="gradient" rounded="sm" fullWidth type="submit" loading={loading}>
           Login
