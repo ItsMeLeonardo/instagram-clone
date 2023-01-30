@@ -97,10 +97,10 @@ model tag {
 
 model user {
   user_id                         Int       @id @default(autoincrement())
-  username                        String    @db.VarChar(50)
-  password                        String    @db.VarChar(50)
-  email                           String    @unique(map: "email_unique") @db.VarChar(50)
-  location                        String    @db.VarChar(50)
+  username                        String    @db.VarChar(255)
+  password                        String    @db.VarChar(255)
+  email                           String    @unique(map: "email_unique") @db.VarChar(255)
+  location                        String    @db.VarChar(255)
   avatar                          String    @db.VarChar(255)
   created_at                      DateTime  @default(now()) @db.Timestamp(6)
   name                            String    @default("") @db.VarChar(100)
