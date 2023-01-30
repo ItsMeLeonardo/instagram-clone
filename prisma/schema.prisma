@@ -91,7 +91,7 @@ model story {
 
 model tag {
   tag_id   Int        @id @default(autoincrement())
-  name     String     @db.VarChar(50)
+  name     String     @unique(map: "tag_name_unique") @db.VarChar(50)
   post_tag post_tag[]
 }
 
