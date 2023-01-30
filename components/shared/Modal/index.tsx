@@ -1,3 +1,4 @@
+'use client'
 import { ReactNode, useEffect } from 'react'
 
 import styles from './modal.module.css'
