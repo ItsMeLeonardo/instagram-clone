@@ -14,8 +14,6 @@ export default function MicInput({ onResult }: MicInputProps) {
   const [isRecoding, setIsRecoding] = useState(false)
   const recognitionRef = useRef<SpeechRecognition>()
 
-  const noSupport = !window.webkitSpeechRecognition && !window.SpeechRecognition
-
   useEffect(() => {
     if (!window.webkitSpeechRecognition && !window.SpeechRecognition) return
     const SpeechRecognition = window.webkitSpeechRecognition || window.SpeechRecognition
@@ -68,7 +66,7 @@ export default function MicInput({ onResult }: MicInputProps) {
       data-icon-right
       data-icon-button
       onClick={handleClick}
-      disabled={noSupport}
+      disabled={!recognitionRef.current}
     >
       {isRecoding ? <MicrophoneOpen size="16" /> : <Microphone size="16" />}
     </button>
