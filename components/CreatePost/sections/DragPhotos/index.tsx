@@ -15,6 +15,11 @@ type Props = {
 export default function DragPhotos({ onUpload }: Props) {
   const dropZoneRef = useRef<HTMLDivElement>(null)
 
+  const handleUploadPhoto = (files: FileList) => {
+    const photoFiles = Array.from(files).filter((file) => file.type.startsWith('image/'))
+    onUpload(photoFiles)
+  }
+
   const handleDragEnter = (event: DragEvent<HTMLDivElement>) => {
     event.preventDefault()
   }
@@ -35,18 +40,14 @@ export default function DragPhotos({ onUpload }: Props) {
   const handleDrop = (event: DragEvent<HTMLDivElement>) => {
     event.preventDefault()
     if (!dropZoneRef.current) return
-    const files = Array.from(event.dataTransfer.files)
 
     dropZoneRef.current.removeAttribute('data-dragging')
-
-    onUpload(files)
+    handleUploadPhoto(event.dataTransfer.files)
   }
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (!event.target.files) return
-    const files = Array.from(event.target.files)
-
-    onUpload(files)
+    handleUploadPhoto(event.target.files)
   }
 
   return (
@@ -63,7 +64,7 @@ export default function DragPhotos({ onUpload }: Props) {
         <p className={styles.text}>Drag photos here</p>
       </div>
       <label className={styles.uploadImage}>
-        <input type="file" hidden multiple onChange={handleChange} />
+        <input type="file" hidden multiple onChange={handleChange} accept="image/*" />
         <span className={styles.icon}>
           <UploadIcon size={16} />
         </span>

@@ -2,6 +2,7 @@ import Plus from 'remixicon-react/AddLineIcon'
 
 import styles from './Header.module.css'
 import SearchInput from './SearchInput'
+import CreatePost from 'components/CreatePost'
 
 export default function Header() {
   return (
@@ -14,6 +15,8 @@ export default function Header() {
         </span>
         <span>Create new post</span>
       </button>
+
+      <CreatePost />
     </div>
   )
 }

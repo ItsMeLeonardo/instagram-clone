@@ -1,6 +1,8 @@
 import uid from 'tiny-uid'
 import { create } from 'zustand'
 
+export const PHOTOS_LIMIT = 10
+
 type Photo = {
   id: string
   preview: string
@@ -44,16 +46,26 @@ export const useCreatePostStore = create<State>(() => ({
 
 export const useCreatePostActions: Actions = {
   addPhotos: (files) => {
-    const photos = files.map((file) => createPhoto(file))
-    useCreatePostStore.setState((state) => ({
-      photos: [...state.photos, ...photos],
-    }))
+    const photos = files.slice(0, PHOTOS_LIMIT).map((file) => createPhoto(file))
+    useCreatePostStore.setState((state) => {
+      if (state.photos.length + photos.length > PHOTOS_LIMIT) {
+        return {
+          photos: state.photos,
+        }
+      }
+
+      return {
+        photos: [...state.photos, ...photos],
+      }
+    })
   },
   setInitialPhotos: (files) => {
-    const photos = files.map((file) => createPhoto(file))
-    useCreatePostStore.setState(() => ({
-      photos,
-    }))
+    const photos = files.slice(0, PHOTOS_LIMIT).map((file) => createPhoto(file))
+    useCreatePostStore.setState(() => {
+      return {
+        photos,
+      }
+    })
   },
   removePhoto: (id) => {
     useCreatePostStore.setState((state) => {

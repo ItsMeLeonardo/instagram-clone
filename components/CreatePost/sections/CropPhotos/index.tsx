@@ -10,16 +10,15 @@ import UploadIcon from 'remixicon-react/UploadCloud2LineIcon'
 import ArrowLeft from 'remixicon-react/ArrowLeftSLineIcon'
 import ArrowRight from 'remixicon-react/ArrowRightSLineIcon'
 import OriginalAspectIcon from 'remixicon-react/Image2LineIcon'
-import { useCurrentPhoto } from 'components/CreatePost/store/useCreatePost'
+import UploadCarousel from './UploadCarousel'
+
+import { useCurrentPhoto, usePhotos } from 'components/CreatePost/store/useCreatePost'
 import { useCreatePostActions } from 'components/CreatePost/store'
+
+import { alertToast } from 'components/shared/Toaster'
 
 import 'react-image-crop/dist/ReactCrop.css'
 import styles from './crop-photos.module.css'
-import UploadCarousel from './UploadCarousel'
-
-export type CropPhotosProps = {
-  // photos: PhotoFile[]
-}
 
 type Options = 'crop' | 'zoom' | 'upload'
 
@@ -48,6 +47,7 @@ const { addPhotos, nextPhoto, prevPhoto } = useCreatePostActions
 
 export default function CropPhotos() {
   const { currentPhoto, isFirstPhoto, isLastPhoto } = useCurrentPhoto()
+  const { totalPhotos } = usePhotos()
 
   const [crop, setCrop] = useState<Crop>()
   const [selectedOption, setSelectedOption] = useState<Options | null>(null)
@@ -85,6 +85,10 @@ export default function CropPhotos() {
     const files = e.target.files
 
     if (!files) return
+    if (files.length + totalPhotos > 10) {
+      alertToast('You can upload a maximum of 10 photos')
+      return
+    }
     addPhotos(Array.from(files))
   }
 

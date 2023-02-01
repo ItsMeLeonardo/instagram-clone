@@ -5,18 +5,14 @@ import Modal from 'components/shared/Modal'
 import SectionContainer from './sections/SectionContainer'
 import DragPhotos from './sections/DragPhotos'
 
-import { useCreatePostActions } from 'components/CreatePost/store'
+import { useCreatePostActions, PHOTOS_LIMIT } from 'components/CreatePost/store'
+import { usePhotos } from 'components/CreatePost/store/useCreatePost'
 
 import CropPhotos from './sections/CropPhotos'
 import ApplyFilter from './sections/ApplyFilters'
 import CaptionPhoto from './sections/CaptionPhoto'
-import { usePhotos } from 'components/CreatePost/store/useCreatePost'
+import ToastContainer, { alertToast } from 'components/shared/Toaster'
 // import styles from './create-post.module.css'
-
-export type PhotoFile = {
-  preview: string
-  file: File
-}
 
 type Steps = 'upload' | 'crop' | 'filter' | 'caption'
 
@@ -63,7 +59,12 @@ export default function CreatePost() {
   const { title, nextStep, prevStep, nextStepLabel } = STEP_DATA[currentStep]
 
   const handleUploadPhotos = (files: File[]) => {
+    if (files.length === 0) return
     setInitialPhotos(files)
+
+    if (files.length > PHOTOS_LIMIT) {
+      alertToast('You can upload up to 10 photos by post')
+    }
     setCurrentStep('crop')
   }
 
@@ -79,33 +80,9 @@ export default function CreatePost() {
     }
   }
 
-  /*   const handleAddPhoto = (photo: File | File[]) => {
-    if (Array.isArray(photo)) {
-      const newPhotos = photo.map((file) => {
-        const photo = {
-          file,
-          preview: URL.createObjectURL(file),
-        }
-        return photo
-      })
-      setPhotos((photos) => [...photos, ...newPhotos])
-      return
-    }
-    const newPhoto = {
-      file: photo,
-      preview: URL.createObjectURL(photo),
-    }
-    setPhotos((photos) => [...photos, newPhoto])
-  }
-
-  const handleRemovePhoto = (index: number) => {
-    setPhotos((photos) => {
-      return photos.filter((_, i) => i !== index)
-    })
-  } */
-
   return (
     <Modal open>
+      <ToastContainer />
       <SectionContainer
         title={title}
         showSteps={currentStep !== 'upload'}
