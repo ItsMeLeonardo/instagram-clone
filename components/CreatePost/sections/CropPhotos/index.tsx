@@ -1,6 +1,6 @@
 'use client'
 import { useState, ChangeEvent, useRef, useEffect } from 'react'
-import ReactCrop, { type Crop, PixelCrop, PercentCrop } from 'react-image-crop'
+import ReactCrop, { type Crop, PixelCrop, PercentCrop, convertToPixelCrop } from 'react-image-crop'
 
 import AspectRatioIcon from 'remixicon-react/AspectRatioLineIcon'
 
@@ -61,6 +61,8 @@ export default function CropPhotos() {
   const [crop, setCrop] = useState<Crop>()
   const [selectedOption, setSelectedOption] = useState<Options | null>(null)
   const [aspect, setAspect] = useState<number | 'original'>('original')
+
+  const imageRef = useRef<HTMLImageElement>(null)
   // const [zoom, setZoom] = useState(0)
 
   useEffect(() => {
@@ -109,10 +111,20 @@ export default function CropPhotos() {
     addPhotos(Array.from(files))
   }
 
+  const handleChangeCropByAspect = (crop: PercentCrop) => {
+    setCrop(crop)
+
+    if (imageRef.current) {
+      const pixelCrop = convertToPixelCrop(crop, imageRef.current?.width, imageRef.current?.height)
+      setPhotoCrop(pixelCrop)
+    }
+  }
+
   const handleAspectChange = (newAspect: number | 'original') => {
     setAspect(newAspect)
     if (newAspect === 'original') {
       setCrop(originalImageCrop)
+      removePhotoCrop()
       return
     }
 
@@ -124,8 +136,7 @@ export default function CropPhotos() {
         y: 15,
         unit: '%',
       }
-
-      setCrop(crop)
+      handleChangeCropByAspect(crop)
       return
     }
 
@@ -138,7 +149,7 @@ export default function CropPhotos() {
         unit: '%',
       }
 
-      setCrop(crop)
+      handleChangeCropByAspect(crop)
       return
     }
 
@@ -151,7 +162,7 @@ export default function CropPhotos() {
         unit: '%',
       }
 
-      setCrop(crop)
+      handleChangeCropByAspect(crop)
       return
     }
   }
@@ -185,7 +196,7 @@ export default function CropPhotos() {
         className={styles.crop_container}
       >
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={currentPhoto?.preview} alt="photos" className={styles.crop_image} />
+        <img src={currentPhoto?.preview} alt="photos" className={styles.crop_image} ref={imageRef} />
       </ReactCrop>
 
       {!isFirstPhoto && (
