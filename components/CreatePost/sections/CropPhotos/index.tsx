@@ -1,6 +1,6 @@
 'use client'
-import { useState, ChangeEvent, useRef } from 'react'
-import ReactCrop, { type Crop } from 'react-image-crop'
+import { useState, ChangeEvent, useRef, useEffect } from 'react'
+import ReactCrop, { type Crop, PixelCrop, PercentCrop } from 'react-image-crop'
 
 import AspectRatioIcon from 'remixicon-react/AspectRatioLineIcon'
 
@@ -12,7 +12,7 @@ import ArrowRight from 'remixicon-react/ArrowRightSLineIcon'
 import OriginalAspectIcon from 'remixicon-react/Image2LineIcon'
 import UploadCarousel from './UploadCarousel'
 
-import { useCurrentPhoto, usePhotos } from 'components/CreatePost/store/useCreatePost'
+import { useCurrentPhoto, usePhotos, usePhotoCrop } from 'components/CreatePost/store/useCreatePost'
 import { useCreatePostActions } from 'components/CreatePost/store'
 
 import { alertToast } from 'components/shared/Toaster'
@@ -43,16 +43,33 @@ const aspectOptions: AspectOption[] = [
   },
 ]
 
-const { addPhotos, nextPhoto, prevPhoto } = useCreatePostActions
+const originalImageCrop: PixelCrop = {
+  height: 0,
+  width: 0,
+  x: 0,
+  y: 0,
+  unit: 'px',
+}
+
+const { addPhotos, nextPhoto, prevPhoto, setPhotoCrop, removePhotoCrop } = useCreatePostActions
 
 export default function CropPhotos() {
   const { currentPhoto, isFirstPhoto, isLastPhoto } = useCurrentPhoto()
   const { totalPhotos } = usePhotos()
+  const defaultCrop = usePhotoCrop()
 
   const [crop, setCrop] = useState<Crop>()
   const [selectedOption, setSelectedOption] = useState<Options | null>(null)
   const [aspect, setAspect] = useState<number | 'original'>('original')
   // const [zoom, setZoom] = useState(0)
+
+  useEffect(() => {
+    if (currentPhoto) {
+      setCrop(defaultCrop)
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const zoomInputRef = useRef<HTMLInputElement>(null)
 
@@ -92,9 +109,81 @@ export default function CropPhotos() {
     addPhotos(Array.from(files))
   }
 
+  const handleAspectChange = (newAspect: number | 'original') => {
+    setAspect(newAspect)
+    if (newAspect === 'original') {
+      setCrop(originalImageCrop)
+      return
+    }
+
+    if (newAspect === 1 / 1) {
+      const crop: PercentCrop = {
+        height: 70,
+        width: 70,
+        x: 15,
+        y: 15,
+        unit: '%',
+      }
+
+      setCrop(crop)
+      return
+    }
+
+    if (newAspect === 4 / 5) {
+      const crop: PercentCrop = {
+        height: 100,
+        width: 80,
+        x: 10,
+        y: 0,
+        unit: '%',
+      }
+
+      setCrop(crop)
+      return
+    }
+
+    if (newAspect === 16 / 9) {
+      const crop: PercentCrop = {
+        height: 56.25,
+        width: 100,
+        x: 0,
+        y: 21.875,
+        unit: '%',
+      }
+
+      setCrop(crop)
+      return
+    }
+  }
+
+  const handleCrop = (pixelCrop: PixelCrop) => {
+    setCrop(pixelCrop)
+  }
+
+  const handleCompleteCrop = (crop: PixelCrop) => {
+    const { width, height } = crop
+    if (width === 0 && height === 0) {
+      setAspect('original')
+      removePhotoCrop()
+      return
+    }
+    setPhotoCrop(crop)
+  }
+
+  const aspectNumber = aspect === 'original' ? undefined : aspect
+
   return (
     <div className={styles.container}>
-      <ReactCrop crop={crop} onChange={(c) => setCrop(c)} aspect={1 / 1} className={styles.crop_container}>
+      <ReactCrop
+        crop={crop}
+        onChange={handleCrop}
+        locked={aspect === 'original'}
+        minWidth={150}
+        minHeight={150}
+        onComplete={handleCompleteCrop}
+        aspect={aspectNumber}
+        className={styles.crop_container}
+      >
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src={currentPhoto?.preview} alt="photos" className={styles.crop_image} />
       </ReactCrop>
@@ -112,7 +201,11 @@ export default function CropPhotos() {
       )}
       {selectedOption === 'crop' && (
         <div className={styles.aspect_options}>
-          <button className={styles.option} data-active={aspect === 'original'} onClick={() => setAspect('original')}>
+          <button
+            className={styles.option}
+            data-active={aspect === 'original'}
+            onClick={() => handleAspectChange('original')}
+          >
             <span className={styles.label}>Original</span>
             <span className={styles.icon}>
               <OriginalAspectIcon size={24} />
@@ -123,7 +216,7 @@ export default function CropPhotos() {
               className={styles.option}
               key={label}
               data-active={aspect === value}
-              onClick={() => setAspect(value)}
+              onClick={() => handleAspectChange(value)}
             >
               <span className={styles.label}>{label}</span>
               <span className={styles.aspect_icon} data-aspect={label}></span>

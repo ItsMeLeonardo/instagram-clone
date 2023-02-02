@@ -24,3 +24,17 @@ export function usePhotos() {
     totalPhotos: photos.length,
   }
 }
+
+const photoCropSelector = (state: State) => state.crop
+
+export function usePhotoCrop() {
+  const crop = useCreatePostStore(photoCropSelector, shallow)
+  return crop
+}
+
+const croppedPhotosSelector = (state: State) => state.croppedPhotos
+
+export function useCroppedPhotos() {
+  const croppedPhotos = useCreatePostStore(croppedPhotosSelector, shallow)
+  return croppedPhotos
+}

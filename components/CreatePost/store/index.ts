@@ -1,5 +1,8 @@
 import uid from 'tiny-uid'
 import { create } from 'zustand'
+import { cropImage } from 'utils/client/shared/images'
+
+import type { PixelCrop } from 'react-image-crop'
 
 export const PHOTOS_LIMIT = 10
 
@@ -14,6 +17,8 @@ export type State = {
   currentPhotoIndex: number
   description: string
   tags: string[]
+  crop?: PixelCrop
+  croppedPhotos: Photo[]
 }
 
 export type Actions = {
@@ -25,6 +30,9 @@ export type Actions = {
   selectPhoto: (id: string) => void
   setDescription: (description: string) => void
   addTags: (tags: string[]) => void
+  setPhotoCrop: (crop: PixelCrop) => void
+  removePhotoCrop: () => void
+  cropPhotos: () => void
 }
 
 const createPhoto = (file: File): Photo => ({
@@ -42,6 +50,7 @@ export const useCreatePostStore = create<State>(() => ({
   currentPhotoIndex: 0,
   description: '',
   tags: [],
+  croppedPhotos: [],
 }))
 
 export const useCreatePostActions: Actions = {
@@ -134,5 +143,46 @@ export const useCreatePostActions: Actions = {
     useCreatePostStore.setState((state) => ({
       tags: [...state.tags, ...tags],
     }))
+  },
+  setPhotoCrop: (crop) => {
+    useCreatePostStore.setState(() => ({
+      crop,
+    }))
+  },
+
+  removePhotoCrop: () => {
+    useCreatePostStore.setState(() => ({
+      crop: undefined,
+    }))
+  },
+
+  async cropPhotos() {
+    const photos = useCreatePostStore.getState().photos
+    const crop = useCreatePostStore.getState().crop
+
+    if (!crop) return
+
+    const croppedPhotos: Awaited<ReturnType<typeof cropImage>>[] = []
+    const originalWidth = 450
+    const originalHeight = 450
+    for (const photo of photos) {
+      const croppedPhoto = await cropImage({ image: photo.file, crop, originalWidth, originalHeight })
+      croppedPhotos.push(croppedPhoto)
+    }
+
+    useCreatePostStore.setState((state) => {
+      const photos = croppedPhotos.map(([file, preview], index) => {
+        const id = state.photos[index].id
+        return {
+          id,
+          file,
+          preview,
+        }
+      })
+
+      return {
+        croppedPhotos: photos,
+      }
+    })
   },
 }

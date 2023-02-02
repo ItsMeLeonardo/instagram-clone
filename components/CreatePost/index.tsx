@@ -45,7 +45,7 @@ const STEP_DATA: Record<Steps, StepData> = {
   },
 }
 
-const { setInitialPhotos } = useCreatePostActions
+const { setInitialPhotos, cropPhotos } = useCreatePostActions
 export default function CreatePost() {
   const { totalPhotos } = usePhotos()
   const [currentStep, setCurrentStep] = useState<Steps>('upload')
@@ -68,10 +68,12 @@ export default function CreatePost() {
     setCurrentStep('crop')
   }
 
-  const handleNextStep = () => {
-    if (nextStep) {
-      setCurrentStep(nextStep)
+  const handleNextStep = async () => {
+    if (!nextStep) return
+    if (nextStep === 'filter') {
+      cropPhotos()
     }
+    setCurrentStep(nextStep)
   }
 
   const handlePrevStep = () => {
