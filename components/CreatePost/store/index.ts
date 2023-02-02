@@ -160,7 +160,14 @@ export const useCreatePostActions: Actions = {
     const photos = useCreatePostStore.getState().photos
     const crop = useCreatePostStore.getState().crop
 
-    if (!crop) return
+    if (!crop) {
+      useCreatePostStore.setState((state) => {
+        return {
+          croppedPhotos: state.photos,
+        }
+      })
+      return
+    }
 
     const croppedPhotos: Awaited<ReturnType<typeof cropImage>>[] = []
     const originalWidth = 450
