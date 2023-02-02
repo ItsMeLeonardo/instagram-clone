@@ -5,15 +5,20 @@ const TO_RADIANS = Math.PI / 180
 type CropImageParams = {
   image: File
   crop: PixelCrop
+  originalWidth?: number
+  originalHeight?: number
   scale?: number
   rotate?: number
 }
 
 export function cropImage(params: CropImageParams): Promise<[File, string]> {
   return new Promise((resolve) => {
-    const { image: imageFIle, crop, scale = 1, rotate = 0 } = params
+    const { image: imageFIle, crop, scale = 1, rotate = 0, originalHeight, originalWidth } = params
     const image = new Image()
     image.src = URL.createObjectURL(imageFIle)
+
+    if (originalHeight) image.height = originalHeight
+    if (originalWidth) image.width = originalWidth
 
     image.addEventListener('load', () => {
       const canvas = document.createElement('canvas')
