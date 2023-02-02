@@ -64,7 +64,7 @@ export default function CropPhotos() {
   // const [zoom, setZoom] = useState(0)
 
   useEffect(() => {
-    if (currentPhoto) {
+    if (defaultCrop) {
       setCrop(defaultCrop)
     }
 
