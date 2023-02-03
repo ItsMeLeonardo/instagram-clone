@@ -40,3 +40,10 @@ export function useEditedPhotos() {
   const editedPhotos = useCreatePostStore(editedPhotosSelector, shallow)
   return editedPhotos
 }
+
+const isCroppingSelector = (state: State) => state.isCropping
+
+export function useIsCropping() {
+  const isCropping = useCreatePostStore(isCroppingSelector, shallow)
+  return isCropping
+}

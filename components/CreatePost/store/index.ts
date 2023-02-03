@@ -23,6 +23,7 @@ export type State = {
   tags: string[]
   crop?: PixelCrop
   editedPhotos: EditedPhoto[]
+  isCropping: boolean
 }
 
 export type Actions = {
@@ -57,6 +58,7 @@ export const useCreatePostStore = create<State>(() => ({
   description: '',
   tags: [],
   editedPhotos: [],
+  isCropping: false,
 }))
 
 export const useCreatePostActions: Actions = {
@@ -175,6 +177,9 @@ export const useCreatePostActions: Actions = {
       return
     }
 
+    useCreatePostStore.setState(() => ({
+      isCropping: true,
+    }))
     const croppedPhotos: Awaited<ReturnType<typeof cropImage>>[] = []
     const originalWidth = 450
     const originalHeight = 450
@@ -195,6 +200,7 @@ export const useCreatePostActions: Actions = {
 
       return {
         editedPhotos: photos,
+        isCropping: false,
       }
     })
   },

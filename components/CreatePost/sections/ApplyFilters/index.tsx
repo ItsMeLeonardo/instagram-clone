@@ -1,16 +1,18 @@
 import ArrowLeft from 'remixicon-react/ArrowLeftSLineIcon'
 import ArrowRight from 'remixicon-react/ArrowRightSLineIcon'
 
-import { useCurrentPhoto } from 'components/CreatePost/store/useCreatePost'
+import { useCurrentPhoto, useIsCropping } from 'components/CreatePost/store/useCreatePost'
 
 import styles from './apply-filter.module.css'
 import { useCreatePostActions } from 'components/CreatePost/store'
 import { filters } from 'utils/client/shared/filter/filters'
+import Loader from 'components/shared/Loader'
 
 const { nextPhoto, prevPhoto, applyFilter, removeFilter } = useCreatePostActions
 
 export default function ApplyFilter() {
   const { currentEditedPhoto: currentPhoto, isFirstPhoto, isLastPhoto } = useCurrentPhoto()
+  const isCropping = useIsCropping()
 
   const handleNextPhoto = () => {
     nextPhoto()
@@ -20,27 +22,32 @@ export default function ApplyFilter() {
     prevPhoto()
   }
 
-  if (!currentPhoto) return <div>Loading ...</div>
-
+  const loading = !currentPhoto || isCropping
   return (
     <div className={styles.container}>
-      <div className={styles.photo_container}>
-        {!isFirstPhoto && (
-          <button className={styles.icon_button} data-arrow-left onClick={handlePrevPhoto}>
-            <ArrowLeft size={16} />
-          </button>
-        )}
+      {!loading ? (
+        <div className={styles.photo_container}>
+          {!isFirstPhoto && (
+            <button className={styles.icon_button} data-arrow-left onClick={handlePrevPhoto}>
+              <ArrowLeft size={16} />
+            </button>
+          )}
 
-        {!isLastPhoto && (
-          <button className={styles.icon_button} data-arrow-right onClick={handleNextPhoto}>
-            <ArrowRight size={16} />
-          </button>
-        )}
-        <picture className={`${styles.image} filter-${currentPhoto.filter}`}>
-          <img src={currentPhoto.preview} alt="hello" />
-        </picture>
-      </div>
-      <div className={styles.filters}>
+          {!isLastPhoto && (
+            <button className={styles.icon_button} data-arrow-right onClick={handleNextPhoto}>
+              <ArrowRight size={16} />
+            </button>
+          )}
+          <picture className={`${styles.image} filter-${currentPhoto.filter}`}>
+            <img src={currentPhoto.preview} alt="hello" />
+          </picture>
+        </div>
+      ) : (
+        <div className={styles.photo_container_loader}>
+          <Loader size={48} />
+        </div>
+      )}
+      <div className={styles.filters} data-disabled={loading}>
         <button
           className={styles.filter_item}
           onClick={() => removeFilter(currentPhoto.id)}
