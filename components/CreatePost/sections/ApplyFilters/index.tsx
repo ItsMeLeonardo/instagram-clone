@@ -8,11 +8,11 @@ import { useCreatePostActions } from 'components/CreatePost/store'
 import { filters } from './filters'
 import { useState } from 'react'
 
-const { nextPhoto, prevPhoto } = useCreatePostActions
+const { nextPhoto, prevPhoto, applyFilter, removeFilter } = useCreatePostActions
 
 export default function ApplyFilter() {
-  const { currentCroppedPhoto, isFirstPhoto, isLastPhoto } = useCurrentPhoto()
-  const [photoFilter, setPhotoFilter] = useState('original')
+  const { currentEditedPhoto: currentPhoto, isFirstPhoto, isLastPhoto } = useCurrentPhoto()
+  // const [photoFilter, setPhotoFilter] = useState('original')
 
   const handleNextPhoto = () => {
     nextPhoto()
@@ -21,6 +21,8 @@ export default function ApplyFilter() {
   const handlePrevPhoto = () => {
     prevPhoto()
   }
+
+  if (!currentPhoto) return <div>Loading ...</div>
 
   return (
     <div className={styles.container}>
@@ -36,32 +38,32 @@ export default function ApplyFilter() {
             <ArrowRight size={16} />
           </button>
         )}
-        <picture className={`${styles.image} ${photoFilter}`}>
-          <img src={currentCroppedPhoto?.preview} alt="hello" />
+        <picture className={`${styles.image} filter-${currentPhoto.filter}`}>
+          <img src={currentPhoto.preview} alt="hello" />
         </picture>
       </div>
       <div className={styles.filters}>
         <button
           className={styles.filter_item}
-          onClick={() => setPhotoFilter('original')}
-          data-active={'original' === photoFilter}
+          onClick={() => removeFilter(currentPhoto.id)}
+          data-active={!currentPhoto.filter}
         >
           <picture className={styles.image_filter}>
             <img src="/assets/sample/filter-sample.webp" alt={'original photo'} />
           </picture>
           <span className={styles.label}>original</span>
         </button>
-        {filters.map((filter) => (
+        {filters.map(({ name }) => (
           <button
-            key={filter}
+            key={name}
             className={styles.filter_item}
-            onClick={() => setPhotoFilter(filter)}
-            data-active={filter === photoFilter}
+            onClick={() => applyFilter(name, currentPhoto.id)}
+            data-active={name === currentPhoto.filter}
           >
-            <picture className={`${filter} ${styles.image_filter}`}>
-              <img src="/assets/sample/filter-sample.webp" alt={filter} />
+            <picture className={`filter-${name} ${styles.image_filter}`}>
+              <img src="/assets/sample/filter-sample.webp" alt={name} />
             </picture>
-            <span className={styles.label}>{filter.split('-')[1]}</span>
+            <span className={styles.label}>{name}</span>
           </button>
         ))}
       </div>

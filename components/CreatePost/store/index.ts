@@ -12,13 +12,17 @@ type Photo = {
   file: File
 }
 
+type EditedPhoto = {
+  filter?: string
+} & Photo
+
 export type State = {
   photos: Photo[]
   currentPhotoIndex: number
   description: string
   tags: string[]
   crop?: PixelCrop
-  croppedPhotos: Photo[]
+  editedPhotos: EditedPhoto[]
 }
 
 export type Actions = {
@@ -33,6 +37,8 @@ export type Actions = {
   setPhotoCrop: (crop: PixelCrop) => void
   removePhotoCrop: () => void
   cropPhotos: () => void
+  applyFilter: (filter: string, photoId: string) => void
+  removeFilter: (photoId: string) => void
 }
 
 const createPhoto = (file: File): Photo => ({
@@ -50,7 +56,7 @@ export const useCreatePostStore = create<State>(() => ({
   currentPhotoIndex: 0,
   description: '',
   tags: [],
-  croppedPhotos: [],
+  editedPhotos: [],
 }))
 
 export const useCreatePostActions: Actions = {
@@ -163,7 +169,7 @@ export const useCreatePostActions: Actions = {
     if (!crop) {
       useCreatePostStore.setState((state) => {
         return {
-          croppedPhotos: state.photos,
+          editedPhotos: state.photos,
         }
       })
       return
@@ -188,7 +194,41 @@ export const useCreatePostActions: Actions = {
       })
 
       return {
-        croppedPhotos: photos,
+        editedPhotos: photos,
+      }
+    })
+  },
+
+  applyFilter(filter, photoId) {
+    useCreatePostStore.setState((state) => {
+      const editedPhotos = state.editedPhotos.map((photo) => {
+        if (photo.id !== photoId) return photo
+
+        return {
+          ...photo,
+          filter,
+        }
+      })
+
+      return {
+        editedPhotos,
+      }
+    })
+  },
+
+  removeFilter(photoId) {
+    useCreatePostStore.setState((state) => {
+      const editedPhotos = state.editedPhotos.map((photo) => {
+        if (photo.id !== photoId) return photo
+
+        return {
+          ...photo,
+          filter: undefined,
+        }
+      })
+
+      return {
+        editedPhotos,
       }
     })
   },
