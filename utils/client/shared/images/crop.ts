@@ -13,9 +13,9 @@ type CropImageParams = {
 
 export function cropImage(params: CropImageParams): Promise<[File, string]> {
   return new Promise((resolve) => {
-    const { image: imageFIle, crop, scale = 1, rotate = 0, originalHeight, originalWidth } = params
+    const { image: imageFile, crop, scale = 1, rotate = 0, originalHeight, originalWidth } = params
     const image = new Image()
-    image.src = URL.createObjectURL(imageFIle)
+    image.src = URL.createObjectURL(imageFile)
 
     if (originalHeight) image.height = originalHeight
     if (originalWidth) image.width = originalWidth
@@ -65,7 +65,7 @@ export function cropImage(params: CropImageParams): Promise<[File, string]> {
 
       canvas.toBlob((blob) => {
         if (blob) {
-          const file = new File([blob], 'cropped.png', { type: 'image/png' })
+          const file = new File([blob], imageFile.name, { type: imageFile.type })
           const preview = canvas.toDataURL('image/png')
 
           resolve([file, preview])
