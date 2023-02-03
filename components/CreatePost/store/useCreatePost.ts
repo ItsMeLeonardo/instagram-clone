@@ -33,3 +33,10 @@ export function usePhotoCrop() {
   const crop = useCreatePostStore(photoCropSelector, shallow)
   return crop
 }
+
+const editedPhotosSelector = (state: State) => state.editedPhotos
+
+export function useEditedPhotos() {
+  const editedPhotos = useCreatePostStore(editedPhotosSelector, shallow)
+  return editedPhotos
+}

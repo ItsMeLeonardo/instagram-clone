@@ -13,7 +13,8 @@ import styles from './caption-photo.module.css'
 const { nextPhoto, prevPhoto } = useCreatePostActions
 
 export default function CaptionPhoto() {
-  const { currentCroppedPhoto, isFirstPhoto, isLastPhoto } = useCurrentPhoto()
+  const { currentEditedPhoto: currentPhoto, isFirstPhoto, isLastPhoto } = useCurrentPhoto()
+
   const [tags, setTags] = useState<string[]>([])
 
   const handleNextPhoto = () => {
@@ -30,6 +31,8 @@ export default function CaptionPhoto() {
     setTags(hashTags)
   }, 500)
 
+  if (!currentPhoto) return <div>Loading ...</div>
+
   return (
     <div className={styles.container}>
       <div className={styles.photo_container}>
@@ -44,8 +47,8 @@ export default function CaptionPhoto() {
             <ArrowRight size={16} />
           </button>
         )}
-        <picture className={styles.image}>
-          <img src={currentCroppedPhoto?.preview} alt="hello" />
+        <picture className={`${styles.image} filter-${currentPhoto.filter}`} style={{ position: 'relative' }}>
+          <img src={currentPhoto.preview} alt="hello" />
         </picture>
       </div>
       <div className={styles.content}>

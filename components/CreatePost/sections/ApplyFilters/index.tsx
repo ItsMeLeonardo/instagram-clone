@@ -5,13 +5,12 @@ import { useCurrentPhoto } from 'components/CreatePost/store/useCreatePost'
 
 import styles from './apply-filter.module.css'
 import { useCreatePostActions } from 'components/CreatePost/store'
-import { filters } from './filters'
+import { filters } from 'utils/client/shared/filter/filters'
 
 const { nextPhoto, prevPhoto, applyFilter, removeFilter } = useCreatePostActions
 
 export default function ApplyFilter() {
   const { currentEditedPhoto: currentPhoto, isFirstPhoto, isLastPhoto } = useCurrentPhoto()
-  // const [photoFilter, setPhotoFilter] = useState('original')
 
   const handleNextPhoto = () => {
     nextPhoto()

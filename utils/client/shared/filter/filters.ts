@@ -39,11 +39,12 @@ import {
   walden,
   willow,
   xpro2,
+  type Preset,
 } from 'instagram-filters'
 
 type Filter = {
   name: string
-  filter: () => void
+  filter: () => Preset
 }
 
 export const filters: Filter[] = [
