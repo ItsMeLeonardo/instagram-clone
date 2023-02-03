@@ -12,12 +12,13 @@ export type SectionContainerProps = {
   nextStepLabel?: string
   onPrevStep?: () => void
   children: ReactNode
+  large?: boolean
 }
 
 export default function SectionContainer(props: SectionContainerProps) {
-  const { title, nextStepLabel, onNextStep, onPrevStep, showSteps, children } = props
+  const { title, nextStepLabel, onNextStep, onPrevStep, showSteps, children, large } = props
   return (
-    <aside className={styles.container}>
+    <aside className={styles.container} data-large={large}>
       <header className={styles.header} data-show-steps={showSteps}>
         {showSteps && (
           <button className={styles.button_back} onClick={onPrevStep}>
