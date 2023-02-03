@@ -6,7 +6,6 @@ import { useCurrentPhoto } from 'components/CreatePost/store/useCreatePost'
 import styles from './apply-filter.module.css'
 import { useCreatePostActions } from 'components/CreatePost/store'
 import { filters } from './filters'
-import { useState } from 'react'
 
 const { nextPhoto, prevPhoto, applyFilter, removeFilter } = useCreatePostActions
 
