@@ -82,6 +82,8 @@ export default function CreatePost() {
     }
   }
 
+  const largeContainer = currentStep === 'caption' || currentStep === 'filter'
+
   return (
     <Modal open>
       <ToastContainer />
@@ -91,6 +93,7 @@ export default function CreatePost() {
         onNextStep={handleNextStep}
         onPrevStep={handlePrevStep}
         nextStepLabel={nextStepLabel}
+        large={largeContainer}
       >
         {currentStep === 'upload' && <DragPhotos onUpload={handleUploadPhotos} />}
         {currentStep === 'crop' && <CropPhotos />}
