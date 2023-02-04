@@ -11,7 +11,7 @@ import { useCompletePost, usePhotos } from 'components/CreatePost/store/useCreat
 import CropPhotos from './sections/CropPhotos'
 import ApplyFilter from './sections/ApplyFilters'
 import CaptionPhoto from './sections/CaptionPhoto'
-import ToastContainer, { alertToast } from 'components/shared/Toaster'
+import { alertToast } from 'components/shared/Toaster'
 import { createPost } from 'service/client/post/create'
 // import styles from './create-post.module.css'
 
@@ -58,6 +58,7 @@ export default function CreatePost({ onComplete, onCancel, open }: Props) {
   const post = useCompletePost()
   const { totalPhotos } = usePhotos()
   const [currentStep, setCurrentStep] = useState<Steps>('upload')
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     if (totalPhotos === 0) {
@@ -87,18 +88,25 @@ export default function CreatePost({ onComplete, onCancel, open }: Props) {
     reset()
   }
 
-  const handleCreatePost = async () => {
-    const result = await createPost({
+  const handleCreatePost = () => {
+    setLoading(true)
+    createPost({
       description: post.description,
       photos: post.editedPhotos,
       tags: post.tags,
     })
-    handleComplete()
+      .then(() => {
+        handleComplete()
+      })
+      .catch(() => {})
+      .finally(() => {
+        setLoading(false)
+      })
   }
 
-  const handleNextStep = async () => {
+  const handleNextStep = () => {
     if (!nextStep) {
-      await handleCreatePost()
+      handleCreatePost()
       return
     }
     if (nextStep === 'filter') {
@@ -118,7 +126,6 @@ export default function CreatePost({ onComplete, onCancel, open }: Props) {
 
   return (
     <Modal open={open} onClose={handleCancel}>
-      <ToastContainer />
       <SectionContainer
         title={title}
         showSteps={currentStep !== 'upload'}
@@ -126,6 +133,7 @@ export default function CreatePost({ onComplete, onCancel, open }: Props) {
         onPrevStep={handlePrevStep}
         nextStepLabel={nextStepLabel}
         large={largeContainer}
+        loading={loading}
       >
         {currentStep === 'upload' && <DragPhotos onUpload={handleUploadPhotos} />}
         {currentStep === 'crop' && <CropPhotos />}
