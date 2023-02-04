@@ -12,7 +12,7 @@ type Photo = {
   file: File
 }
 
-type EditedPhoto = {
+export type EditedPhoto = {
   filter?: string
 } & Photo
 
@@ -34,7 +34,7 @@ export type Actions = {
   prevPhoto: () => void
   selectPhoto: (id: string) => void
   setDescription: (description: string) => void
-  addTags: (tags: string[]) => void
+  setTags: (tags: string[]) => void
   setPhotoCrop: (crop: PixelCrop) => void
   removePhotoCrop: () => void
   cropPhotos: () => void
@@ -147,9 +147,9 @@ export const useCreatePostActions: Actions = {
       description,
     }))
   },
-  addTags: (tags) => {
-    useCreatePostStore.setState((state) => ({
-      tags: [...state.tags, ...tags],
+  setTags: (tags) => {
+    useCreatePostStore.setState(() => ({
+      tags: tags,
     }))
   },
   setPhotoCrop: (crop) => {

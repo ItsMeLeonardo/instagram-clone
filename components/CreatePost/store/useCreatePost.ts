@@ -47,3 +47,24 @@ export function useIsCropping() {
   const isCropping = useCreatePostStore(isCroppingSelector, shallow)
   return isCropping
 }
+
+const tagSelector = (state: State) => state.tags
+
+export function useTags() {
+  const tags = useCreatePostStore(tagSelector, shallow)
+  return tags
+}
+
+export function useCompletePost() {
+  const editedPhotos = useCreatePostStore(editedPhotosSelector, shallow)
+  const tags = useCreatePostStore(tagSelector, shallow)
+  const description = useCreatePostStore((state) => state.description, shallow)
+
+  const completePost = {
+    editedPhotos,
+    tags,
+    description,
+  }
+
+  return completePost
+}

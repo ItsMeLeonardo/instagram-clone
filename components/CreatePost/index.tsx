@@ -6,12 +6,13 @@ import SectionContainer from './sections/SectionContainer'
 import DragPhotos from './sections/DragPhotos'
 
 import { useCreatePostActions, PHOTOS_LIMIT } from 'components/CreatePost/store'
-import { usePhotos } from 'components/CreatePost/store/useCreatePost'
+import { useCompletePost, usePhotos } from 'components/CreatePost/store/useCreatePost'
 
 import CropPhotos from './sections/CropPhotos'
 import ApplyFilter from './sections/ApplyFilters'
 import CaptionPhoto from './sections/CaptionPhoto'
 import ToastContainer, { alertToast } from 'components/shared/Toaster'
+import { createPost } from 'service/client/post/create'
 // import styles from './create-post.module.css'
 
 type Steps = 'upload' | 'crop' | 'filter' | 'caption'
@@ -47,6 +48,7 @@ const STEP_DATA: Record<Steps, StepData> = {
 
 const { setInitialPhotos, cropPhotos } = useCreatePostActions
 export default function CreatePost() {
+  const post = useCompletePost()
   const { totalPhotos } = usePhotos()
   const [currentStep, setCurrentStep] = useState<Steps>('upload')
 
@@ -69,10 +71,22 @@ export default function CreatePost() {
   }
 
   const handleNextStep = async () => {
-    if (!nextStep) return
+    if (!nextStep) {
+      const result = await createPost({
+        description: post.description,
+        photos: post.editedPhotos,
+        tags: post.tags,
+      })
+
+      result.forEach((entry) => {
+        console.log(entry)
+      })
+      return
+    }
     if (nextStep === 'filter') {
       cropPhotos()
     }
+
     setCurrentStep(nextStep)
   }
 

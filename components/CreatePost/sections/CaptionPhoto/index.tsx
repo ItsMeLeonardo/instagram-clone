@@ -1,21 +1,20 @@
 'use client'
-import { useState, ChangeEvent } from 'react'
+import { ChangeEvent } from 'react'
 import debounce from 'just-debounce'
 import ArrowLeft from 'remixicon-react/ArrowLeftSLineIcon'
 import ArrowRight from 'remixicon-react/ArrowRightSLineIcon'
 
 import { useCreatePostActions } from 'components/CreatePost/store'
-import { useCurrentPhoto } from 'components/CreatePost/store/useCreatePost'
+import { useCurrentPhoto, useTags } from 'components/CreatePost/store/useCreatePost'
 import { extractHashTags } from 'utils/shared/hashTag'
 
 import styles from './caption-photo.module.css'
 
-const { nextPhoto, prevPhoto } = useCreatePostActions
+const { nextPhoto, prevPhoto, setTags, setDescription } = useCreatePostActions
 
 export default function CaptionPhoto() {
   const { currentEditedPhoto: currentPhoto, isFirstPhoto, isLastPhoto } = useCurrentPhoto()
-
-  const [tags, setTags] = useState<string[]>([])
+  const tags = useTags()
 
   const handleNextPhoto = () => {
     nextPhoto()
@@ -29,6 +28,7 @@ export default function CaptionPhoto() {
     const value = e.target.value
     const hashTags = extractHashTags(value)
     setTags(hashTags)
+    setDescription(value)
   }, 500)
 
   if (!currentPhoto) return <div>Loading ...</div>
@@ -56,7 +56,7 @@ export default function CaptionPhoto() {
         <textarea className={styles.description} placeholder="Write a caption" onInput={handleChangeCaption}></textarea>
         <div className={styles.tags}>
           <header>
-            <strong className={styles.title}>Tags</strong>
+            <strong className={styles.title}>Tags ({tags.length})</strong>
             <label className={styles.helper_text}>all words starting with # will be automatically tagged</label>
           </header>
           <div className={styles.tag_list}>

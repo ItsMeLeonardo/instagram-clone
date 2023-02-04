@@ -23,6 +23,7 @@ export default function ApplyFilter() {
   }
 
   const loading = !currentPhoto || isCropping
+
   return (
     <div className={styles.container}>
       {!loading ? (
@@ -50,8 +51,8 @@ export default function ApplyFilter() {
       <div className={styles.filters} data-disabled={loading}>
         <button
           className={styles.filter_item}
-          onClick={() => removeFilter(currentPhoto.id)}
-          data-active={!currentPhoto.filter}
+          onClick={() => removeFilter(currentPhoto?.id)}
+          data-active={!currentPhoto?.filter}
         >
           <picture className={styles.image_filter}>
             <img src="/assets/sample/filter-sample.webp" alt={'original photo'} />
@@ -62,8 +63,8 @@ export default function ApplyFilter() {
           <button
             key={name}
             className={styles.filter_item}
-            onClick={() => applyFilter(name, currentPhoto.id)}
-            data-active={name === currentPhoto.filter}
+            onClick={() => applyFilter(name, currentPhoto?.id)}
+            data-active={name === currentPhoto?.filter}
           >
             <picture className={`filter-${name} ${styles.image_filter}`}>
               <img src="/assets/sample/filter-sample.webp" alt={name} />
