@@ -15,6 +15,11 @@ import ToastContainer, { alertToast } from 'components/shared/Toaster'
 import { createPost } from 'service/client/post/create'
 // import styles from './create-post.module.css'
 
+type Props = {
+  onComplete?: () => void
+  onCancel?: () => void
+}
+
 type Steps = 'upload' | 'crop' | 'filter' | 'caption'
 
 type StepData = {
@@ -47,7 +52,8 @@ const STEP_DATA: Record<Steps, StepData> = {
 }
 
 const { setInitialPhotos, cropPhotos } = useCreatePostActions
-export default function CreatePost() {
+
+export default function CreatePost({ onComplete, onCancel }: Props) {
   const post = useCompletePost()
   const { totalPhotos } = usePhotos()
   const [currentStep, setCurrentStep] = useState<Steps>('upload')
@@ -70,17 +76,18 @@ export default function CreatePost() {
     setCurrentStep('crop')
   }
 
+  const handleCreatePost = async () => {
+    const result = await createPost({
+      description: post.description,
+      photos: post.editedPhotos,
+      tags: post.tags,
+    })
+    onComplete && onComplete()
+  }
+
   const handleNextStep = async () => {
     if (!nextStep) {
-      const result = await createPost({
-        description: post.description,
-        photos: post.editedPhotos,
-        tags: post.tags,
-      })
-
-      result.forEach((entry) => {
-        console.log(entry)
-      })
+      await handleCreatePost()
       return
     }
     if (nextStep === 'filter') {
@@ -99,7 +106,7 @@ export default function CreatePost() {
   const largeContainer = currentStep === 'caption' || currentStep === 'filter'
 
   return (
-    <Modal open>
+    <Modal open onClose={onCancel}>
       <ToastContainer />
       <SectionContainer
         title={title}

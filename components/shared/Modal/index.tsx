@@ -28,7 +28,7 @@ export default function Modal(props: ModalProps) {
 
   return (
     <aside className={styles.overlay} onClick={onClose}>
-      {children}
+      <div onClick={(e) => e.stopPropagation()}>{children}</div>
     </aside>
   )
 }

@@ -39,13 +39,11 @@ export async function createPost({ description, photos, tags }: Params) {
     }
   }
 
-  return formData
-
-  /*  const { data } = await api.post('/post', formData, {
+  const { data } = await api.post('/post', formData, {
     headers: {
       'Content-Type': 'multipart/form-data',
     },
   })
 
-  return data */
+  return data
 }
