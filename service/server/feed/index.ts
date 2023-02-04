@@ -38,7 +38,7 @@ class FeedService {
         },
       },
       orderBy: {
-        created_at: filter === 'latest' ? 'desc' : 'asc',
+        created_at: filter === 'latest' ? 'asc' : 'desc',
       },
     })
     return posts
