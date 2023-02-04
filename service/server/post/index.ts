@@ -84,7 +84,7 @@ class PostService {
       throw new InvalidPostError()
     }
 
-    const tags = await tagService.upsertTags(postDto.tags)
+    const tags = await tagService.upsertTags(postDto.tags || [])
 
     const post = {
       description: postDto.description,
