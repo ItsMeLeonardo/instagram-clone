@@ -9,8 +9,29 @@
   padding: 0.75rem;
   height: 70px;
   overflow: hidden;
-
+  --toast-color: #333;
   box-shadow: 0 0 2rem rgba(0, 0, 0, 0.05), 0 1px 1rem 0 rgba(0, 0, 0, 0.1);
+  border-left: 0.5rem solid var(--toast-color);
+
+  &[data-theme='success'] {
+    --toast-color: var(--success);
+    box-shadow: 0 0 2rem color-mod(var(--success) a(0.05)), 0 1px 1rem 0 color-mod(var(--success) a(0.1));
+  }
+
+  &[data-theme='warning'] {
+    --toast-color: var(--warning);
+    box-shadow: 0 0 2rem color-mod(var(--warning) a(0.15)), 0 1px 1rem 0 color-mod(var(--warning) a(0.1));
+  }
+
+  &[data-theme='danger'] {
+    --toast-color: var(--danger);
+    box-shadow: 0 0 2rem color-mod(var(--danger) a(0.15)), 0 1px 1rem 0 color-mod(var(--danger) a(0.1));
+  }
+
+  &[data-theme='info'] {
+    --toast-color: var(--info);
+    box-shadow: 0 0 2rem color-mod(var(--info) a(0.15)), 0 1px 1rem 0 color-mod(var(--info) a(0.1));
+  }
 
   .icon {
     height: 100%;
