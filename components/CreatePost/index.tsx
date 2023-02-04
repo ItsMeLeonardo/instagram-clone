@@ -18,6 +18,7 @@ import { createPost } from 'service/client/post/create'
 type Props = {
   onComplete?: () => void
   onCancel?: () => void
+  open?: boolean
 }
 
 type Steps = 'upload' | 'crop' | 'filter' | 'caption'
@@ -53,7 +54,7 @@ const STEP_DATA: Record<Steps, StepData> = {
 
 const { setInitialPhotos, cropPhotos } = useCreatePostActions
 
-export default function CreatePost({ onComplete, onCancel }: Props) {
+export default function CreatePost({ onComplete, onCancel, open }: Props) {
   const post = useCompletePost()
   const { totalPhotos } = usePhotos()
   const [currentStep, setCurrentStep] = useState<Steps>('upload')
@@ -106,7 +107,7 @@ export default function CreatePost({ onComplete, onCancel }: Props) {
   const largeContainer = currentStep === 'caption' || currentStep === 'filter'
 
   return (
-    <Modal open onClose={onCancel}>
+    <Modal open={open} onClose={onCancel}>
       <ToastContainer />
       <SectionContainer
         title={title}

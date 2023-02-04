@@ -29,7 +29,7 @@ export default function Header() {
         <span>Create new post</span>
       </button>
 
-      {open && <CreatePost onComplete={closeModal} onCancel={closeModal} />}
+      <CreatePost onComplete={closeModal} onCancel={closeModal} open={open} />
     </div>
   )
 }
