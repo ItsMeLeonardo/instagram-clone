@@ -17,31 +17,12 @@ import { useCreatePostActions } from 'components/CreatePost/store'
 
 import { alertToast } from 'components/shared/Toaster'
 
+import { ASPECT_OPTIONS } from './utils'
+
 import 'react-image-crop/dist/ReactCrop.css'
 import styles from './crop-photos.module.css'
 
 type Options = 'crop' | 'zoom' | 'upload'
-
-type AspectOption = {
-  label: string
-  value: number
-}
-
-const aspectOptions: AspectOption[] = [
-  {
-    label: '1:1',
-    value: 1 / 1,
-  },
-
-  {
-    label: '4:5',
-    value: 4 / 5,
-  },
-  {
-    label: '16:9',
-    value: 16 / 9,
-  },
-]
 
 const originalImageCrop: PixelCrop = {
   height: 0,
@@ -120,51 +101,15 @@ export default function CropPhotos() {
     }
   }
 
-  const handleAspectChange = (newAspect: number | 'original') => {
+  const handleAspectChange = (newAspect: number | 'original', crop?: PercentCrop) => {
     setAspect(newAspect)
-    if (newAspect === 'original') {
+    if (newAspect === 'original' || !crop) {
       setCrop(originalImageCrop)
       removePhotoCrop()
       return
     }
 
-    if (newAspect === 1 / 1) {
-      const crop: PercentCrop = {
-        height: 70,
-        width: 70,
-        x: 15,
-        y: 15,
-        unit: '%',
-      }
-      handleChangeCropByAspect(crop)
-      return
-    }
-
-    if (newAspect === 4 / 5) {
-      const crop: PercentCrop = {
-        height: 100,
-        width: 80,
-        x: 10,
-        y: 0,
-        unit: '%',
-      }
-
-      handleChangeCropByAspect(crop)
-      return
-    }
-
-    if (newAspect === 16 / 9) {
-      const crop: PercentCrop = {
-        height: 56.25,
-        width: 100,
-        x: 0,
-        y: 21.875,
-        unit: '%',
-      }
-
-      handleChangeCropByAspect(crop)
-      return
-    }
+    handleChangeCropByAspect(crop)
   }
 
   const handleCrop = (pixelCrop: PixelCrop) => {
@@ -222,12 +167,12 @@ export default function CropPhotos() {
               <OriginalAspectIcon size={24} />
             </span>
           </button>
-          {aspectOptions.map(({ label, value }) => (
+          {ASPECT_OPTIONS.map(({ label, value, crop }) => (
             <button
               className={styles.option}
               key={label}
               data-active={aspect === value}
-              onClick={() => handleAspectChange(value)}
+              onClick={() => handleAspectChange(value, crop)}
             >
               <span className={styles.label}>{label}</span>
               <span className={styles.aspect_icon} data-aspect={label}></span>
