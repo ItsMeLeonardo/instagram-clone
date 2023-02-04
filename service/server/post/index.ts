@@ -1,7 +1,7 @@
 import { db } from 'lib/server/persistence'
 
-import { PostDto, postSchema } from './dto'
-import type { ExplorePost, Post } from 'types/post'
+import { PostSchema, postSchema } from './dto'
+import type { ExplorePost, Post, PostCreated } from 'types/post'
 import { InvalidPostError } from './errors'
 
 import tagService from 'service/server/tag'
@@ -77,7 +77,7 @@ class PostService {
     }))
   }
 
-  async createPost(postDto: PostDto) {
+  async createPost(postDto: PostSchema): Promise<PostCreated> {
     const { success } = postSchema.safeParse(postDto)
 
     if (!success) {
@@ -103,7 +103,13 @@ class PostService {
       },
     })
 
-    return newPost
+    return {
+      id: newPost.post_id,
+      description: newPost.description,
+      createdAt: newPost.created_at,
+      photos: newPost.photos,
+      userId: newPost.user_id,
+    }
   }
 
   private postListAdapter(posts: Awaited<ReturnType<typeof this.getBbListPosts>>): Post[] {
