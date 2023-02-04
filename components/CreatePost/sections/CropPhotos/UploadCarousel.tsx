@@ -1,6 +1,7 @@
 'use client'
 import useEmblaCarousel from 'embla-carousel-react'
 import CloseIcon from 'remixicon-react/CloseLineIcon'
+import { AnimatePresence, type AnimationProps, motion } from 'framer-motion'
 
 import ArrowLeft from 'remixicon-react/ArrowLeftSLineIcon'
 import ArrowRight from 'remixicon-react/ArrowRightSLineIcon'
@@ -12,7 +13,12 @@ import { MouseEvent, useEffect } from 'react'
 
 import styles from './upload-carousel.module.css'
 
-export type UploadCarouselProps = {}
+const itemAnimation: AnimationProps = {
+  exit: {
+    opacity: 0,
+    scale: 0.5,
+  },
+}
 
 const { selectPhoto, removePhoto } = useCreatePostActions
 
@@ -39,36 +45,38 @@ export default function UploadCarousel() {
     <div className={styles.carousel_container}>
       <div className={styles.carousel_viewport} ref={showArrows ? emblaRef : null}>
         <div className={styles.carousel_list}>
-          {photos.map(({ id, preview }) => {
-            const active = currentPhoto?.id === id
+          <AnimatePresence>
+            {photos.map(({ id, preview }) => {
+              const active = currentPhoto?.id === id
 
-            const handleSelectPhoto = (e: MouseEvent<HTMLButtonElement>) => {
-              e.stopPropagation()
-              if (active) return
-              selectPhoto(id)
-            }
+              const handleSelectPhoto = (e: MouseEvent<HTMLButtonElement>) => {
+                e.stopPropagation()
+                if (active) return
+                selectPhoto(id)
+              }
 
-            const handleRemovePhoto = (e: MouseEvent<HTMLButtonElement>) => {
-              e.stopPropagation()
-              removePhoto(id)
-            }
+              const handleRemovePhoto = (e: MouseEvent<HTMLButtonElement>) => {
+                e.stopPropagation()
+                removePhoto(id)
+              }
 
-            return (
-              <div key={id} className={styles.item} data-active={active}>
-                <button className={styles.image} onClick={handleSelectPhoto}>
-                  <picture className={styles.image}>
-                    <img src={preview} alt="" />
-                  </picture>
-                </button>
-
-                {active && (
-                  <button className={styles.remove_btn} onClick={handleRemovePhoto}>
-                    <CloseIcon size={16} />
+              return (
+                <motion.div {...itemAnimation} key={id} className={styles.item} data-active={active}>
+                  <button className={styles.image} onClick={handleSelectPhoto}>
+                    <picture className={styles.image}>
+                      <img src={preview} alt="" />
+                    </picture>
                   </button>
-                )}
-              </div>
-            )
-          })}
+
+                  {active && (
+                    <button className={styles.remove_btn} onClick={handleRemovePhoto}>
+                      <CloseIcon size={16} />
+                    </button>
+                  )}
+                </motion.div>
+              )
+            })}
+          </AnimatePresence>
         </div>
       </div>
       {showArrows && (

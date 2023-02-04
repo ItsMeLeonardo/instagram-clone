@@ -1,6 +1,7 @@
 'use client'
 import { useState, ChangeEvent, useRef, useEffect } from 'react'
 import ReactCrop, { type Crop, PixelCrop, PercentCrop, convertToPixelCrop } from 'react-image-crop'
+import { motion, AnimatePresence, type AnimationProps } from 'framer-motion'
 
 import AspectRatioIcon from 'remixicon-react/AspectRatioLineIcon'
 
@@ -23,6 +24,46 @@ import 'react-image-crop/dist/ReactCrop.css'
 import styles from './crop-photos.module.css'
 
 type Options = 'crop' | 'zoom' | 'upload'
+
+const optionsAnimation: AnimationProps = {
+  initial: {
+    opacity: 0,
+    scale: 0.5,
+    originX: 0,
+    originY: '100%',
+  },
+  animate: {
+    opacity: 1,
+    scale: 1,
+  },
+  exit: {
+    opacity: 0,
+    scale: 0.5,
+  },
+  transition: {
+    duration: 0.35,
+  },
+}
+
+const optionsAnimationRight: AnimationProps = {
+  initial: {
+    opacity: 0,
+    scale: 0.5,
+    originX: '100%',
+    originY: '100%',
+  },
+  animate: {
+    opacity: 1,
+    scale: 1,
+  },
+  exit: {
+    opacity: 0,
+    scale: 0.5,
+  },
+  transition: {
+    duration: 0.35,
+  },
+}
 
 const originalImageCrop: PixelCrop = {
   height: 0,
@@ -155,31 +196,33 @@ export default function CropPhotos() {
           <ArrowRight size={16} />
         </button>
       )}
-      {selectedOption === 'crop' && (
-        <div className={styles.aspect_options}>
-          <button
-            className={styles.option}
-            data-active={aspect === 'original'}
-            onClick={() => handleAspectChange('original')}
-          >
-            <span className={styles.label}>Original</span>
-            <span className={styles.icon}>
-              <OriginalAspectIcon size={24} />
-            </span>
-          </button>
-          {ASPECT_OPTIONS.map(({ label, value, crop }) => (
+      <AnimatePresence>
+        {selectedOption === 'crop' && (
+          <motion.div key="crop-option" {...optionsAnimation} className={styles.aspect_options}>
             <button
               className={styles.option}
-              key={label}
-              data-active={aspect === value}
-              onClick={() => handleAspectChange(value, crop)}
+              data-active={aspect === 'original'}
+              onClick={() => handleAspectChange('original')}
             >
-              <span className={styles.label}>{label}</span>
-              <span className={styles.aspect_icon} data-aspect={label}></span>
+              <span className={styles.label}>Original</span>
+              <span className={styles.icon}>
+                <OriginalAspectIcon size={24} />
+              </span>
             </button>
-          ))}
-        </div>
-      )}
+            {ASPECT_OPTIONS.map(({ label, value, crop }) => (
+              <button
+                className={styles.option}
+                key={label}
+                data-active={aspect === value}
+                onClick={() => handleAspectChange(value, crop)}
+              >
+                <span className={styles.label}>{label}</span>
+                <span className={styles.aspect_icon} data-aspect={label}></span>
+              </button>
+            ))}
+          </motion.div>
+        )}
+      </AnimatePresence>
       <button
         className={styles.icon_button}
         data-aspect-ratio
@@ -189,19 +232,21 @@ export default function CropPhotos() {
         <AspectRatioIcon size={16} />
       </button>
 
-      {selectedOption === 'zoom' && (
-        <div className={styles.zoom_option}>
-          <input
-            ref={zoomInputRef}
-            className={styles.range_input}
-            min={0}
-            max={10}
-            defaultValue={0}
-            type="range"
-            onInput={handleChangeZoomRange}
-          />
-        </div>
-      )}
+      <AnimatePresence>
+        {selectedOption === 'zoom' && (
+          <motion.div {...optionsAnimation} key="zoom-option" className={styles.zoom_option}>
+            <input
+              ref={zoomInputRef}
+              className={styles.range_input}
+              min={0}
+              max={10}
+              defaultValue={0}
+              type="range"
+              onInput={handleChangeZoomRange}
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <button
         className={styles.icon_button}
@@ -212,15 +257,17 @@ export default function CropPhotos() {
         <ZoomIcon size={16} />
       </button>
 
-      {selectedOption === 'upload' && (
-        <div className={styles.upload_photo}>
-          <UploadCarousel />
-          <label className={styles.upload}>
-            <input type="file" hidden multiple onInput={handleUploadPhoto} />
-            <AddIcon size={32} strokeWidth={1} />
-          </label>
-        </div>
-      )}
+      <AnimatePresence>
+        {selectedOption === 'upload' && (
+          <motion.div {...optionsAnimationRight} key="upload-option" className={styles.upload_photo}>
+            <UploadCarousel />
+            <label className={styles.upload}>
+              <input type="file" hidden multiple onInput={handleUploadPhoto} />
+              <AddIcon size={32} strokeWidth={1} />
+            </label>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <button
         className={styles.icon_button}
