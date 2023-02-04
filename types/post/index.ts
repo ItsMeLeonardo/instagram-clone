@@ -19,6 +19,14 @@ type PostStats = {
 
 type UserPost = Pick<User, 'avatar' | 'username' | 'location' | 'id'>
 
+export type PostCreated = {
+  id: number
+  description: string
+  createdAt: Date | string
+  userId: number
+  photos: string[]
+}
+
 export type ExplorePost = {
   id: number
   photos: string[]
