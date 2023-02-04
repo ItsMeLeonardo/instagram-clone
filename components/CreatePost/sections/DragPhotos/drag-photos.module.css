@@ -37,9 +37,19 @@
     font-weight: 700;
     display: flex;
     gap: 0.5rem;
+    transition: transform 0.2s ease-in-out;
 
     &:focus-within {
       box-shadow: 0 0 1rem color-mod(var(--primary) a(0.25));
+    }
+
+    &:hover,
+    &:focus {
+      transform: scale(1.05);
+    }
+
+    &:active {
+      transform: scale(0.99);
     }
 
     .icon {
