@@ -52,7 +52,7 @@ const STEP_DATA: Record<Steps, StepData> = {
   },
 }
 
-const { setInitialPhotos, cropPhotos } = useCreatePostActions
+const { setInitialPhotos, cropPhotos, reset } = useCreatePostActions
 
 export default function CreatePost({ onComplete, onCancel, open }: Props) {
   const post = useCompletePost()
@@ -77,13 +77,23 @@ export default function CreatePost({ onComplete, onCancel, open }: Props) {
     setCurrentStep('crop')
   }
 
+  const handleCancel = () => {
+    onCancel && onCancel()
+    reset()
+  }
+
+  const handleComplete = () => {
+    onComplete && onComplete()
+    reset()
+  }
+
   const handleCreatePost = async () => {
     const result = await createPost({
       description: post.description,
       photos: post.editedPhotos,
       tags: post.tags,
     })
-    onComplete && onComplete()
+    handleComplete()
   }
 
   const handleNextStep = async () => {
@@ -107,7 +117,7 @@ export default function CreatePost({ onComplete, onCancel, open }: Props) {
   const largeContainer = currentStep === 'caption' || currentStep === 'filter'
 
   return (
-    <Modal open={open} onClose={onCancel}>
+    <Modal open={open} onClose={handleCancel}>
       <ToastContainer />
       <SectionContainer
         title={title}

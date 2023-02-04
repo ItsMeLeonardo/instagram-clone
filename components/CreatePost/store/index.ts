@@ -40,6 +40,7 @@ export type Actions = {
   cropPhotos: () => void
   applyFilter: (filter: string, photoId: string) => void
   removeFilter: (photoId: string) => void
+  reset: () => void
 }
 
 const createPhoto = (file: File): Photo => ({
@@ -52,14 +53,16 @@ const removePhotoPreview = (photo: Photo) => {
   URL.revokeObjectURL(photo.preview)
 }
 
-export const useCreatePostStore = create<State>(() => ({
+const initialState: State = {
   photos: [],
   currentPhotoIndex: 0,
   description: '',
   tags: [],
   editedPhotos: [],
   isCropping: false,
-}))
+}
+
+export const useCreatePostStore = create<State>(() => initialState)
 
 export const useCreatePostActions: Actions = {
   addPhotos: (files) => {
@@ -236,6 +239,14 @@ export const useCreatePostActions: Actions = {
       return {
         editedPhotos,
       }
+    })
+  },
+
+  reset() {
+    useCreatePostStore.setState((state) => {
+      state.photos.forEach((photo) => removePhotoPreview(photo))
+      state.editedPhotos.forEach((photo) => removePhotoPreview(photo))
+      return initialState
     })
   },
 }
