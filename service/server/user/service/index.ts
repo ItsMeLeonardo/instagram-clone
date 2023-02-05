@@ -122,6 +122,7 @@ class UserService {
       location: user.location,
       createdAt: user.created_at,
       lastName: user.lastname,
+      name: user.name,
     }
   }
 }
