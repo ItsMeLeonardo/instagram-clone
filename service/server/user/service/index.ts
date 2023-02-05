@@ -1,5 +1,6 @@
 import { db } from 'lib/server/persistence'
-import type { UserFindResult, UserDetail } from 'types/user'
+import type { UserFindResult, UserDetail, User } from 'types/user'
+import { UpdateUser } from '../dto'
 class UserService {
   private async getUserByIdDb(id: number) {
     const user = await db.user.findUnique({
@@ -100,6 +101,27 @@ class UserService {
       followers: user._count.follow_follow_follower_idTouser,
       following: user._count.follow_follow_user_idTouser,
       posts: user._count.post,
+    }
+  }
+
+  async updateUser(id: number, data: UpdateUser): Promise<User> {
+    const user = await db.user.update({
+      where: {
+        user_id: id,
+      },
+      data: {
+        ...data,
+      },
+    })
+
+    return {
+      id: user.user_id,
+      username: user.username,
+      avatar: user.avatar,
+      email: user.email,
+      location: user.location,
+      createdAt: user.created_at,
+      lastName: user.lastname,
     }
   }
 }
