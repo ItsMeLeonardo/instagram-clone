@@ -23,7 +23,7 @@ const modalOverlayAnimations: AnimationProps = {
     opacity: 0,
   },
   transition: {
-    duration: 0.35,
+    duration: 0.25,
   },
 }
 
