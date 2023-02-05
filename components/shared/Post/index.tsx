@@ -12,6 +12,7 @@ import type { Post } from 'types/post'
 import styles from './Post.module.css'
 import Tag from './Tag'
 import CommentSection from './Comment'
+import SlideImage from './SlideImage'
 
 export type PostProps = Post
 
@@ -31,9 +32,7 @@ export default function Post(props: PostProps) {
         </button>
       </header>
       <div className={styles.body}>
-        <picture className={styles.image}>
-          <img src={photos[0]} alt={description} />
-        </picture>
+        <SlideImage photos={photos} description={description} />
 
         <div className={styles.options}>
           <button className={styles.button}>
