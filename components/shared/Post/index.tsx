@@ -13,6 +13,8 @@ import styles from './Post.module.css'
 import Tag from './Tag'
 import CommentSection from './Comment'
 import SlideImage from './SlideImage'
+import Tooltip from 'components/shared/Tooltip'
+import UserFollowCard from 'components/UserFollowCard'
 
 export type PostProps = Post
 
@@ -24,9 +26,11 @@ export default function Post(props: PostProps) {
   return (
     <section className={styles.post}>
       <header className={styles.header}>
-        <a href="/">
-          <User avatar={user.avatar} name={user.username} description={userDescription} interactive />
-        </a>
+        <Tooltip content={<UserFollowCard userId={user.id} />} interactive>
+          <div>
+            <User avatar={user.avatar} name={user.username} description={userDescription} interactive />
+          </div>
+        </Tooltip>
         <button className={styles.options}>
           <Options />
         </button>

@@ -1,14 +1,15 @@
+import { CancelToken } from 'axios'
 import { api } from '../api'
 
-import type { UserFindResult } from 'types/user'
+import { UserDetail, UserFindResult } from 'types/user'
 
 export * from './update-user'
 
-type Params = {
+type FindUserParams = {
   keyword: string
 }
 
-export async function findUser({ keyword }: Params) {
+export async function findUser({ keyword }: FindUserParams) {
   if (!keyword) return
   try {
     const { data } = await api.get<UserFindResult[]>(`/user?keyword=${keyword}`)
@@ -16,5 +17,17 @@ export async function findUser({ keyword }: Params) {
     return data
   } catch (error) {
     return []
+  }
+}
+
+export async function getUserById(id: number, cancelToken?: CancelToken) {
+  try {
+    const { data } = await api.get<UserDetail>(`/user/${id}`, {
+      cancelToken,
+    })
+
+    return data
+  } catch (error) {
+    return null
   }
 }
