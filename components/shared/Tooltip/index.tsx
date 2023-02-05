@@ -1,5 +1,5 @@
 'use client'
-import Tippy from '@tippyjs/react/headless'
+import LazyTippy from './LazyTooltip'
 
 import type { TippyProps } from '@tippyjs/react'
 import type { ReactNode } from 'react'
@@ -13,7 +13,7 @@ type TooltipProps = {
 
 export default function Tooltip({ children, content, ...props }: TooltipProps) {
   return (
-    <Tippy
+    <LazyTippy
       {...props}
       render={(attrs) => (
         <div className={styles.container} tabIndex={-1} {...attrs}>
@@ -23,6 +23,6 @@ export default function Tooltip({ children, content, ...props }: TooltipProps) {
     >
       {/* @ts-ignore */}
       {children}
-    </Tippy>
+    </LazyTippy>
   )
 }
