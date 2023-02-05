@@ -34,3 +34,8 @@ export type ExplorePost = {
   likes: number
   description: string
 }
+
+export type PhotoPost = {
+  id: number
+  photos: string[]
+}

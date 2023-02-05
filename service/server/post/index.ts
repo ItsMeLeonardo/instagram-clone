@@ -1,7 +1,7 @@
 import { db } from 'lib/server/persistence'
 
 import { PostSchema, postSchema } from './dto'
-import type { ExplorePost, Post, PostCreated } from 'types/post'
+import type { ExplorePost, PhotoPost, Post, PostCreated } from 'types/post'
 import { InvalidPostError } from './errors'
 
 import tagService from 'service/server/tag'
@@ -14,6 +14,24 @@ class PostService {
     })
 
     return post
+  }
+
+  async getPostsByUserId(id: number, limit: number): Promise<PhotoPost[]> {
+    const posts = await db.post.findMany({
+      where: {
+        user_id: id,
+      },
+      select: {
+        post_id: true,
+        photos: true,
+      },
+      take: limit,
+    })
+
+    return posts.map((post) => ({
+      id: post.post_id,
+      photos: post.photos,
+    }))
   }
 
   private async getBbListPosts() {
