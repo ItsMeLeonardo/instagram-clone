@@ -86,6 +86,24 @@
     list-style: none;
   }
 
+  .item {
+    display: flex;
+    align-items: center;
+
+    .remove {
+      aspect-ratio: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      padding: 1rem;
+
+      &:hover {
+        background: var(--gray-50);
+      }
+    }
+  }
+
   .not_found {
     width: 100%;
     padding: 1.25rem 0.75rem;

@@ -1,7 +1,9 @@
 'use client'
-import { useEffect, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import debounce from 'just-debounce'
 import { motion, AnimatePresence, type AnimationProps } from 'framer-motion'
+
+import RemoveIcon from 'remixicon-react/CloseLineIcon'
 
 import MagnifyingGlass from 'remixicon-react/SearchLineIcon'
 import User from 'components/shared/User'
@@ -13,6 +15,8 @@ import type { UserFindResult } from 'types/user'
 import styles from './search-input.module.css'
 import Loader from 'components/shared/Loader'
 import MicInput from 'components/shared/MicInput'
+import { useClickOutside } from 'utils/client/shared/hooks/useClickOutside'
+import { useLocalStorage } from 'utils/client/shared/hooks/useLocalStorage'
 
 const resultsAnimation: AnimationProps = {
   initial: { opacity: 0, y: -10 },
@@ -20,28 +24,31 @@ const resultsAnimation: AnimationProps = {
   exit: { opacity: 0, y: -10 },
 }
 
+const STORAGE_KEY = 'recent_searches'
+
 export default function SearchInput() {
   const [results, setResults] = useState<UserFindResult[]>([])
   const [loading, setLoading] = useState(false)
   const inputRef = useRef<HTMLInputElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
 
+  const [recentSearches, setRecentSearches] = useLocalStorage<UserFindResult[]>({ key: STORAGE_KEY, initialValue: [] })
   const [resultVisible, setResultVisible] = useState(false)
 
-  useEffect(() => {
-    const handleOutsideClick = (e: MouseEvent) => {
-      if (!containerRef.current) return
-      if (containerRef.current.contains(e.target as Node)) return
+  useClickOutside(containerRef, () => setResultVisible(false))
 
-      setResultVisible(false)
-    }
+  const addRecentSearch = (user: UserFindResult) => {
+    const exist = recentSearches?.find((u) => u.id === user.id)
+    if (exist) return
+    const newList = recentSearches ? [user, ...recentSearches] : [user]
+    setRecentSearches(newList)
+  }
 
-    document.addEventListener('click', handleOutsideClick)
-
-    return () => {
-      document.removeEventListener('click', handleOutsideClick)
-    }
-  }, [])
+  const removeRecentSearch = (id: number) => {
+    if (!recentSearches) return
+    const newList = recentSearches.filter((u) => u.id !== id)
+    setRecentSearches(newList)
+  }
 
   const handleSearch = debounce((keyword: string) => {
     if (keyword.trim().length === 0) {
@@ -95,19 +102,42 @@ export default function SearchInput() {
           <motion.aside {...resultsAnimation} key="search-results" className={styles.results}>
             {results.length > 0 ? (
               <ul className={styles.list}>
-                {results.map(({ avatar, id, email, username }) => (
-                  <li key={id} className={styles.item}>
-                    <button className={styles.result_item}>
-                      <User avatar={avatar} description={email} name={username} interactive />
-                    </button>
-                  </li>
-                ))}
+                {results.map((user) => {
+                  const { avatar, id, email, username } = user
+                  return (
+                    <li key={id} className={styles.item}>
+                      <button className={styles.result_item} onClick={() => addRecentSearch(user)}>
+                        <User avatar={avatar} description={email} name={username} interactive />
+                      </button>
+                    </li>
+                  )
+                })}
               </ul>
             ) : (
               <li className={styles.item}>
                 <p className={styles.not_found}>No results found</p>
               </li>
             )}
+          </motion.aside>
+        )}
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {recentSearches && resultVisible && !inputRef.current?.value.length && (
+          <motion.aside {...resultsAnimation} key="resent-searches" className={styles.results}>
+            <ul className={styles.list}>
+              {recentSearches.map(({ avatar, id, email, username }) => (
+                <li key={id} className={styles.item}>
+                  <button className={styles.result_item}>
+                    <User avatar={avatar} description={email} name={username} interactive />
+                  </button>
+
+                  <button className={styles.remove} onClick={() => removeRecentSearch(id)}>
+                    <RemoveIcon size="16" />
+                  </button>
+                </li>
+              ))}
+            </ul>
           </motion.aside>
         )}
       </AnimatePresence>
