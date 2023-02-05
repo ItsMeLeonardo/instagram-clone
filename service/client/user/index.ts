@@ -2,6 +2,8 @@ import { api } from '../api'
 
 import type { UserFindResult } from 'types/user'
 
+export * from './update-user'
+
 type Params = {
   keyword: string
 }

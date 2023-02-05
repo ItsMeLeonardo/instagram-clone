@@ -1,4 +1,4 @@
-import Image from 'next/image'
+/* eslint-disable @next/next/no-img-element */
 
 import type { ReactNode, DetailedHTMLProps, HTMLAttributes } from 'react'
 import style from './avatar.module.css'
@@ -24,10 +24,10 @@ export default function Avatar(props: Props) {
   return (
     <picture className={style.avatar} data-size={size} data-bordered={bordered} {...pictureProps}>
       {justIcon && <span className={style.icon}>{icon}</span>}
-      {justImg && <Image width={80} height={80} src={src} alt={alt} />}
+      {justImg && <img width={80} height={80} src={src} alt={alt} />}
       {hasIconAndImg && (
         <div className={style.bothContainer}>
-          <Image width={80} height={80} src={src} alt={alt} />
+          <img width={80} height={80} src={src} alt={alt} />
           <span className={style.icon} data-has-both>
             {icon}
           </span>
