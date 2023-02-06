@@ -32,48 +32,6 @@
       }
     }
 
-    .options {
-      display: flex;
-
-      margin-top: 0.5rem;
-
-      .button {
-        padding: 0.5rem;
-        flex-grow: 1;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 0.5rem;
-        font-size: 14px;
-        border-radius: 0.5rem;
-        transition: background-color 0.2s ease-in-out;
-
-        @media (min-width: 768px) {
-          padding: 0.5rem 1rem;
-        }
-
-        .label {
-          display: flex;
-          gap: 0.25rem;
-          font-size: 12px;
-          align-items: center;
-
-          .word {
-            display: none;
-
-            @media (min-width: 768px) {
-              display: block;
-            }
-          }
-        }
-
-        &:hover,
-        &:focus {
-          background-color: var(--gray-100);
-        }
-      }
-    }
-
     .description {
       font-size: 0.875rem;
 

@@ -1,0 +1,55 @@
+.options {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  margin-top: 0.5rem;
+
+  .button {
+    padding: 0.5rem;
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    font-size: 14px;
+    border-radius: 0.5rem;
+    transition: background-color 0.2s ease-in-out, transform 0.12s ease-in-out;
+    cursor: pointer;
+    color: var(--text);
+
+    &[data-liked='true'] {
+      color: var(--primary);
+      background: color-mod(var(--primary) alpha(0.1));
+
+      &:hover {
+        background-color: color-mod(var(--primary) alpha(0.2));
+      }
+    }
+
+    @media (min-width: 768px) {
+      padding: 0.5rem 1rem;
+    }
+
+    .label {
+      display: flex;
+      gap: 0.25rem;
+      font-size: 12px;
+      align-items: center;
+
+      .word {
+        display: none;
+
+        @media (min-width: 768px) {
+          display: block;
+        }
+      }
+    }
+
+    &:hover {
+      background-color: var(--gray-100);
+    }
+
+    &:active {
+      transform: scale(0.95);
+    }
+  }
+}

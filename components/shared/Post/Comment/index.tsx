@@ -13,8 +13,13 @@ import { useUserAvatar } from 'lib/client/user/useUser'
 import type { FormEvent } from 'react'
 
 import styles from './comment.module.css'
+import { commentInputId } from '../utils'
 
-export default function CommentSection() {
+type CommentSectionProps = {
+  postId: number
+}
+
+export default function CommentSection({ postId }: CommentSectionProps) {
   const avatar = useUserAvatar()
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -23,6 +28,8 @@ export default function CommentSection() {
 
     console.log({ comment: input.value })
   }
+
+  const inputId = commentInputId`${postId}`
 
   return (
     <footer className={styles.comment}>
@@ -35,6 +42,7 @@ export default function CommentSection() {
         <label className={styles.comment_input}>
           <input
             className={styles.input}
+            id={inputId}
             type="text"
             name="comment"
             placeholder="Add a comment..."
