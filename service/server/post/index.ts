@@ -34,7 +34,7 @@ class PostService {
     }))
   }
 
-  private async getBbListPosts() {
+  async getPosts(): Promise<Post[]> {
     const posts = await db.post.findMany({
       include: {
         user: {
@@ -64,12 +64,30 @@ class PostService {
         },
       },
     })
-    return posts
-  }
 
-  async getPosts() {
-    const posts = await this.getBbListPosts()
-    return this.postListAdapter(posts)
+    return posts.map((post) => {
+      return {
+        id: post.post_id,
+        description: post.description,
+        createdAt: post.created_at,
+        photos: post.photos,
+        user: {
+          id: post.user.user_id,
+          avatar: post.user.avatar,
+          username: post.user.username,
+          location: post.user.location,
+        },
+        stats: {
+          comment: post._count.comment,
+          like: post._count.like,
+          saved_post: post._count.saved_post,
+        },
+        tags: post.post_tag.map(({ tag }) => ({
+          id: tag.tag_id,
+          name: tag.name,
+        })),
+      }
+    })
   }
 
   async getExplorePosts(): Promise<ExplorePost[]> {
@@ -128,32 +146,6 @@ class PostService {
       photos: newPost.photos,
       userId: newPost.user_id,
     }
-  }
-
-  private postListAdapter(posts: Awaited<ReturnType<typeof this.getBbListPosts>>): Post[] {
-    return posts.map((post) => {
-      return {
-        id: post.post_id,
-        description: post.description,
-        createdAt: post.created_at,
-        photos: post.photos,
-        user: {
-          id: post.user.user_id,
-          avatar: post.user.avatar,
-          username: post.user.username,
-          location: post.user.location,
-        },
-        stats: {
-          comment: post._count.comment,
-          like: post._count.like,
-          saved_post: post._count.saved_post,
-        },
-        tags: post.post_tag.map(({ tag }) => ({
-          id: tag.tag_id,
-          name: tag.name,
-        })),
-      }
-    })
   }
 }
 
