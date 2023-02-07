@@ -36,11 +36,13 @@ export default function Favorite() {
       </header>
       <div className={styles.grid}>
         {savedList.map(({ id, savedPosts, title }) => {
-          const [{ post }] = savedPosts
+          const isEmpty = savedPosts.length === 0
+
+          const postPoster = isEmpty ? '/assets/emoji/face-in-clouds.webp' : savedPosts[0].post.photos[0]
 
           return (
             <picture key={id} className={styles.item}>
-              <img src={post.photos[0]} alt={title} />
+              <img src={postPoster} alt={title} />
               <span className={styles.title}>{title}</span>
             </picture>
           )

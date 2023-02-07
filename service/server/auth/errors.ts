@@ -15,3 +15,9 @@ export class UserAlreadyExistsError extends Error {
     super('User already exists')
   }
 }
+
+export class UnauthorizedError extends Error {
+  constructor() {
+    super('Unauthorized')
+  }
+}

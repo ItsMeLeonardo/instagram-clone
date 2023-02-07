@@ -13,3 +13,11 @@ export default base()
 
     res.json(savedPosts)
   })
+  .post<NextAuthRequest>(async (req, res) => {
+    const id = req.userId
+    const { title } = req.body
+
+    const savedPost = await savedService.createSavedList(Number(id), title)
+
+    res.json(savedPost)
+  })
