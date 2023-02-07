@@ -12,12 +12,15 @@ import styles from './button-options.module.css'
 
 import { commentInputId } from '../utils'
 import { useState } from 'react'
+import { useLikePost } from 'lib/client/post/useLikePost'
 
 type ButtonOptionsProps = {
   likes: number
   comments: number
   saved: number
   postId: number
+  isLiked: boolean
+  isSaved: boolean
 }
 
 const likedAnimation: AnimationProps = {
@@ -34,13 +37,13 @@ const unLikedAnimation: AnimationProps = {
   transition: { duration: 0.3 },
 }
 
-export default function ButtonOptions({ comments, likes, saved, postId }: ButtonOptionsProps) {
-  const [liked, setLiked] = useState(false)
+export default function ButtonOptions({ comments, likes, saved, postId, isLiked }: ButtonOptionsProps) {
+  const { loading, toggle, liked } = useLikePost(postId, isLiked)
 
   const inputId = commentInputId`${postId}`
   return (
     <div className={styles.options}>
-      <button className={styles.button} data-liked={liked} onClick={() => setLiked(!liked)}>
+      <button className={styles.button} data-liked={liked} onClick={toggle}>
         <AnimatePresence>
           {liked ? (
             <motion.span key="like-active" {...likedAnimation} className={styles.icon}>
@@ -53,7 +56,7 @@ export default function ButtonOptions({ comments, likes, saved, postId }: Button
           )}
         </AnimatePresence>
         <span className={styles.label}>
-          <span className={styles.quantity}>{liked ? likes + 1 : likes}</span>
+          <span className={styles.quantity}>{liked && !isLiked ? likes + 1 : likes}</span>
           <span className={styles.word}>Like</span>
         </span>
       </button>

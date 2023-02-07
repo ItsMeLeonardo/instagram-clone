@@ -1,7 +1,7 @@
 import { db } from 'lib/server/persistence'
 
 import { PostSchema, postSchema } from './dto'
-import type { ExplorePost, PhotoPost, Post, PostCreated } from 'types/post'
+import type { ExplorePost, PhotoPost, Post, PostCreated, PostStats } from 'types/post'
 import { InvalidPostError } from './errors'
 
 import tagService from 'service/server/tag'
@@ -146,6 +146,67 @@ class PostService {
       photos: newPost.photos,
       userId: newPost.user_id,
     }
+  }
+
+  async likePost(postId: number, userId: number) {
+    const post = await db.post.findUnique({
+      where: {
+        post_id: postId,
+      },
+    })
+
+    if (!post) {
+      throw new InvalidPostError()
+    }
+
+    await db.like.create({
+      data: {
+        user_id: userId,
+        post_id: postId,
+      },
+    })
+  }
+
+  async unlikePost(postId: number, userId: number) {
+    const post = await db.post.findUnique({
+      where: {
+        post_id: postId,
+      },
+    })
+
+    if (!post) {
+      throw new InvalidPostError()
+    }
+
+    await db.like.deleteMany({
+      where: {
+        user_id: userId,
+        post_id: postId,
+      },
+    })
+  }
+
+  async getPostStats(postId: number): Promise<PostStats> {
+    const post = await db.post.findUnique({
+      where: {
+        post_id: postId,
+      },
+      select: {
+        _count: {
+          select: {
+            comment: true,
+            like: true,
+            saved_post: true,
+          },
+        },
+      },
+    })
+
+    if (!post) {
+      throw new InvalidPostError()
+    }
+
+    return post._count
   }
 }
 

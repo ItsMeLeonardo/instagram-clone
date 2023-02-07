@@ -1,9 +1,9 @@
 import { db } from 'lib/server/persistence'
 import type { FeedFilter } from 'types/feed'
-import type { Post } from 'types/post'
+import type { FeedPost } from 'types/post'
 
 class FeedService {
-  private async getFeedDb(userId: number, filter: FeedFilter = 'latest') {
+  async getFeed(userId: number, filter: FeedFilter = 'latest'): Promise<FeedPost[]> {
     const posts = await db.post.findMany({
       where: {
         NOT: {
@@ -36,21 +36,42 @@ class FeedService {
             },
           },
         },
+        like: {
+          where: {
+            user_id: userId,
+          },
+          select: {
+            like_id: true,
+          },
+        },
       },
       orderBy: {
         created_at: filter === 'latest' ? 'asc' : 'desc',
       },
     })
-    return posts
-  }
 
-  async getFeed(userId: number, filter: FeedFilter = 'latest') {
-    const posts = await this.getFeedDb(userId, filter)
-    return this.postListAdapter(posts)
-  }
+    const userSavedList = await db.saved
+      .findMany({
+        where: {
+          user_id: userId,
+        },
+        include: {
+          saved_post: {
+            include: {
+              post: {
+                select: {
+                  post_id: true,
+                },
+              },
+            },
+          },
+        },
+      })
+      .then((saved) => saved.flatMap((s) => s.saved_post.map((post) => post.post_id)))
 
-  private postListAdapter(posts: Awaited<ReturnType<typeof this.getFeedDb>>): Post[] {
+    const savedPosts = new Set(userSavedList)
     return posts.map((post) => {
+      const saved = savedPosts.has(post.post_id)
       return {
         id: post.post_id,
         description: post.description,
@@ -71,6 +92,8 @@ class FeedService {
           id: tag.tag_id,
           name: tag.name,
         })),
+        liked: post.like.length > 0,
+        saved,
       }
     })
   }

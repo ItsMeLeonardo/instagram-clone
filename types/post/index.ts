@@ -11,7 +11,12 @@ export type Post = {
   tags: Tag[]
 }
 
-type PostStats = {
+export type FeedPost = {
+  liked: boolean
+  saved: boolean
+} & Post
+
+export type PostStats = {
   comment: number
   like: number
   saved_post: number
