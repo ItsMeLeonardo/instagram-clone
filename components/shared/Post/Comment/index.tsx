@@ -1,10 +1,10 @@
 'use client'
 
 import Avatar from 'components/shared/Avatar'
-import Attachment from 'remixicon-react/Attachment2Icon'
-import ImageIcon from 'remixicon-react/ImageLineIcon'
+/* import Attachment from 'remixicon-react/Attachment2Icon'
+import ImageIcon from 'remixicon-react/ImageLineIcon' */
 import SendPlane from 'remixicon-react/SendPlaneFillIcon'
-import EmojiButton from '../EmojiButton'
+// import EmojiButton from '../EmojiButton'
 
 import Loader from 'components/shared/Loader'
 
@@ -14,19 +14,26 @@ import type { FormEvent } from 'react'
 
 import styles from './comment.module.css'
 import { commentInputId } from '../utils'
+import { useCommentPost } from '../utils/useCommentPost'
 
 type CommentSectionProps = {
   postId: number
 }
 
 export default function CommentSection({ postId }: CommentSectionProps) {
+  const { commentPost, loading } = useCommentPost(postId)
   const avatar = useUserAvatar()
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     const input = e.currentTarget.elements.namedItem('comment') as HTMLInputElement
+    const comment = input.value.trim()
 
-    console.log({ comment: input.value })
+    if (comment) {
+      commentPost(input.value).then(() => {
+        input.value = ''
+      })
+    }
   }
 
   const inputId = commentInputId`${postId}`
@@ -50,20 +57,21 @@ export default function CommentSection({ postId }: CommentSectionProps) {
           />
 
           <div className={styles.options}>
-            <label className={styles.button}>
+            {/*<label className={styles.button}>
               <Attachment size="20" />
               <input type="file" />
-            </label>
+            </label> */}
 
-            <EmojiButton />
+            {/* <EmojiButton /> */}
 
+            {/*
             <label className={styles.button}>
               <ImageIcon size="20" />
               <input type="file" />
             </label>
-
+            */}
             <button className={styles.submit}>
-              <SendPlane size="20" />
+              {loading ? <Loader size={20} color="light" /> : <SendPlane size="20" />}
             </button>
           </div>
         </label>

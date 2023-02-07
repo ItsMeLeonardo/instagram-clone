@@ -23,6 +23,8 @@ export default function Page({ params }: PageProps) {
     return redirect('/app/feed/latest')
   }
 
+  console.log(posts)
+
   const dataNotReady = !posts || isLoading
 
   return (
