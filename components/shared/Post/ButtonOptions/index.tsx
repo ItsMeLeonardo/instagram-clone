@@ -11,7 +11,6 @@ import Bookmark from 'remixicon-react/BookmarkLineIcon'
 import styles from './button-options.module.css'
 
 import { commentInputId } from '../utils'
-import { useState } from 'react'
 import { useLikePost } from 'lib/client/post/useLikePost'
 
 type ButtonOptionsProps = {
@@ -38,7 +37,7 @@ const unLikedAnimation: AnimationProps = {
 }
 
 export default function ButtonOptions({ comments, likes, saved, postId, isLiked }: ButtonOptionsProps) {
-  const { loading, toggle, liked } = useLikePost(postId, isLiked)
+  const { toggle, liked } = useLikePost(postId, isLiked)
 
   const inputId = commentInputId`${postId}`
   return (
