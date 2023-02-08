@@ -5,11 +5,27 @@ import { getSavedPosts } from 'service/client/saved'
 
 import styles from './page-favorite.module.css'
 import Button from 'components/shared/Button'
-
-const promise = getSavedPosts()
+import CreateListButton from 'components/Saved/CreateListButton'
+import { useSavedList } from 'lib/client/save/useSavedList'
 
 export default function Favorite() {
-  const savedList = use(promise)
+  const { savedList, isLoading } = useSavedList()
+
+  if (isLoading || !savedList) {
+    return (
+      <section className={styles.container}>
+        <header className={styles.header}>
+          <small className={styles.text}>{"Only you can see what you've saved"}</small>
+          <button className={styles.button}>+ new collection</button>
+        </header>
+        <div className={styles.grid}>
+          {Array.from({ length: 9 }, (_, index) => {
+            return <div key={index} className={styles.item} data-loader={true}></div>
+          })}
+        </div>
+      </section>
+    )
+  }
 
   const isSaved = savedList.length > 0
 
@@ -32,7 +48,7 @@ export default function Favorite() {
     <section className={styles.container}>
       <header className={styles.header}>
         <small className={styles.text}>{"Only you can see what you've saved"}</small>
-        <button className={styles.button}>+ new collection</button>
+        <CreateListButton />
       </header>
       <div className={styles.grid}>
         {savedList.map(({ id, savedPosts, title }) => {
