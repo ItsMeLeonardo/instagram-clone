@@ -1,8 +1,10 @@
-import nc from 'next-connect'
+import nc, { Options } from 'next-connect'
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { logger } from 'utils/shared/logs'
 
-export default function base<Request extends NextApiRequest, Response extends NextApiResponse>() {
+export default function base<Request extends NextApiRequest, Response extends NextApiResponse>(
+  options?: Options<Request, Response>
+) {
   const handler = nc<Request, Response>({
     onError: (err, req, res) => {
       logger.error(err.stack)
@@ -11,6 +13,7 @@ export default function base<Request extends NextApiRequest, Response extends Ne
     onNoMatch: (req, res) => {
       res.status(404).end('Page is not found')
     },
+    ...options,
   })
 
   return handler

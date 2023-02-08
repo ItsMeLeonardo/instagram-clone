@@ -63,6 +63,7 @@ class PostService {
           },
         },
       },
+      take: 10,
     })
 
     return posts.map((post) => {

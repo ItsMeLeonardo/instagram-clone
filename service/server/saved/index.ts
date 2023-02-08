@@ -122,6 +122,58 @@ class SavedService {
       },
     })
   }
+
+  async addPostToSavedList(userId: number, savedId: number, postId: number): Promise<void> {
+    const savedPost = await db.saved.findUnique({
+      where: {
+        saved_id: savedId,
+      },
+      select: {
+        user_id: true,
+      },
+    })
+
+    if (!savedPost) {
+      throw new SavedListNotFoundError()
+    }
+
+    if (savedPost.user_id !== userId) {
+      throw new UnauthorizedError()
+    }
+
+    await db.saved_post.create({
+      data: {
+        saved_id: savedId,
+        post_id: postId,
+      },
+    })
+  }
+
+  async removePostFromSavedList(userId: number, savedId: number, postId: number): Promise<void> {
+    const savedPost = await db.saved.findUnique({
+      where: {
+        saved_id: savedId,
+      },
+      select: {
+        user_id: true,
+      },
+    })
+
+    if (!savedPost) {
+      throw new SavedListNotFoundError()
+    }
+
+    if (savedPost.user_id !== userId) {
+      throw new UnauthorizedError()
+    }
+
+    await db.saved_post.deleteMany({
+      where: {
+        saved_id: savedId,
+        post_id: postId,
+      },
+    })
+  }
 }
 
 const savedService = new SavedService()
