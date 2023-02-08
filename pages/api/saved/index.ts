@@ -17,7 +17,10 @@ export default base()
     const id = req.userId
     const { title } = req.body
 
-    const savedPost = await savedService.createSavedList(Number(id), title)
-
-    res.json(savedPost)
+    try {
+      const savedPost = await savedService.createSavedList(Number(id), title)
+      res.json(savedPost)
+    } catch (error) {
+      res.status(400).json({ message: "Couldn't create the list" })
+    }
   })
