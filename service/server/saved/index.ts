@@ -33,6 +33,7 @@ class SavedService {
         title: savedPost.title,
         createdAt: savedPost.created_at,
         poster: savedPost.saved_post[0]?.post.photos[0],
+        posts: savedPost.saved_post.map((savedPost) => savedPost.post.post_id),
       }
     })
   }
