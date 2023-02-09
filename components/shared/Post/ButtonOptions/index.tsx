@@ -73,7 +73,6 @@ export default function ButtonOptions({ comments, likes, isSaved, postId, isLike
           <Share size="20" />
         </span>
         <span className={styles.label}>
-          <span className={styles.quantity}>134</span>
           <span className={styles.word}>Share</span>
         </span>
       </button>
