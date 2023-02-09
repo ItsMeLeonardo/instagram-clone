@@ -7,6 +7,7 @@ import type { Story } from 'types/story'
 
 import styles from './story.module.css'
 import Modal from '../Modal'
+import CreateStory from 'components/CreateStory'
 
 export type StoryProps = {
   stories: Story[]
@@ -14,10 +15,14 @@ export type StoryProps = {
 
 export default function Story({ stories }: StoryProps) {
   const [modalOpen, setModalOpen] = useState(false)
+  const [addStoryModal, setAddStoryModal] = useState(false)
   const selectedStory = useRef<Story | null>(null)
 
   const openModal = () => setModalOpen(true)
   const closeModal = () => setModalOpen(false)
+
+  const openAddStoryModal = () => setAddStoryModal(true)
+  const closeAddStoryModal = () => setAddStoryModal(false)
 
   const handleSelectStory = (id: number) => {
     const story = stories.find((story) => story.id === id)
@@ -28,7 +33,7 @@ export default function Story({ stories }: StoryProps) {
 
   return (
     <aside className={styles.stories}>
-      <button className={styles.story}>
+      <button className={styles.story} onClick={openAddStoryModal}>
         <Avatar bordered size="lg" icon={<AddIcon size="28" />} alt="add story" />
 
         <span className={styles.label}>Add story</span>
@@ -51,6 +56,7 @@ export default function Story({ stories }: StoryProps) {
           </picture>
         </div>
       </Modal>
+      <CreateStory open={addStoryModal} onClose={closeAddStoryModal} />
     </aside>
   )
 }

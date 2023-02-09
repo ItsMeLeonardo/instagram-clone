@@ -1,0 +1,84 @@
+.container {
+  background: var(--bg-content);
+  height: 90vh;
+  aspect-ratio: 9/16;
+  border-radius: 1rem;
+  position: relative;
+  padding: 0.5rem;
+
+  .preview {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    border-radius: 1rem;
+    position: relative;
+    cursor: default;
+
+    .remove_button {
+      position: absolute;
+      top: 0.5rem;
+      right: 0.5rem;
+      background: var(--bg-content);
+      border: 0;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.5rem;
+      cursor: pointer;
+    }
+
+    .create_button {
+      position: absolute;
+      background: white;
+      bottom: 0;
+      right: 0;
+      width: 100%;
+      padding: 0.5rem;
+    }
+  }
+
+  .drop_section {
+    cursor: pointer;
+    border-radius: 1rem;
+    border: 2px dashed var(--gray-300);
+    height: 100%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    color: var(--text);
+    opacity: 0.5;
+
+    &:focus-within {
+      border-color: var(--primary);
+    }
+
+    input {
+      opacity: 0;
+      position: absolute;
+      z-index: -1;
+      width: 0;
+      height: 0;
+    }
+
+    &[data-dragging='true'] {
+      border-color: var(--primary);
+      background: var(--gray-400);
+    }
+
+    .drop_text {
+      font-size: 1.25rem;
+      font-weight: 600;
+    }
+
+    .icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+  }
+}
