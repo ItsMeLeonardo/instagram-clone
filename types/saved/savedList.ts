@@ -1,10 +1,14 @@
 export type SavedList = {
   id: number
   title: string
-  userId: number
   createdAt: string | Date
   postNumber: number
   savedPosts: SavedPost[]
+}
+
+export type SimpleSavedList = {
+  id: number
+  title: string
 }
 
 interface SavedPost {

@@ -1,5 +1,5 @@
 import { db } from 'lib/server/persistence'
-import type { SavedList } from 'types/saved'
+import type { SavedList, SimpleSavedList } from 'types/saved'
 import { UnauthorizedError } from '../auth/errors'
 import { SavedListNotFoundError } from './errors'
 
@@ -31,7 +31,6 @@ class SavedService {
       return {
         id: savedPost.saved_id,
         title: savedPost.title,
-        userId: savedPost.user_id,
         createdAt: savedPost.created_at,
         postNumber: savedPost._count.saved_post,
         savedPosts: savedPost.saved_post.map((post) => {
@@ -43,6 +42,24 @@ class SavedService {
             },
           }
         }),
+      }
+    })
+  }
+
+  async getSavedListByUserId(userId: number): Promise<SimpleSavedList[]> {
+    const savedPosts = await db.saved.findMany({
+      where: {
+        user_id: userId,
+      },
+      select: {
+        saved_id: true,
+        title: true,
+      },
+    })
+    return savedPosts.map((savedPost) => {
+      return {
+        id: savedPost.saved_id,
+        title: savedPost.title,
       }
     })
   }
@@ -64,7 +81,6 @@ class SavedService {
     return {
       id: savedPost.saved_id,
       title: savedPost.title,
-      userId: savedPost.user_id,
       createdAt: savedPost.created_at,
       postNumber: savedPost._count.saved_post,
       savedPosts: [],
