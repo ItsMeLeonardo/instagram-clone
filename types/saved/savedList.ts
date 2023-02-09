@@ -2,8 +2,7 @@ export type SavedList = {
   id: number
   title: string
   createdAt: string | Date
-  postNumber: number
-  savedPosts: SavedPost[]
+  poster?: string
 }
 
 export type SimpleSavedList = {
@@ -11,7 +10,7 @@ export type SimpleSavedList = {
   title: string
 }
 
-interface SavedPost {
+export interface SavedPost {
   savedId: number
   post: Post
 }

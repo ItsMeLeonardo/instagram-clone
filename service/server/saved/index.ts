@@ -32,16 +32,7 @@ class SavedService {
         id: savedPost.saved_id,
         title: savedPost.title,
         createdAt: savedPost.created_at,
-        postNumber: savedPost._count.saved_post,
-        savedPosts: savedPost.saved_post.map((post) => {
-          return {
-            savedId: post.saved_post_id,
-            post: {
-              id: post.post.post_id,
-              photos: post.post.photos,
-            },
-          }
-        }),
+        poster: savedPost.saved_post[0]?.post.photos[0],
       }
     })
   }
@@ -82,8 +73,6 @@ class SavedService {
       id: savedPost.saved_id,
       title: savedPost.title,
       createdAt: savedPost.created_at,
-      postNumber: savedPost._count.saved_post,
-      savedPosts: [],
     }
   }
 
