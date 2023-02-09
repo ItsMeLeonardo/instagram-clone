@@ -24,14 +24,3 @@ export default base()
       res.status(400).json({ message: "Couldn't create the list" })
     }
   })
-  .delete<NextAuthRequest>(async (req, res) => {
-    const id = req.userId
-    const { postId } = req.body
-
-    try {
-      await savedService.removePostFromAllSavedList(Number(id), Number(postId))
-      res.status(200).json({ message: 'Posts removed' })
-    } catch (error) {
-      res.status(400).json({ message: "Couldn't remove the post" })
-    }
-  })
