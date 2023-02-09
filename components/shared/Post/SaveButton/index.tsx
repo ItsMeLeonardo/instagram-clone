@@ -5,6 +5,8 @@ import { useState } from 'react'
 import { AnimatePresence, motion, AnimationProps } from 'framer-motion'
 import Tooltip from 'components/shared/Tooltip'
 import SavedList from './SavedList'
+import { removePostFromAllLists } from 'service/client/saved'
+import { alertToast } from 'components/shared/Toaster'
 
 export type Props = {
   isSaved: boolean
@@ -31,13 +33,31 @@ export default function SaveButton({ isSaved, postId }: Props) {
   const onSaved = () => setSaved(true)
   const onRemove = () => setSaved(false)
 
+  const handleClick = () => {
+    if (!saved) {
+      //TODO: save post in generic list
+      alertToast('Coming soon', 'info')
+      onSaved()
+      return
+    }
+
+    removePostFromAllLists(postId)
+      .then(() => {
+        onRemove()
+        alertToast('Post removed successfully', 'success')
+      })
+      .catch(() => {
+        alertToast('Something went wrong', 'danger')
+      })
+  }
+
   return (
     <Tooltip
       content={<SavedList postId={postId} isSaved={isSaved} onSaved={onSaved} onRemove={onRemove} />}
       interactive
       delay={[500, 0]}
     >
-      <button className={styles.button} data-saved={saved} onClick={() => setSaved(!saved)}>
+      <button className={styles.button} data-saved={saved} onClick={handleClick}>
         <AnimatePresence>
           {saved ? (
             <motion.span key="like-active" {...likedAnimation} className={styles.icon}>

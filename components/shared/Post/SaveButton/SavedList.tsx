@@ -10,8 +10,8 @@ type Props = {
   onRemove?: () => void
 }
 
-export default function SavedList({ postId, isSaved, onRemove, onSaved }: Props) {
-  const { savedList, isLoading, savePost, removePost } = useSavedList()
+export default function SavedList({ postId, onSaved }: Props) {
+  const { savedList, isLoading, savePost } = useSavedList()
 
   if (isLoading) {
     return (
@@ -33,19 +33,6 @@ export default function SavedList({ postId, isSaved, onRemove, onSaved }: Props)
   }
 
   const handleClick = (listId: number) => {
-    if (isSaved) {
-      removePost(listId, postId)
-        .then(() => {
-          onRemove?.()
-          alertToast('Post removed successfully', 'success')
-        })
-        .catch(() => {
-          alertToast('Something went wrong', 'danger')
-        })
-
-      return
-    }
-
     savePost(listId, postId)
       .then(() => {
         onSaved?.()

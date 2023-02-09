@@ -34,3 +34,7 @@ export async function addPostToList(listId: number, postId: number) {
 export async function removePostFromList(listId: number, postId: number) {
   await api.delete(`/saved/${listId}/posts/${postId}`)
 }
+
+export async function removePostFromAllLists(postId: number) {
+  await api.delete(`/saved/posts/${postId}`)
+}
