@@ -6,7 +6,7 @@ import styles from './Header.module.css'
 import SearchInput from './SearchInput'
 import CreatePost from 'components/CreatePost'
 import { useState } from 'react'
-import ToastContainer, { alertToast } from 'components/shared/Toaster'
+import { alertToast } from 'components/shared/Toaster'
 
 export default function Header() {
   const [open, setOpen] = useState(false)
@@ -26,7 +26,6 @@ export default function Header() {
 
   return (
     <div className={styles.container}>
-      <ToastContainer />
       <SearchInput />
 
       <button className={styles.button} onClick={openModal}>

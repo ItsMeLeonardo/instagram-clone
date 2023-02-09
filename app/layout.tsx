@@ -1,4 +1,5 @@
 import AuthProvider from 'components/Auth/AuthProvider'
+import ToastContainer from 'components/shared/Toaster'
 
 import type { Session } from 'next-auth'
 import type { ReactNode } from 'react'
@@ -19,6 +20,7 @@ export default function RootLayout({ children, session }: RootLayoutProps) {
         <title>Instagram Clone</title>
       </head>
       <body>
+        <ToastContainer />
         <AuthProvider session={session}>{children}</AuthProvider>
       </body>
     </html>

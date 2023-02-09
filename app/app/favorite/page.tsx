@@ -47,10 +47,8 @@ export default function Favorite() {
         <CreateListButton />
       </header>
       <div className={styles.grid}>
-        {savedList.map(({ id, savedPosts, title }) => {
-          const isEmpty = savedPosts.length === 0
-
-          const postPoster = isEmpty ? '/assets/emoji/face-in-clouds.webp' : savedPosts[0].post.photos[0]
+        {savedList.map(({ id, title, poster }) => {
+          const postPoster = poster || '/assets/emoji/face-in-clouds.webp'
 
           return (
             <picture key={id} className={styles.item}>

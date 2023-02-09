@@ -17,7 +17,7 @@ import { useUser } from 'lib/client/user/useUser'
 
 import { updateUser } from 'service/client/user'
 import { useStoreActions } from 'lib/client/user/store'
-import ToastContainer, { alertToast } from 'components/shared/Toaster'
+import { alertToast } from 'components/shared/Toaster'
 
 import styles from './edit-profile.module.css'
 
@@ -157,7 +157,6 @@ export default function Page() {
 
   return (
     <section>
-      <ToastContainer />
       <header className={styles.header}>
         <Link href="/app/settings" className={styles.back_button}>
           <BackIcon />

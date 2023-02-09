@@ -1,6 +1,6 @@
 import useSWR from 'swr'
 
-import { getSavedPosts, createSavedList, deleteSavedList, editSavedList } from 'service/client/saved'
+import { getSavedPosts, createSavedList, addPostToList, removePostFromList } from 'service/client/saved'
 import { SavedList } from 'types/saved'
 
 export const SAVED_LIST_KEY = 'saved-list'
@@ -19,9 +19,19 @@ export function useSavedList() {
     })
   }
 
+  const savePost = async (listId: number, postId: number) => {
+    await addPostToList(listId, postId)
+  }
+
+  const removePost = async (listId: number, postId: number) => {
+    await removePostFromList(listId, postId)
+  }
+
   return {
     savedList: data,
+    savePost,
     isLoading,
     createList,
+    removePost,
   }
 }

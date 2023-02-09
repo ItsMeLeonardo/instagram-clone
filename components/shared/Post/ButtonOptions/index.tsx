@@ -6,12 +6,12 @@ import HeartFilled from 'remixicon-react/Heart3FillIcon'
 
 import CommentIcon from 'remixicon-react/Chat1LineIcon'
 import Share from 'remixicon-react/ShareLineIcon'
-import Bookmark from 'remixicon-react/BookmarkLineIcon'
 
 import styles from './button-options.module.css'
 
 import { commentInputId } from '../utils'
 import { useLikePost } from 'lib/client/post/useLikePost'
+import SaveButton from '../SaveButton'
 
 type ButtonOptionsProps = {
   likes: number
@@ -36,7 +36,7 @@ const unLikedAnimation: AnimationProps = {
   transition: { duration: 0.3 },
 }
 
-export default function ButtonOptions({ comments, likes, saved, postId, isLiked }: ButtonOptionsProps) {
+export default function ButtonOptions({ comments, likes, isSaved, postId, isLiked }: ButtonOptionsProps) {
   const { toggle, liked } = useLikePost(postId, isLiked)
 
   const inputId = commentInputId`${postId}`
@@ -77,15 +77,8 @@ export default function ButtonOptions({ comments, likes, saved, postId, isLiked 
           <span className={styles.word}>Share</span>
         </span>
       </button>
-      <button className={styles.button}>
-        <span className={styles.icon}>
-          <Bookmark size="20" />
-        </span>
-        <span className={styles.label}>
-          <span className={styles.quantity}>{saved}</span>
-          <span className={styles.word}>Saved</span>
-        </span>
-      </button>
+
+      <SaveButton isSaved={isSaved} postId={postId} />
     </div>
   )
 }
