@@ -1,8 +1,4 @@
 'use client'
-import { use } from 'react'
-
-import { getSavedPosts } from 'service/client/saved'
-
 import styles from './page-favorite.module.css'
 import Button from 'components/shared/Button'
 import CreateListButton from 'components/Saved/CreateListButton'
