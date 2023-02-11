@@ -1,12 +1,12 @@
 export type Story = {
   id: number
-  user: User
   photo: string
   createdAt: string | Date
 }
 
-interface User {
+export interface StoryUser {
   id: number
   avatar: string
   username: string
+  story: Story[]
 }

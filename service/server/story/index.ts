@@ -1,38 +1,46 @@
 import { db } from 'lib/server/persistence'
-import type { Story } from 'types/story'
+import type { StoryUser } from 'types/story'
 import { StoryNotFoundError } from './Errors'
 import { UnauthorizedError } from '../auth/errors'
 
 class StoryService {
-  async getStories(): Promise<Story[]> {
-    const storyList = await db.story.findMany({
+  async getStories(): Promise<StoryUser[]> {
+    const storyByUser = await db.user.findMany({
       select: {
-        created_at: true,
-        photo: true,
-        story_id: true,
-        user: {
+        avatar: true,
+        user_id: true,
+        username: true,
+        story: {
           select: {
-            avatar: true,
-            user_id: true,
-            username: true,
+            created_at: true,
+            photo: true,
+            story_id: true,
+          },
+          where: {
+            created_at: {
+              gte: new Date(new Date().getTime() - 24 * 60 * 60 * 1000),
+            },
           },
         },
       },
+      take: 10,
     })
-    return storyList.map((story) => ({
-      id: story.story_id,
-      photo: story.photo,
-      createdAt: story.created_at,
-      user: {
-        id: story.user.user_id,
-        avatar: story.user.avatar,
-        username: story.user.username,
-      },
-    }))
+    return storyByUser
+      .filter(({ story }) => story.length)
+      .map((story) => ({
+        id: story.user_id,
+        avatar: story.avatar,
+        username: story.username,
+        story: story.story.map((story) => ({
+          id: story.story_id,
+          photo: story.photo,
+          createdAt: story.created_at,
+        })),
+      }))
   }
 
-  async createStory(userId: number, photo: string): Promise<Story> {
-    const story = await db.story.create({
+  async createStory(userId: number, photo: string): Promise<void> {
+    await db.story.create({
       data: {
         photo,
         user_id: userId,
@@ -50,16 +58,6 @@ class StoryService {
         },
       },
     })
-    return {
-      id: story.story_id,
-      photo: story.photo,
-      createdAt: story.created_at,
-      user: {
-        id: story.user.user_id,
-        avatar: story.user.avatar,
-        username: story.user.username,
-      },
-    }
   }
 
   async deleteStory(userId: number, storyId: number): Promise<void> {
