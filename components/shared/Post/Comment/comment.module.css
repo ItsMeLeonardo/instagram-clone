@@ -20,8 +20,9 @@
       padding: 0.8rem 1.25rem;
       padding-right: 120px;
       border-radius: 999px;
-      border: var(--gray-100) 1px solid;
-      background: var(--gray-50);
+      border: var(--bg-content-hover) 1px solid;
+      color: var(--text);
+      background: var(--bg-content);
       font-size: 14px;
     }
 

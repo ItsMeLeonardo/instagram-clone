@@ -15,6 +15,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  color: var(--text);
 
   &[data-icon-button] {
     border-radius: 50%;
@@ -27,7 +28,7 @@
 }
 
 .search_input {
-  background: var(--gray-50);
+  background: var(--bg);
   border-radius: 99px;
   width: 100%;
   display: flex;
@@ -47,6 +48,7 @@
     border: none;
     background: transparent;
     font-size: 14px;
+    color: var(--text);
     &:focus {
       outline: none;
     }
@@ -97,9 +99,10 @@
       align-items: center;
       position: relative;
       padding: 1rem;
+      color: var(--text);
 
       &:hover {
-        background: var(--gray-50);
+        background: var(--bg-content-hover);
       }
     }
   }
@@ -117,7 +120,7 @@
     width: 100%;
     padding: 0.5rem;
     &:hover {
-      background: var(--gray-50);
+      background: var(--bg-content-hover);
     }
   }
 }

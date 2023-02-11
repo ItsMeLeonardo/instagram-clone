@@ -26,12 +26,12 @@ export default async function layout({ children }: LayoutProps) {
         <header className={styles.header}>
           <h3 className={styles.title}>Stories</h3>
 
-          <button className={styles.see_all}>
+          {/*           <button className={styles.see_all}>
             <span className={styles.label}>Watch all</span>
             <span className={styles.icon}>
               <Play size="20" />
             </span>
-          </button>
+          </button> */}
         </header>
 
         <Story stories={stories} />

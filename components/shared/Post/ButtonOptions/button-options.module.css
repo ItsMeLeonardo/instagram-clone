@@ -18,10 +18,10 @@
 
     &[data-liked='true'] {
       color: var(--primary);
-      background: color-mod(var(--primary) alpha(0.1));
+      background: color-mod(var(--primary) alpha(0.2));
 
       &:hover {
-        background-color: color-mod(var(--primary) alpha(0.2));
+        background-color: color-mod(var(--primary) alpha(0.3));
       }
     }
 
@@ -45,7 +45,7 @@
     }
 
     &:hover {
-      background-color: var(--gray-100);
+      background-color: var(--bg-content-hover);
     }
 
     &:active {

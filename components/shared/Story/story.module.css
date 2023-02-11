@@ -14,7 +14,7 @@
     .label {
       font-size: 0.75rem;
       margin: 0;
-      color: var(--gray-700);
+      color: var(--text-muted);
     }
   }
 }
