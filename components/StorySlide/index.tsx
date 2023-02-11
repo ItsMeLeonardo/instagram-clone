@@ -1,5 +1,8 @@
 'use client'
 import { useState } from 'react'
+import ArrowLeft from 'remixicon-react/ArrowLeftSLineIcon'
+import ArrowRight from 'remixicon-react/ArrowRightSLineIcon'
+
 import styles from './story-slide.module.css'
 import Steps from './Steps'
 import { StoryUser } from 'types/story'
@@ -30,6 +33,12 @@ export default function StorySlide({ story, onCompleted }: Props) {
     }, 10)
   }
 
+  const handlePrevPhoto = () => {
+    if (currentStoryIndex > 0) {
+      setCurrentStoryIndex(currentStoryIndex - 1)
+    }
+  }
+
   const storiesPhoto = stories.map((story) => story.photo)
 
   return (
@@ -42,6 +51,15 @@ export default function StorySlide({ story, onCompleted }: Props) {
           <span className={styles.time}>{timeAgo(currentStory.createdAt)}</span>
         </div>
       </header>
+
+      <button className={styles.icon_button} data-arrow-left onClick={handlePrevPhoto}>
+        <ArrowLeft size={16} />
+      </button>
+
+      <button className={styles.icon_button} data-arrow-right onClick={handleNextPhoto}>
+        <ArrowRight size={16} />
+      </button>
+
       <picture className={styles.photo}>
         <img src={currentStory.photo} alt="" />
       </picture>
