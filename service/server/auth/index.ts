@@ -1,5 +1,11 @@
 import { db } from 'lib/server/persistence'
-import { UserNotFoundError, InvalidPasswordError, UserAlreadyExistsError } from './errors'
+import {
+  UserNotFoundError,
+  InvalidPasswordError,
+  UserAlreadyExistsError,
+  EmailAlreadyExistsError,
+  UsernameAlreadyExistsError,
+} from './errors'
 
 import { hashPassword, comparePassword } from 'utils/server/security'
 import { userDtoSchema } from './dto'
@@ -42,7 +48,13 @@ class Auth {
     const userExists = await db.user.findUnique({ where: { email } })
 
     if (userExists) {
-      throw new UserAlreadyExistsError()
+      throw new EmailAlreadyExistsError()
+    }
+
+    const usernameExists = await db.user.findUnique({ where: { username } })
+
+    if (usernameExists) {
+      throw new UsernameAlreadyExistsError()
     }
 
     const defaultAvatar = 'https://i.postimg.cc/hjv490kJ/smiling-face-with-smiling-eyes.webp'

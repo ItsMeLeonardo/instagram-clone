@@ -1,6 +1,8 @@
 import { db } from 'lib/server/persistence'
 import type { UserFindResult, UserDetail, User } from 'types/user'
 import { UpdateUser } from '../dto'
+import { EmailAlreadyExistsError, UsernameAlreadyExistsError } from 'service/server/auth/errors'
+import { PrismaClientKnownRequestError } from '@prisma/client/runtime'
 class UserService {
   private async getUserByIdDb(id: number) {
     const user = await db.user.findUnique({
@@ -105,24 +107,43 @@ class UserService {
   }
 
   async updateUser(id: number, data: UpdateUser): Promise<User> {
-    const user = await db.user.update({
-      where: {
-        user_id: id,
-      },
-      data: {
-        ...data,
-      },
-    })
+    try {
+      const user = await db.user.update({
+        where: {
+          user_id: id,
+        },
+        data: {
+          ...data,
+        },
+      })
 
-    return {
-      id: user.user_id,
-      username: user.username,
-      avatar: user.avatar,
-      email: user.email,
-      location: user.location,
-      createdAt: user.created_at,
-      lastName: user.lastname,
-      name: user.name,
+      return {
+        id: user.user_id,
+        username: user.username,
+        avatar: user.avatar,
+        email: user.email,
+        location: user.location,
+        createdAt: user.created_at,
+        lastName: user.lastname,
+        name: user.name,
+      }
+    } catch (error) {
+      if (error instanceof PrismaClientKnownRequestError) {
+        if (error.code === 'P2002') {
+          const target = error.meta?.target as string[]
+          if (target.includes('username')) {
+            throw new UsernameAlreadyExistsError()
+          }
+
+          if (target.includes('email')) {
+            throw new EmailAlreadyExistsError()
+          }
+
+          throw new Error('Unknown error', error)
+        }
+      }
+
+      throw new Error('Unknown error')
     }
   }
 }

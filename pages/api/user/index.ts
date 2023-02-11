@@ -8,6 +8,8 @@ import userService from 'service/server/user/service'
 import { uploadStrategy } from 'utils/shared/file-request'
 import { UpdateUserDto, updateUserDtoSchema } from 'service/server/user/dto'
 import imageService from 'service/server/images'
+import { logger } from 'utils/shared/logs'
+import { EmailAlreadyExistsError, UsernameAlreadyExistsError } from 'service/server/auth/errors'
 
 export const config = {
   api: {
@@ -43,21 +45,25 @@ export default base()
       return res.status(400).json({ error: 'Invalid post body' })
     }
 
-    if (!file) {
-      try {
-        const user = await userService.updateUser(id, body)
-        res.status(200).json(user)
-        return
-      } catch (error) {
-        return res.status(400).json({ error: 'error updating data' })
-      }
-    }
-
     try {
+      if (!file) {
+        const user = await userService.updateUser(id, body)
+        return res.status(200).json(user)
+      }
+
       const image = await imageService.uploadImage(file)
       const user = await userService.updateUser(id, { ...body, avatar: image.url })
       res.status(200).json(user)
     } catch (error) {
+      if (error instanceof EmailAlreadyExistsError) {
+        return res.status(400).json({ error: 'email already taken' })
+      }
+
+      if (error instanceof UsernameAlreadyExistsError) {
+        return res.status(400).json({ error: 'username already taken' })
+      }
+
+      logger.error(error)
       return res.status(400).json({ error: 'error updating data' })
     }
   })
