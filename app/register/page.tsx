@@ -14,13 +14,17 @@ import type { UserToRegister } from 'service/client/auth'
 import styles from './styles.module.css'
 
 export default function Login() {
-  const { register, handleSubmit } = useForm<UserToRegister>()
+  const {
+    register,
+    handleSubmit,
+    setError,
+    formState: { errors },
+  } = useForm<UserToRegister>()
   const [loading, setLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
 
   const router = useRouter()
   const { user } = useUser()
-
+  setError
   useEffect(() => {
     if (user) {
       router.push('/app/feed/latest')
@@ -34,7 +38,17 @@ export default function Login() {
     const result = await registerUser(data)
     setLoading(false)
     if (typeof result === 'string') {
-      setError(result)
+      const usernameError = result.toLowerCase().includes('username')
+      const emailError = result.toLowerCase().includes('email')
+
+      if (usernameError) {
+        setError('username', { type: 'manual', message: result })
+      }
+
+      if (emailError) {
+        setError('email', { type: 'manual', message: result })
+      }
+
       return
     }
 
@@ -46,15 +60,25 @@ export default function Login() {
       <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
         <h1 className={styles.title}>Sign up</h1>
 
-        <FormField label="email" type="email" {...register('email', { required: 'Email is required' })} />
-        <FormField label="username" type="text" {...register('username', { required: 'Username is required' })} />
+        <FormField
+          label="email"
+          type="email"
+          {...register('email', { required: 'Email is required' })}
+          error={!!errors.email}
+          helperText={errors.email?.message}
+        />
+        <FormField
+          label="username"
+          type="text"
+          {...register('username', { required: 'Username is required' })}
+          error={!!errors.username}
+          helperText={errors.username?.message}
+        />
         <FormField label="password" type="password" {...register('password', { required: 'Password is required' })} />
 
         <Button color="gradient" rounded="sm" fullWidth type="submit" loading={loading}>
           Register
         </Button>
-
-        {error && <span className={styles.error}>{error}</span>}
 
         <div className={styles.footer}>
           <span className={styles.text}>{'Already have an account?'}</span>

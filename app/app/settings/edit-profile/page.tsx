@@ -15,7 +15,7 @@ import FormFieldLoader from 'components/shared/FormField/Loader'
 
 import { useUser } from 'lib/client/user/useUser'
 
-import { updateUser } from 'service/client/user'
+import { updateUser, InvalidEmailError, InvalidUsernameError } from 'service/client/user'
 import { useStoreActions } from 'lib/client/user/store'
 import { alertToast } from 'components/shared/Toaster'
 
@@ -147,7 +147,15 @@ export default function Page() {
         updateUserInformation(user)
         alertToast('Profile updated', 'success')
       })
-      .catch(() => {
+      .catch((error) => {
+        if (error instanceof InvalidEmailError) {
+          setError('email', { type: 'custom', message: error.message })
+          return
+        }
+        if (error instanceof InvalidUsernameError) {
+          setError('username', { type: 'custom', message: error.message })
+          return
+        }
         alertToast('Something went wrong', 'danger')
       })
       .finally(() => {

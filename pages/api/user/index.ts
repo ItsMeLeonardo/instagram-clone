@@ -42,7 +42,7 @@ export default base()
     try {
       updateUserDtoSchema.parse({ ...body })
     } catch (error) {
-      return res.status(400).json({ error: 'Invalid post body' })
+      return res.status(400).json({ message: 'Invalid post body' })
     }
 
     try {
@@ -56,14 +56,14 @@ export default base()
       res.status(200).json(user)
     } catch (error) {
       if (error instanceof EmailAlreadyExistsError) {
-        return res.status(400).json({ error: 'email already taken' })
+        return res.status(400).json({ message: 'email already taken' })
       }
 
       if (error instanceof UsernameAlreadyExistsError) {
-        return res.status(400).json({ error: 'username already taken' })
+        return res.status(400).json({ message: 'username already taken' })
       }
 
       logger.error(error)
-      return res.status(400).json({ error: 'error updating data' })
+      return res.status(400).json({ message: 'error updating data' })
     }
   })

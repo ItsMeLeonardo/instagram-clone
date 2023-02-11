@@ -6,6 +6,15 @@ import { UnauthorizedError } from '../auth/errors'
 class StoryService {
   async getStories(): Promise<StoryUser[]> {
     const storyByUser = await db.user.findMany({
+      where: {
+        story: {
+          some: {
+            created_at: {
+              gte: new Date(new Date().getTime() - 24 * 60 * 60 * 1000),
+            },
+          },
+        },
+      },
       select: {
         avatar: true,
         user_id: true,
@@ -23,7 +32,6 @@ class StoryService {
           },
         },
       },
-      take: 10,
     })
     return storyByUser
       .filter(({ story }) => story.length)
