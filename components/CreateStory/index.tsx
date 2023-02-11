@@ -14,6 +14,10 @@ export default function CreateStory(modalProps: Props) {
   const [file, setFile] = useState<File>()
   const [isLoading, setIsLoading] = useState(false)
 
+  const reset = () => {
+    setFile(undefined)
+  }
+
   const createStory = () => {
     if (!file) {
       alertToast('Please select a photo', 'danger')
@@ -24,6 +28,7 @@ export default function CreateStory(modalProps: Props) {
       .then(() => {
         alertToast('Story created successfully', 'success')
         modalProps.onClose?.()
+        reset()
       })
       .catch(() => {
         alertToast('Something went wrong', 'danger')
