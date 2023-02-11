@@ -31,7 +31,7 @@ class StoryService {
         id: story.user_id,
         avatar: story.avatar,
         username: story.username,
-        story: story.story.map((story) => ({
+        stories: story.story.map((story) => ({
           id: story.story_id,
           photo: story.photo,
           createdAt: story.created_at,

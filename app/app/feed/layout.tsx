@@ -14,7 +14,7 @@ export default async function layout({ children }: LayoutProps) {
   const serverStories = await storyService.getStories()
   const stories = serverStories.map((storyUser) => ({
     ...storyUser,
-    story: storyUser.story.map((story) => ({
+    stories: storyUser.stories.map((story) => ({
       ...story,
       createdAt: (story.createdAt as Date).toISOString(),
     })),

@@ -8,5 +8,5 @@ export interface StoryUser {
   id: number
   avatar: string
   username: string
-  story: Story[]
+  stories: Story[]
 }
