@@ -209,6 +209,26 @@ class PostService {
 
     return post._count
   }
+
+  async getPostsByUsername(username: string, limit = 10): Promise<PhotoPost[]> {
+    const posts = await db.post.findMany({
+      where: {
+        user: {
+          username,
+        },
+      },
+      select: {
+        post_id: true,
+        photos: true,
+      },
+      take: limit,
+    })
+
+    return posts.map((post) => ({
+      id: post.post_id,
+      photos: post.photos,
+    }))
+  }
 }
 
 const postService = new PostService()

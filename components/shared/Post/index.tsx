@@ -12,6 +12,7 @@ import SlideImage from './SlideImage'
 import Tooltip from 'components/shared/Tooltip'
 import UserFollowCard from 'components/UserFollowCard'
 import ButtonOptions from './ButtonOptions'
+import Link from 'next/link'
 
 export type PostProps = FeedPost
 
@@ -24,9 +25,9 @@ export default function Post(props: PostProps) {
     <section className={styles.post}>
       <header className={styles.header}>
         <Tooltip content={<UserFollowCard userId={user.id} />} interactive delay={[500, 0]}>
-          <div>
+          <Link href={`app/${user.username}`}>
             <User avatar={user.avatar} name={user.username} description={userDescription} interactive />
-          </div>
+          </Link>
         </Tooltip>
         <button className={styles.options}>
           <Options />

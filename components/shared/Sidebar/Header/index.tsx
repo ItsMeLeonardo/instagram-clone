@@ -3,6 +3,7 @@ import Avatar from 'components/shared/Avatar'
 import styles from './header.module.css'
 import { useUser } from 'lib/client/user/useUser'
 import LoaderHeader from './Loader'
+import Link from 'next/link'
 
 export default function SidebarHeader() {
   // const data = use(promise)
@@ -15,11 +16,13 @@ export default function SidebarHeader() {
 
   return (
     <header className={styles.header}>
-      <Avatar src={user.avatar} alt="avatar" size="xl" bordered />
-      <div className={styles.data}>
-        <h2 className={styles.username}>{user.username}</h2>
-        <span className={styles.location}>{user.location}</span>
-      </div>
+      <Link href={`app/${user.username}`}>
+        <Avatar src={user.avatar} alt="avatar" size="xl" bordered />
+        <div className={styles.data}>
+          <h2 className={styles.username}>{user.username}</h2>
+          <span className={styles.location}>{user.location}</span>
+        </div>
+      </Link>
 
       <div className={styles.metrics}>
         <div className={styles.metric_item}>

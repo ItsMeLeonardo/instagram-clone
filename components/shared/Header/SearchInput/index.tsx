@@ -1,5 +1,6 @@
 'use client'
-import { useRef, useState } from 'react'
+import Link from 'next/link'
+import { useEffect, useRef, useState } from 'react'
 import debounce from 'just-debounce'
 import { motion, AnimatePresence, type AnimationProps } from 'framer-motion'
 
@@ -17,6 +18,7 @@ import Loader from 'components/shared/Loader'
 import MicInput from 'components/shared/MicInput'
 import { useClickOutside } from 'utils/client/shared/hooks/useClickOutside'
 import { useLocalStorage } from 'utils/client/shared/hooks/useLocalStorage'
+import { usePathname } from 'next/navigation'
 
 const resultsAnimation: AnimationProps = {
   initial: { opacity: 0, y: -10 },
@@ -32,13 +34,20 @@ export default function SearchInput() {
   const inputRef = useRef<HTMLInputElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
 
+  const pathname = usePathname()
+
   const [recentSearches, setRecentSearches] = useLocalStorage<UserFindResult[]>({ key: STORAGE_KEY, initialValue: [] })
   const [resultVisible, setResultVisible] = useState(false)
 
   useClickOutside(containerRef, () => setResultVisible(false))
 
+  useEffect(() => {
+    if (pathname !== '/app') setResultVisible(false)
+  }, [pathname])
+
   const addRecentSearch = (user: UserFindResult) => {
     const exist = recentSearches?.find((u) => u.id === user.id)
+
     if (exist) return
     const newList = recentSearches ? [user, ...recentSearches] : [user]
     setRecentSearches(newList)
@@ -106,9 +115,13 @@ export default function SearchInput() {
                   const { avatar, id, email, username } = user
                   return (
                     <li key={id} className={styles.item}>
-                      <button className={styles.result_item} onClick={() => addRecentSearch(user)}>
+                      <Link
+                        href={`app/${username}`}
+                        className={styles.result_item}
+                        onClick={() => addRecentSearch(user)}
+                      >
                         <User avatar={avatar} description={email} name={username} interactive />
-                      </button>
+                      </Link>
                     </li>
                   )
                 })}
@@ -128,9 +141,9 @@ export default function SearchInput() {
             <ul className={styles.list}>
               {recentSearches.map(({ avatar, id, email, username }) => (
                 <li key={id} className={styles.item}>
-                  <button className={styles.result_item}>
+                  <Link href={`app/${username}`} className={styles.result_item}>
                     <User avatar={avatar} description={email} name={username} interactive />
-                  </button>
+                  </Link>
 
                   <button className={styles.remove} onClick={() => removeRecentSearch(id)}>
                     <RemoveIcon size="16" />
