@@ -28,7 +28,6 @@ export async function updateUser(data: FormData) {
 
     const errorMessage = isAxiosError(err) && err.response?.data.message
 
-    console.log({ errorMessage })
     if (!errorMessage) throw new Error('Error Updating data')
     if (errorMessage.toLowerCase().includes('username')) throw new InvalidUsernameError()
     if (errorMessage.toLowerCase().includes('email')) throw new InvalidEmailError()
