@@ -59,8 +59,7 @@ export default function Login() {
     if (user) {
       router.push('/app/feed/latest')
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [user, router])
 
   useEffect(() => {
     const email = searchParams.get('email')

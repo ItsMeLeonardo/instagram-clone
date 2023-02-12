@@ -29,9 +29,7 @@ export default function Login() {
     if (user) {
       router.push('/app/feed/latest')
     }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [user, router])
 
   const onSubmit: SubmitHandler<UserToRegister> = async (data) => {
     setLoading(true)
