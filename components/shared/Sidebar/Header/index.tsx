@@ -6,8 +6,6 @@ import LoaderHeader from './Loader'
 import Link from 'next/link'
 
 export default function SidebarHeader() {
-  // const data = use(promise)
-
   const { user, loading } = useUser()
 
   if (loading || !user) {

@@ -5,19 +5,11 @@ import Plus from 'remixicon-react/AddLineIcon'
 import styles from './Header.module.css'
 import SearchInput from './SearchInput'
 import CreatePost from 'components/CreatePost'
-import { useState } from 'react'
 import { alertToast } from 'components/shared/Toaster'
+import { useCreatePostModal } from 'lib/client/globalStore'
 
 export default function Header() {
-  const [open, setOpen] = useState(false)
-
-  const openModal = () => {
-    setOpen(true)
-  }
-
-  const closeModal = () => {
-    setOpen(false)
-  }
+  const { isOpen: open, close: closeModal, open: openModal } = useCreatePostModal()
 
   const handleComplete = () => {
     alertToast('Post created successfully', 'success')

@@ -5,17 +5,19 @@ import Link from 'next/link'
 import styles from './item.module.css'
 
 import type { SidebarItem as SidebarItemProp } from '../utils/data'
+import { useCreatePostModal } from 'lib/client/globalStore'
 
 type Props = {
   active: boolean
 } & SidebarItemProp
 
 export default function NavbarItem({ href, icon, label, iconActive, active }: Props) {
+  const { open: openModal } = useCreatePostModal()
   if (label === 'add')
     return (
-      <Link href={href} className={styles.button} data-active={active}>
+      <button className={styles.button} data-active={active} onClick={openModal}>
         {icon}
-      </Link>
+      </button>
     )
 
   return (
