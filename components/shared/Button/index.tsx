@@ -33,10 +33,12 @@ export default function Button(props: Props) {
     fullWidth,
     rounded,
     className,
+    style,
     ...buttonProps
   } = props
 
   const genericProps = {
+    style,
     'data-color': color,
     'data-border': border,
     className: `${button.btn} ${className}`,
