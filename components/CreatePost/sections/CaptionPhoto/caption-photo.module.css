@@ -90,6 +90,7 @@
     outline: none;
     border: none;
     background: transparent;
+    color: var(--text);
     font-size: 14px;
 
     @media (min-width: 426px) {

@@ -20,6 +20,7 @@
       position: absolute;
       top: 0.5rem;
       right: 0.5rem;
+      color: var(--text);
       background: var(--bg-content);
       border: 0;
       border-radius: 50%;
@@ -32,7 +33,7 @@
 
     .create_button {
       position: absolute;
-      background: white;
+      background: var(--bg-content);
       bottom: 0;
       right: 0;
       width: 100%;

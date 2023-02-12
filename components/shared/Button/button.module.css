@@ -8,10 +8,6 @@
   transition: opacity 0.3s ease-in, transform 0.15s ease-in;
   background: var(--btn-color);
 
-  * {
-    color: var(--light);
-  }
-
   &[disabled],
   &[data-disabled='true'] {
     opacity: 0.5;
@@ -25,36 +21,50 @@
   &[data-color='primary'] {
     --btn-color: var(--primary);
     box-shadow: 0 0.5rem 1rem color-mod(var(--primary) alpha(0.2));
-    * {
-      color: white;
+    color: white;
+
+    &[data-border='true'] {
+      --btn-color: var(--primary);
+      box-shadow: none;
+      color: var(--primary);
     }
   }
 
   &[data-color='secondary'] {
     --btn-color: var(--secondary);
-    * {
-      color: var(--black);
+    box-shadow: 0 0.5rem 1rem color-mod(var(--secondary) alpha(0.2));
+    color: var(--black);
+
+    &[data-border='true'] {
+      --btn-color: var(--secondary);
+      box-shadow: none;
+      color: var(--secondary);
     }
   }
 
   &[data-color='success'] {
     --btn-color: var(--success);
+    box-shadow: 0 0.5rem 1rem color-mod(var(--success) alpha(0.2));
   }
 
   &[data-color='danger'] {
     --btn-color: var(--danger);
+    box-shadow: 0 0.5rem 1rem color-mod(var(--danger) alpha(0.2));
   }
 
   &[data-color='warning'] {
     --btn-color: var(--warning);
+    box-shadow: 0 0.5rem 1rem color-mod(var(--warning) alpha(0.2));
   }
 
   &[data-color='info'] {
     --btn-color: var(--info);
+    box-shadow: 0 0.5rem 1rem color-mod(var(--info) alpha(0.2));
   }
 
   &[data-color='light'] {
     --btn-color: var(--light);
+    box-shadow: 0 0.5rem 1rem #1f1d1d14;
     * {
       color: var(--text);
     }
@@ -62,6 +72,7 @@
 
   &[data-color='dark'] {
     --btn-color: var(--black);
+    box-shadow: 0 0.5rem 1rem color-mod(var(--black) alpha(0.2));
     * {
       color: white;
     }
@@ -150,6 +161,7 @@
 
 .label {
   flex-grow: 1;
+  color: inherit;
 
   &[data-icon='true'] {
     padding-right: 1rem;
