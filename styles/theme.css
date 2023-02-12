@@ -169,7 +169,7 @@
   --warning: var(--saffron-300);
   --danger: var(--coral-500);
   --info: var(--azure-500);
-  --light: var(--gray-50);
+  --light: var(--gray-100);
   --dark: var(--gray-900);
   --black: hsl(252, 30%, 10%);
 
@@ -212,5 +212,7 @@ body {
     --loader-bg: var(--gray-900);
     --sibebar-item-bg-hover: var(--gray-900);
     --bg-content-hover: var(--gray-700);
+    --light: var(--gray-900);
+    --dark: var(--gray-100);
   }
 }
