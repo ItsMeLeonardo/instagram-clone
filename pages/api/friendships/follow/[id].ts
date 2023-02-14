@@ -7,11 +7,11 @@ import { logger } from 'utils/shared/logs'
 export default base()
   .use(authMiddleware)
   .post<NextAuthRequest>(async (req, res) => {
-    const followerId = req.userId
+    const loggedUserId = req.userId
     const userId = req.query.id
 
     try {
-      await friendshipService.follow(Number(userId), followerId)
+      await friendshipService.follow(Number(userId), loggedUserId)
       res.json({ status: 'ok' })
     } catch (error) {
       logger.error(error)

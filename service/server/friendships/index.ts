@@ -64,23 +64,51 @@ class FriendshipService {
     })
   }
 
-  async follow(userId: number, followerId: number) {
+  async follow(userId: number, loggedUserId: number) {
     const follow = await db.follow.create({
       data: {
         user_id: userId,
-        follower_id: followerId,
+        follower_id: loggedUserId,
       },
     })
 
     return follow
   }
 
-  async unFollow(followId: number) {
-    await db.follow.delete({
+  async unFollow(loggedUserId: number, userId: number) {
+    await db.follow.deleteMany({
       where: {
-        follow_id: followId,
+        follower_id: loggedUserId,
+        user_id: userId,
+        AND: {
+          follower_id: {
+            not: userId,
+          },
+        },
       },
     })
+  }
+
+  async isFollowing(loggedUserId: number, userId: number) {
+    const follow = await db.follow.findFirst({
+      where: {
+        follower_id: loggedUserId,
+        user_id: userId,
+      },
+    })
+
+    return follow ? true : false
+  }
+
+  async isFollower(followerId: number, userId: number) {
+    const follow = await db.follow.findFirst({
+      where: {
+        follower_id: followerId,
+        user_id: userId,
+      },
+    })
+
+    return follow ? true : false
   }
 }
 
