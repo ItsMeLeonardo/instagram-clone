@@ -5,6 +5,7 @@ import Button from 'components/shared/Button'
 import styles from './header-options.module.css'
 import { useUser } from 'lib/client/user/useUser'
 import Loader from './Loader'
+import FollowButton from './FollowButton'
 
 type Props = {
   userId: number
@@ -33,9 +34,7 @@ export default function HeaderOptions({ userId }: Props) {
 
   return (
     <div className={styles.options}>
-      <Button rounded="md">
-        <span className={styles.button_label}>Follow</span>
-      </Button>
+      <FollowButton userId={userId} />
       <Button rounded="md" color="light">
         <span className={styles.button_label}>Message</span>
       </Button>

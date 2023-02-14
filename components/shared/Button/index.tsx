@@ -53,7 +53,7 @@ export default function Button(props: Props) {
       <span className={button.label} data-icon={!!icon} data-icon-right={!!iconRight}>
         {children}
       </span>
-      {loading && <Loader color="light" size={24} />}
+      {loading && <Loader color="light" size={16} />}
       {iconRight && !loading && <span className={button.iconRight}>{iconRight}</span>}
     </>
   )

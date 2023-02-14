@@ -32,7 +32,7 @@ export default function SidebarHeader() {
           <span className={styles.label}>Followers</span>
         </div>
         <div className={styles.metric_item}>
-          <strong className={styles.value}>{user.following}</strong>
+          <strong className={styles.value}>{user.followings}</strong>
           <span className={styles.label}>Following</span>
         </div>
       </div>

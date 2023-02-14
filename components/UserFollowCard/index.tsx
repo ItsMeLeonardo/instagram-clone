@@ -13,9 +13,10 @@ type UserFollowCardProps = {
 }
 
 export default function UserFollowCard({ userId }: UserFollowCardProps) {
-  const { posts, user, isLoading } = useUserFollowData(userId)
+  const { posts, user, isLoading: loadingCard, followLoading, toggleFollow } = useUserFollowData(userId)
 
-  if (isLoading) return <Loader />
+  if (loadingCard) return <Loader />
+
   return (
     <div className={styles.container}>
       <header className={styles.header}>
@@ -35,7 +36,7 @@ export default function UserFollowCard({ userId }: UserFollowCardProps) {
           <span className={styles.label}>followers</span>
         </div>
         <div className={styles.item}>
-          <span className={styles.value}>{user?.following}</span>
+          <span className={styles.value}>{user?.followings}</span>
           <span className={styles.label}>Following</span>
         </div>
       </div>
@@ -46,16 +47,17 @@ export default function UserFollowCard({ userId }: UserFollowCardProps) {
             <img src={post.photos[0]} alt="post" />
           </picture>
         ))}
-        {/*     <picture className={styles.post}>
-          <img src="https://i.pinimg.com/236x/19/94/b9/1994b976fc54744e9af897d71d880489.jpg" alt="post" />
-        </picture>
-        <picture className={styles.post}>
-          <img src="https://i.pinimg.com/564x/4c/30/ac/4c30ac8c47c247d918311a9cc9f045b9.jpg" alt="post" />
-        </picture> */}
       </div>
       <footer className={styles.follow}>
-        <Button fullWidth rounded="md" className={styles.button}>
-          <span className={styles.label}>Follow</span>
+        <Button
+          fullWidth
+          rounded="md"
+          className={styles.button}
+          onClick={toggleFollow}
+          loading={followLoading}
+          color={user?.following ? 'light' : 'primary'}
+        >
+          <span className={styles.label}>{user?.following ? 'Unfollow' : 'Follow'}</span>
         </Button>
       </footer>
     </div>

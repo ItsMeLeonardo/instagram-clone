@@ -6,7 +6,7 @@ import { logger } from 'utils/shared/logs'
 
 export default base()
   .use(authMiddleware)
-  .post<NextAuthRequest>(async (req, res) => {
+  .delete<NextAuthRequest>(async (req, res) => {
     const loggedUserId = req.userId
     const userId = req.query.id
 

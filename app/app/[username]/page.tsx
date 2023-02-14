@@ -26,7 +26,7 @@ export default async function Page({ params }: Props) {
       <header className={styles.header}>
         <div className={styles.bg_gradient}></div>
         <div className={styles.content}>
-          <Avatar bordered size="xl" src={user.avatar} alt={user.name} />
+          <Avatar bordered size="xl" src={user.avatar} alt={user.username} />
 
           <div className={styles.info}>
             <h1 className={styles.name}>
@@ -46,7 +46,7 @@ export default async function Page({ params }: Props) {
                 <span className={styles.statLabel}>followers</span>
               </div>
               <div className={styles.stat}>
-                <span className={styles.statNumber}>{user.following}</span>
+                <span className={styles.statNumber}>{user.followings}</span>
                 <span className={styles.statLabel}>following</span>
               </div>
             </div>

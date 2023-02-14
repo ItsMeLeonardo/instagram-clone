@@ -9,6 +9,8 @@ type State = {
 type Actions = {
   setUser: (user: UserDetail) => void
   updateUserInformation: (user: Partial<User>) => void
+  followUser: () => void
+  unFollowUser: () => void
 }
 
 export type UserStore = State & Actions
@@ -28,6 +30,28 @@ export const useStoreActions: Actions = {
         user: {
           ...state.user,
           ...user,
+        },
+      }
+    })
+  },
+  followUser: () => {
+    useUserStore.setState((state) => {
+      if (!state.user) return state
+      return {
+        user: {
+          ...state.user,
+          followings: state.user.followings + 1,
+        },
+      }
+    })
+  },
+  unFollowUser: () => {
+    useUserStore.setState((state) => {
+      if (!state.user) return state
+      return {
+        user: {
+          ...state.user,
+          followings: state.user.followings - 1,
         },
       }
     })
