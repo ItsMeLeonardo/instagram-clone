@@ -5,7 +5,7 @@ import { EmailAlreadyExistsError, UsernameAlreadyExistsError } from 'service/ser
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime'
 import friendshipService from 'service/server/friendships'
 class UserService {
-  async getUserById(id: number, loggedUserId: number): Promise<UserDetail | null> {
+  async getUserById(id: number, loggedUserId?: number): Promise<UserDetail | null> {
     const user = await db.user.findUnique({
       where: {
         user_id: id,
@@ -31,7 +31,7 @@ class UserService {
 
     if (!user) return null
 
-    const isFollowing = await friendshipService.isFollowing(loggedUserId, id)
+    const isFollowing = loggedUserId ? await friendshipService.isFollowing(loggedUserId, user.user_id) : false
 
     return {
       id: user.user_id,
@@ -42,8 +42,8 @@ class UserService {
       createdAt: user.created_at,
       lastName: user.lastname,
       name: user.name,
-      followers: user._count.follow_follow_follower_idTouser,
-      followings: user._count.follow_follow_user_idTouser,
+      followings: user._count.follow_follow_follower_idTouser,
+      followers: user._count.follow_follow_user_idTouser,
       posts: user._count.post,
       following: isFollowing,
     }
@@ -98,8 +98,8 @@ class UserService {
       lastName: user.lastname,
       name: user.name,
       following: isFollowing,
-      followers: user._count.follow_follow_follower_idTouser,
-      followings: user._count.follow_follow_user_idTouser,
+      followings: user._count.follow_follow_follower_idTouser,
+      followers: user._count.follow_follow_user_idTouser,
       posts: user._count.post,
     }
   }
