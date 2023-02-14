@@ -7,12 +7,13 @@ export interface User {
   createdAt: string | Date
   name?: string
   lastName?: string
+  following?: boolean
 }
 
 export type UserDetail = User & {
   posts: number
   followers: number
-  following: number
+  followings: number
 }
 
 export type UserFindResult = {

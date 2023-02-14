@@ -3,8 +3,9 @@ import type { UserFindResult, UserDetail, User } from 'types/user'
 import { UpdateUser } from '../dto'
 import { EmailAlreadyExistsError, UsernameAlreadyExistsError } from 'service/server/auth/errors'
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime'
+import friendshipService from 'service/server/friendships'
 class UserService {
-  private async getUserByIdDb(id: number) {
+  async getUserById(id: number, loggedUserId: number): Promise<UserDetail | null> {
     const user = await db.user.findUnique({
       where: {
         user_id: id,
@@ -28,12 +29,24 @@ class UserService {
       },
     })
 
-    return user
-  }
+    if (!user) return null
 
-  async getUserById(id: number) {
-    const user = await this.getUserByIdDb(id)
-    return this.userByIdAdapter(user)
+    const isFollowing = await friendshipService.isFollowing(loggedUserId, id)
+
+    return {
+      id: user.user_id,
+      username: user.username,
+      avatar: user.avatar,
+      email: user.email,
+      location: user.location,
+      createdAt: user.created_at,
+      lastName: user.lastname,
+      name: user.name,
+      followers: user._count.follow_follow_follower_idTouser,
+      followings: user._count.follow_follow_user_idTouser,
+      posts: user._count.post,
+      following: isFollowing,
+    }
   }
 
   async getUsers() {
@@ -48,7 +61,7 @@ class UserService {
     return users
   }
 
-  async getUserByUsername(username: string) {
+  async getUserByUsername(username: string, loggedUserId?: number): Promise<UserDetail | null> {
     const user = await db.user.findUnique({
       where: {
         username,
@@ -73,6 +86,7 @@ class UserService {
     })
 
     if (!user) return null
+    const isFollowing = loggedUserId ? await friendshipService.isFollowing(loggedUserId, user.user_id) : false
 
     return {
       id: user.user_id,
@@ -83,8 +97,9 @@ class UserService {
       createdAt: user.created_at,
       lastName: user.lastname,
       name: user.name,
+      following: isFollowing,
       followers: user._count.follow_follow_follower_idTouser,
-      following: user._count.follow_follow_user_idTouser,
+      followings: user._count.follow_follow_user_idTouser,
       posts: user._count.post,
     }
   }
@@ -129,24 +144,6 @@ class UserService {
     }))
   }
 
-  private userByIdAdapter(user: Awaited<ReturnType<typeof this.getUserByIdDb>>): UserDetail | null {
-    if (!user) return null
-
-    return {
-      id: user.user_id,
-      username: user.username,
-      avatar: user.avatar,
-      email: user.email,
-      location: user.location,
-      createdAt: user.created_at,
-      lastName: user.lastname,
-      name: user.name,
-      followers: user._count.follow_follow_follower_idTouser,
-      following: user._count.follow_follow_user_idTouser,
-      posts: user._count.post,
-    }
-  }
-
   async updateUser(id: number, data: UpdateUser): Promise<User> {
     try {
       const user = await db.user.update({
@@ -167,6 +164,7 @@ class UserService {
         createdAt: user.created_at,
         lastName: user.lastname,
         name: user.name,
+        following: false,
       }
     } catch (error) {
       if (error instanceof PrismaClientKnownRequestError) {
