@@ -12,6 +12,7 @@ import Button from 'components/shared/Button'
 import { signIn } from 'next-auth/react'
 import { useUser } from 'lib/client/user/useUser'
 import FormField from 'components/shared/FormField'
+import SocialMediaButtons from 'components/Auth/SocialMediaButtons'
 
 export default function Login() {
   const router = useRouter()
@@ -81,6 +82,8 @@ export default function Login() {
           Login
         </Button>
         {error && <span className={styles.error}>Invalid email or password</span>}
+
+        <SocialMediaButtons />
 
         <div className={styles.footer}>
           <span className={styles.text}>{"Don't have an account?"}</span>

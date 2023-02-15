@@ -120,6 +120,7 @@
   justify-content: center;
   margin-top: 1rem;
   font-size: 1rem;
+  flex-wrap: wrap;
   color: var(--gray-500);
 
   .link {

@@ -12,6 +12,9 @@ import { useUser } from 'lib/client/user/useUser'
 import type { UserToRegister } from 'service/client/auth'
 
 import styles from './styles.module.css'
+import Google from 'components/Auth/SocialMediaButtons/Google'
+import Github from 'components/Auth/SocialMediaButtons/Github'
+import SocialMediaButtons from 'components/Auth/SocialMediaButtons'
 
 export default function Login() {
   const {
@@ -77,6 +80,8 @@ export default function Login() {
         <Button color="gradient" rounded="sm" fullWidth type="submit" loading={loading}>
           Register
         </Button>
+
+        <SocialMediaButtons />
 
         <div className={styles.footer}>
           <span className={styles.text}>{'Already have an account?'}</span>
