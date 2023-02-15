@@ -2,6 +2,7 @@
 import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
+import { signIn } from 'next-auth/react'
 
 import { logger } from 'utils/shared/logs'
 
@@ -9,7 +10,6 @@ import type { FormEvent } from 'react'
 
 import styles from './styles.module.css'
 import Button from 'components/shared/Button'
-import { signIn } from 'next-auth/react'
 import { useUser } from 'lib/client/user/useUser'
 import FormField from 'components/shared/FormField'
 import SocialMediaButtons from 'components/Auth/SocialMediaButtons'

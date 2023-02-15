@@ -98,7 +98,7 @@ model tag {
 model user {
   user_id                         Int       @id @default(autoincrement())
   username                        String    @unique @db.VarChar(255)
-  password                        String    @db.VarChar(255)
+  password                        String?   @db.VarChar(255)
   email                           String    @unique(map: "email_unique") @db.VarChar(255)
   location                        String    @db.VarChar(255)
   avatar                          String    @db.VarChar(255)

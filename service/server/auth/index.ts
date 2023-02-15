@@ -1,11 +1,5 @@
 import { db } from 'lib/server/persistence'
-import {
-  UserNotFoundError,
-  InvalidPasswordError,
-  UserAlreadyExistsError,
-  EmailAlreadyExistsError,
-  UsernameAlreadyExistsError,
-} from './errors'
+import { UserNotFoundError, InvalidPasswordError, EmailAlreadyExistsError, UsernameAlreadyExistsError } from './errors'
 
 import { hashPassword, comparePassword } from 'utils/server/security'
 import { userDtoSchema } from './dto'
@@ -24,6 +18,10 @@ class Auth {
 
     if (!user) {
       throw new UserNotFoundError()
+    }
+
+    if (!user.password) {
+      throw new InvalidPasswordError()
     }
 
     const passwordMatch = await comparePassword(password, user.password)
@@ -78,6 +76,31 @@ class Auth {
       email: newUser.email,
       location: newUser.location,
       createdAt: newUser.created_at,
+    }
+  }
+
+  async loginWithSocial({ email, username, avatar }: { email: string; username: string; avatar: string }) {
+    const userExists = await db.user.findUnique({ where: { email } })
+
+    if (userExists) {
+      return {
+        id: userExists.user_id,
+        email: userExists.email,
+      }
+    }
+
+    const newUser = await db.user.create({
+      data: {
+        email,
+        username,
+        avatar,
+        location: 'All over the world',
+      },
+    })
+
+    return {
+      id: newUser.user_id,
+      email: newUser.email,
     }
   }
 }

@@ -1,5 +1,6 @@
 import NextAuth, { type NextAuthOptions } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
+import GithubProvider from 'next-auth/providers/github'
 
 import authService from 'service/server/auth'
 
@@ -31,6 +32,10 @@ export const authOptions: NextAuthOptions = {
         }
       },
     }),
+    GithubProvider({
+      clientId: process.env.GITHUB_ID!,
+      clientSecret: process.env.GITHUB_SECRET!,
+    }),
   ],
 
   pages: {
@@ -41,6 +46,18 @@ export const authOptions: NextAuthOptions = {
     async session({ session, token }) {
       //@ts-ignore
       session.accessToken = token.accessToken
+      const { user } = session
+
+      if (user) {
+        const { email, image, name } = user
+
+        if (!email || !image || !name) return session
+
+        const result = await authService.loginWithSocial({ email, avatar: image, username: name })
+
+        token.sub = result.id.toString()
+      }
+
       return session
     },
   },
