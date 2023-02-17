@@ -1,19 +1,92 @@
 import { db } from 'lib/server/persistence'
 
 import { PostSchema, postSchema } from './dto'
-import type { ExplorePost, PhotoPost, Post, PostCreated, PostStats } from 'types/post'
+import type { ExplorePost, PhotoPost, Post, PostCreated, PostStats, PostDetail } from 'types/post'
 import { InvalidPostError } from './errors'
 
 import tagService from 'service/server/tag'
+import { PostNotFoundError } from './errors'
+import { RawComment } from 'types/comments'
 class PostService {
-  async getPostById(id: number) {
+  async getPostById(id: number): Promise<PostDetail> {
     const post = await db.post.findUnique({
       where: {
         post_id: id,
       },
+      include: {
+        user: {
+          select: {
+            user_id: true,
+            username: true,
+            avatar: true,
+            location: true,
+          },
+        },
+        _count: {
+          select: {
+            comment: true,
+            like: true,
+            saved_post: true,
+          },
+        },
+        post_tag: {
+          select: {
+            tag: {
+              select: {
+                name: true,
+                tag_id: true,
+              },
+            },
+          },
+        },
+        comment: {
+          select: {
+            comment: true,
+            comment_id: true,
+            user: {
+              select: {
+                username: true,
+                avatar: true,
+                user_id: true,
+              },
+            },
+          },
+        },
+      },
     })
 
-    return post
+    if (!post) throw new PostNotFoundError()
+
+    return {
+      id: post.post_id,
+      description: post.description,
+      createdAt: post.created_at,
+      photos: post.photos,
+      user: {
+        id: post.user.user_id,
+        avatar: post.user.avatar,
+        username: post.user.username,
+        location: post.user.location,
+      },
+      stats: {
+        comment: post._count.comment,
+        like: post._count.like,
+        saved_post: post._count.saved_post,
+      },
+      tags: post.post_tag.map(({ tag }) => ({
+        id: tag.tag_id,
+        name: tag.name,
+      })),
+      comments: post.comment.map((comment) => ({
+        commentId: comment.comment_id,
+        comment: comment.comment as RawComment,
+        user: {
+          avatar: comment.user.avatar,
+          username: comment.user.username,
+          id: comment.user.user_id,
+        },
+      })),
+    }
   }
 
   async getPostsByUserId(id: number, limit: number): Promise<PhotoPost[]> {

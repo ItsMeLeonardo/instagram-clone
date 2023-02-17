@@ -1,3 +1,4 @@
+import { Comment } from 'types/comments'
 import type { Tag } from 'types/tags'
 import type { User } from 'types/user'
 
@@ -44,3 +45,7 @@ export type PhotoPost = {
   id: number
   photos: string[]
 }
+
+export type PostDetail = {
+  comments: Comment[]
+} & Post
