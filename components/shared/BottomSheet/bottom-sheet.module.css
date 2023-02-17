@@ -1,0 +1,11 @@
+.bottom_sheet {
+  z-index: calc(var(--modal-z-index) + 1) !important;
+}
+
+.window_wrap {
+  background: var(--bg-content) !important;
+}
+
+.drag_indicator {
+  background: var(--text) !important;
+}
