@@ -13,13 +13,15 @@
     --card-size: 80vh;
     width: 100%;
     display: grid;
-    grid-template-columns: 1fr 1.125fr;
+    grid-template-columns: 1fr 300px;
     grid-template-rows: var(--card-size);
     aspect-ratio: 7/5;
   }
 
   @media (min-width: 1024px) {
-    --card-size: 90vh;
+    --card-size: 80vh;
+    aspect-ratio: 16/9;
+    grid-template-columns: auto 350px;
   }
 
   .photos {
@@ -69,9 +71,12 @@
     }
 
     .description {
-      font-size: 0.75rem;
+      font-size: 0.85rem;
       color: var(--text-muted);
-      margin-bottom: 3rem;
+      padding-bottom: 1rem;
+      margin-bottom: 1rem;
+
+      border-bottom: 1px solid var(--bg);
     }
 
     .comments {
@@ -93,14 +98,14 @@
 
   .username {
     font-weight: 600;
-    font-size: 0.75rem;
+    font-size: 0.85rem;
     color: var(--text);
     &::after {
       content: ' ';
     }
   }
   .text {
-    font-size: 0.75rem;
+    font-size: 0.85rem;
     color: var(--text-muted);
     margin: 0;
   }
