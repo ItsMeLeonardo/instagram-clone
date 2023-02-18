@@ -6,6 +6,7 @@ import styles from './user-page.module.css'
 import userService from 'service/server/user/service'
 import Avatar from 'components/shared/Avatar'
 import HeaderOptions from 'components/UserProfile/HeaderOptions'
+import PostItem from 'components/user-detail/PostItem'
 
 type Props = {
   params: { username: string }
@@ -56,9 +57,7 @@ export default async function Page({ params }: Props) {
 
       <div className={styles.grid}>
         {posts.map(({ id, photos }) => (
-          <picture key={id} className={styles.item}>
-            <img src={photos[0]} alt="" />
-          </picture>
+          <PostItem key={id} postId={id} photo={photos[0]} />
         ))}
       </div>
     </section>
