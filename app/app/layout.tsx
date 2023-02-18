@@ -5,6 +5,7 @@ import Header from 'components/shared/Header'
 import Sidebar from 'components/shared/Sidebar'
 import Aside from 'components/shared/Aside'
 import MobileNavbar from 'components/shared/Sidebar/MobileNavbar'
+import PostDetailContainer from 'components/PostDetail/PostDetailContainer'
 
 type AppLayoutProps = {
   children: ReactNode
@@ -25,6 +26,7 @@ export default function AppLayout({ children }: AppLayoutProps) {
       <aside className={style.aside}>
         <Aside />
       </aside>
+      <PostDetailContainer />
       <MobileNavbar />
     </div>
   )

@@ -8,6 +8,7 @@
   bottom: 0;
   padding: 0.5rem 1rem;
   height: var(--navbar-mobile-h);
+  z-index: var(--header-z-index);
 
   @media (min-width: 768px) {
     display: none;

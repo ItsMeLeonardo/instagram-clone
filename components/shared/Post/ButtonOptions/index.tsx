@@ -9,14 +9,14 @@ import Share from 'remixicon-react/ShareLineIcon'
 
 import styles from './button-options.module.css'
 
-import { commentInputId } from '../utils'
 import { useLikePost } from 'lib/client/post/useLikePost'
 import SaveButton from '../SaveButton'
+import { useOpenPostDetailModal } from 'components/PostDetail/Store'
 
 type ButtonOptionsProps = {
   likes: number
   comments: number
-  saved: number
+  // saved: number
   postId: number
   isLiked: boolean
   isSaved: boolean
@@ -38,8 +38,8 @@ const unLikedAnimation: AnimationProps = {
 
 export default function ButtonOptions({ comments, likes, isSaved, postId, isLiked }: ButtonOptionsProps) {
   const { toggle, liked } = useLikePost(postId, isLiked)
+  const openModal = useOpenPostDetailModal()
 
-  const inputId = commentInputId`${postId}`
   return (
     <div className={styles.options}>
       <button className={styles.button} data-liked={liked} onClick={toggle}>
@@ -59,7 +59,7 @@ export default function ButtonOptions({ comments, likes, isSaved, postId, isLike
           <span className={styles.word}>Like</span>
         </span>
       </button>
-      <label className={styles.button} htmlFor={inputId}>
+      <button className={styles.button} onClick={() => openModal(postId)}>
         <span className={styles.icon}>
           <CommentIcon size="20" />
         </span>
@@ -67,7 +67,7 @@ export default function ButtonOptions({ comments, likes, isSaved, postId, isLike
           <span className={styles.quantity}>{comments}</span>
           <span className={styles.word}>Comment</span>
         </span>
-      </label>
+      </button>
       <button className={styles.button}>
         <span className={styles.icon}>
           <Share size="20" />
@@ -76,7 +76,6 @@ export default function ButtonOptions({ comments, likes, isSaved, postId, isLike
           <span className={styles.word}>Share</span>
         </span>
       </button>
-
       <SaveButton isSaved={isSaved} postId={postId} />
     </div>
   )

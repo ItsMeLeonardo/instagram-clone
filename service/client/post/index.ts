@@ -1,6 +1,6 @@
 import { api } from 'service/client/api'
 
-import type { PhotoPost, Post } from 'types/post'
+import type { PhotoPost, Post, PostDetail } from 'types/post'
 import type { CancelToken } from 'axios'
 
 export * from './create'
@@ -11,6 +11,13 @@ export async function getPosts() {
   // const { data } = await api.get<Post[]>('/posts', { cache: 'no-store' })
 
   const { data } = await api.get<Post[]>('/post')
+  return data
+}
+
+export async function getPostDetail(id: number) {
+  if (!id) return
+  const { data } = await api.get<PostDetail>(`/post/${id}`)
+
   return data
 }
 

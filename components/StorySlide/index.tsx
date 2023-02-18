@@ -41,6 +41,9 @@ export default function StorySlide({ story, onCompleted }: Props) {
 
   const storiesPhoto = stories.map((story) => story.photo)
 
+  const isLastPhoto = currentStoryIndex === storiesPhoto.length - 1
+  const isFirstPhoto = currentStoryIndex === 0
+
   return (
     <div className={styles.container}>
       <Steps stories={storiesPhoto} currentStoryIndex={currentStoryIndex} onCompleted={handleNextPhoto} />
@@ -51,14 +54,17 @@ export default function StorySlide({ story, onCompleted }: Props) {
           <span className={styles.time}>{timeAgo(currentStory.createdAt)}</span>
         </div>
       </header>
+      {!isFirstPhoto && (
+        <button className={styles.icon_button} data-arrow-left onClick={handlePrevPhoto}>
+          <ArrowLeft size={16} />
+        </button>
+      )}
 
-      <button className={styles.icon_button} data-arrow-left onClick={handlePrevPhoto}>
-        <ArrowLeft size={16} />
-      </button>
-
-      <button className={styles.icon_button} data-arrow-right onClick={handleNextPhoto}>
-        <ArrowRight size={16} />
-      </button>
+      {!isLastPhoto && (
+        <button className={styles.icon_button} data-arrow-right onClick={handleNextPhoto}>
+          <ArrowRight size={16} />
+        </button>
+      )}
 
       <picture className={styles.photo}>
         <img src={currentStory.photo} alt="" />

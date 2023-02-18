@@ -18,7 +18,7 @@ export type PostProps = FeedPost
 
 export default function Post(props: PostProps) {
   const { createdAt, description, photos, stats, user, tags, id, liked, saved } = props
-  const { comment: commentNumber, like, saved_post } = stats
+  const { comment: commentNumber, like } = stats
 
   const userDescription = `${user.location} - ${timeAgo(createdAt)}`
   return (
@@ -36,14 +36,7 @@ export default function Post(props: PostProps) {
       <div className={styles.body}>
         <SlideImage photos={photos} description={description} />
 
-        <ButtonOptions
-          postId={id}
-          comments={commentNumber}
-          likes={like}
-          saved={saved_post}
-          isLiked={liked}
-          isSaved={saved}
-        />
+        <ButtonOptions postId={id} comments={commentNumber} likes={like} isLiked={liked} isSaved={saved} />
 
         <p className={styles.description}>{description}</p>
 

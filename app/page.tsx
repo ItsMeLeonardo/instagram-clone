@@ -1,8 +1,5 @@
 import GitHubIcon from 'remixicon-react/GithubFillIcon'
 
-import Login from 'remixicon-react/User2LineIcon'
-import Home from 'remixicon-react/Home2LineIcon'
-
 import Button from 'components/shared/Button'
 
 import styles from './page.module.css'
