@@ -1,4 +1,4 @@
-import { SavedList, SimpleSavedList } from 'types/saved'
+import { SavedList, SavedListDetail, SimpleSavedList } from 'types/saved'
 import { api } from '../api'
 
 export async function getSavedPosts() {
@@ -37,4 +37,10 @@ export async function removePostFromList(listId: number, postId: number) {
 
 export async function removePostFromAllLists(postId: number) {
   await api.delete(`/saved/posts/${postId}`)
+}
+
+export async function getPostsBySavedList(listId: number) {
+  const { data } = await api.get<SavedListDetail>(`/saved/${listId}`)
+
+  return data
 }

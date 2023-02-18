@@ -3,6 +3,7 @@ import styles from './page-favorite.module.css'
 import Button from 'components/shared/Button'
 import CreateListButton from 'components/Saved/CreateListButton'
 import { useSavedList } from 'lib/client/save/useSavedList'
+import Link from 'next/link'
 
 export default function Favorite() {
   const { savedList, isLoading } = useSavedList()
@@ -33,9 +34,7 @@ export default function Favorite() {
         </picture>
 
         <h1 className={styles.title}>{"You haven't saved anything yet"}</h1>
-        <Button color="gradient" rounded>
-          create your first collection
-        </Button>
+        <CreateListButton />
       </section>
     )
   }
@@ -51,10 +50,12 @@ export default function Favorite() {
           const postPoster = poster || '/assets/emoji/face-in-clouds.webp'
 
           return (
-            <picture key={id} className={styles.item}>
-              <img src={postPoster} alt={title} />
-              <span className={styles.title}>{title}</span>
-            </picture>
+            <Link key={id} href={`app/favorite/${id}`}>
+              <picture className={styles.item}>
+                <img src={postPoster} alt={title} />
+                <span className={styles.title}>{title}</span>
+              </picture>
+            </Link>
           )
         })}
       </div>

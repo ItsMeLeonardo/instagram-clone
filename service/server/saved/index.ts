@@ -1,5 +1,5 @@
 import { db } from 'lib/server/persistence'
-import type { SavedList } from 'types/saved'
+import type { SavedList, SavedListDetail } from 'types/saved'
 import { UnauthorizedError } from '../auth/errors'
 import { SavedListNotFoundError } from './errors'
 
@@ -172,6 +172,52 @@ class SavedService {
         },
       },
     })
+  }
+
+  async getPostsBySavedList(userId: number, savedId: number): Promise<SavedListDetail> {
+    const savedPost = await db.saved.findUnique({
+      where: {
+        saved_id: savedId,
+      },
+      select: {
+        saved_id: true,
+        user_id: true,
+        title: true,
+        created_at: true,
+      },
+    })
+
+    if (!savedPost) {
+      throw new SavedListNotFoundError()
+    }
+
+    if (savedPost.user_id !== userId) {
+      throw new UnauthorizedError()
+    }
+
+    const posts = await db.saved_post.findMany({
+      where: {
+        saved_id: savedId,
+      },
+      include: {
+        post: {
+          select: {
+            post_id: true,
+            photos: true,
+          },
+        },
+      },
+    })
+
+    return {
+      id: savedPost.saved_id,
+      title: savedPost.title,
+      createdAt: savedPost.created_at,
+      posts: posts.map((post) => ({
+        id: post.post.post_id,
+        photos: post.post.photos,
+      })),
+    }
   }
 }
 

@@ -19,3 +19,10 @@ interface Post {
   id: number
   photos: string[]
 }
+
+export type SavedListDetail = {
+  id: number
+  title: string
+  createdAt: string | Date
+  posts: Post[]
+}

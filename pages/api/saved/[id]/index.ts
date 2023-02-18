@@ -9,6 +9,28 @@ import { logger } from 'utils/shared/logs'
 
 export default base()
   .use(authMiddleware)
+  .get<NextAuthRequest>(async (req, res) => {
+    const savedId = req.query.id as string
+    const userId = req.userId
+
+    try {
+      const posts = await savedService.getPostsBySavedList(Number(userId), Number(savedId))
+
+      res.json(posts)
+    } catch (error) {
+      if (error instanceof SavedListNotFoundError) {
+        res.status(404).json({ message: error.message })
+        return
+      }
+
+      if (error instanceof UnauthorizedError) {
+        res.status(401).json({ message: error.message })
+        return
+      }
+      logger.error(error)
+      res.status(500).json({ message: 'Internal server error' })
+    }
+  })
   .put<NextAuthRequest>(async (req, res) => {
     const { title } = req.body
     const savedId = req.query.id as string

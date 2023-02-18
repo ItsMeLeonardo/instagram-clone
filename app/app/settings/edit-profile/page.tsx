@@ -37,7 +37,7 @@ type avatarPreview = {
 }
 
 const { updateUserInformation } = useStoreActions
-//https://i.pinimg.com/236x/ed/22/7c/ed227c80400401488dac5d4ba55231d4.jpg
+
 export default function Page() {
   const {
     register,
