@@ -1,4 +1,4 @@
-import { PixelCrop } from 'react-image-crop'
+import { PercentCrop, PixelCrop } from 'react-image-crop'
 
 const TO_RADIANS = Math.PI / 180
 
@@ -73,4 +73,11 @@ export function cropImage(params: CropImageParams): Promise<[File, string]> {
       })
     })
   })
+}
+
+export function cropImagePercentage(params: CropImageParams): Promise<[File, string]> {
+  const { crop, originalHeight, originalWidth } = params
+  const scale = originalWidth && originalHeight ? originalWidth / crop.width : 1
+
+  return cropImage({ ...params, scale })
 }
