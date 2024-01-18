@@ -63,7 +63,7 @@ export default function Login() {
   }, [user, router])
 
   useEffect(() => {
-    const email = searchParams.get('email')
+    const email = searchParams?.get('email')
     if (email && emailRef.current) {
       emailRef.current.focus()
       emailRef.current.value = email

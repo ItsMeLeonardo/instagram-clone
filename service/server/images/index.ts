@@ -7,6 +7,7 @@ import {
 } from 'cloudinary'
 
 import sharp from 'sharp'
+import { logger } from 'utils/shared/logs'
 import { OptimizedImageError, UploadImageError } from './errors'
 
 type UploadResult = {
@@ -57,6 +58,7 @@ class ImageService {
 
       return { url, id } as UploadResult
     } catch (error) {
+      logger.error(error)
       throw new UploadImageError("Couldn't upload image")
     }
   }
@@ -72,6 +74,7 @@ class ImageService {
     try {
       await ImageService.provider.uploader.destroy(id)
     } catch (error) {
+      logger.error(error)
       throw new UploadImageError("Couldn't remove image")
     }
   }

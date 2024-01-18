@@ -14,7 +14,7 @@ export default function SidebarHeader() {
 
   return (
     <header className={styles.header}>
-      <Link href={`app/${user.username}`} className={styles.profile}>
+      <Link href={`/app/${user.username}`} className={styles.profile}>
         <Avatar src={user.avatar} alt="avatar" size="xl" bordered />
         <div className={styles.data}>
           <h2 className={styles.username}>{user.username}</h2>

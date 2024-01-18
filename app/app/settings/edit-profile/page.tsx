@@ -13,30 +13,19 @@ import Loader from 'components/shared/Loader'
 import Button from 'components/shared/Button'
 import FormFieldLoader from 'components/shared/FormField/Loader'
 
-import { useUser } from 'lib/client/user/useUser'
+import { UserProfileUpdate, useUser } from 'lib/client/user/useUser'
 
-import { updateUser, InvalidEmailError, InvalidUsernameError } from 'service/client/user'
-import { useStoreActions } from 'lib/client/user/store'
+import { InvalidEmailError, InvalidUsernameError } from 'service/client/user'
 import { alertToast } from 'components/shared/Toaster'
 
 import styles from './edit-profile.module.css'
-
-type EditProfileForm = {
-  email: string
-  username: string
-  name: string
-  lastname: string
-  location: string
-  avatar?: string
-  avatarFile?: FileList
-}
 
 type avatarPreview = {
   preview: string
   source: 'file' | 'url'
 }
 
-const { updateUserInformation } = useStoreActions
+const usernamePattern = /^[A-Za-z0-9]+(?:[_-][A-Za-z0-9]+)*$/i
 
 export default function Page() {
   const {
@@ -47,14 +36,13 @@ export default function Page() {
     setValue,
     getValues,
     formState: { errors },
-  } = useForm<EditProfileForm>()
+  } = useForm<UserProfileUpdate>()
 
-  const { user, loading } = useUser()
+  const { user, loading, updateProfile } = useUser()
 
   const [avatar, setAvatar] = useState<avatarPreview | null>(null)
-  const [savingChanges, setSavingChanges] = useState(false)
 
-  const readyData = !loading && user
+  const readyData = user
 
   const removeAvatar = () => {
     if (!user) return
@@ -76,9 +64,9 @@ export default function Page() {
     setAvatar({ preview: value, source: 'url' })
   }
 
-  const getChangedValues = () => {
+  const getChangedValues = (): Partial<UserProfileUpdate> => {
     if (!user) return {}
-    type DefaultValues = Omit<EditProfileForm, 'avatar' | 'avatarFile'>
+    type DefaultValues = Omit<UserProfileUpdate, 'avatar' | 'avatarFile'>
     const defaultValues: DefaultValues = {
       email: user.email,
       username: user.username,
@@ -95,26 +83,24 @@ export default function Page() {
         acc[key] = value
       }
       return acc
-    }, {} as EditProfileForm)
+    }, {} as UserProfileUpdate)
 
     return changedValues
   }
 
-  const getNewAvatar = (): string | File | undefined => {
+  const getNewAvatar = (): string | FileList | undefined => {
     if (!user) return
     if (!avatar) return
 
     if (avatar.source === 'url') {
       return avatar.preview
     }
-    const file = getValues('avatarFile')?.[0]
-    return file
+    return getValues('avatarFile')
   }
 
-  const onSubmit: SubmitHandler<EditProfileForm> = () => {
+  const onSubmit: SubmitHandler<UserProfileUpdate> = () => {
     if (!user) return
 
-    const formData = new FormData()
     const changedValues = getChangedValues()
     const newAvatar = getNewAvatar()
 
@@ -126,25 +112,25 @@ export default function Page() {
       return
     }
 
-    changedValuesEntries.forEach(([k, value]) => {
-      const key = k as keyof EditProfileForm
-      if (typeof value !== 'string') return
-      formData.append(key, value)
-    })
+    const profileUpdate = {
+      ...changedValues,
+    }
 
     if (newAvatar) {
       if (typeof newAvatar === 'string') {
-        formData.append('avatar', newAvatar)
+        profileUpdate.avatar = newAvatar
       } else {
-        formData.append('avatarFile', newAvatar)
+        profileUpdate.avatarFile = newAvatar
       }
     }
 
-    setSavingChanges(true)
-    updateUser(formData)
+    updateProfile(profileUpdate)
       .then((user) => {
-        if (!user) return
-        updateUserInformation(user)
+        if (!user) {
+          alertToast('Something went wrong', 'danger')
+          return
+        }
+        removeAvatar()
         alertToast('Profile updated', 'success')
       })
       .catch((error) => {
@@ -158,10 +144,9 @@ export default function Page() {
         }
         alertToast('Something went wrong', 'danger')
       })
-      .finally(() => {
-        setSavingChanges(false)
-      })
   }
+
+
 
   return (
     <section>
@@ -169,7 +154,7 @@ export default function Page() {
         <Link href="/app/settings" className={styles.back_button}>
           <BackIcon />
         </Link>
-        <h1>Change password</h1>
+        <h1>Edit Profile</h1>
       </header>
       <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
         <header className={styles.avatar_section}>
@@ -209,7 +194,10 @@ export default function Page() {
               </div>
             </>
           ) : (
-            <Avatar icon={<Loader size={32} />} alt="avatar" size="xl" bordered />
+            <>
+              <Avatar icon={<Loader size={32} />} alt="avatar" size="xl" bordered />
+              <div className={styles.data}></div>
+            </>
           )}
         </header>
         {readyData ? (
@@ -220,7 +208,7 @@ export default function Page() {
               defaultValue={user.email}
               error={!!errors.email}
               helperText={errors.email?.message}
-              disabled={savingChanges}
+              disabled={loading}
               {...register('email', { required: 'Email is required' })}
             />
             <FormField
@@ -228,15 +216,21 @@ export default function Page() {
               defaultValue={user.username}
               error={!!errors.username}
               helperText={errors.username?.message}
-              disabled={savingChanges}
-              {...register('username', { required: 'Username is required' })}
+              disabled={loading}
+              {...register('username', {
+                required: 'Username is required',
+                pattern: {
+                  value: usernamePattern,
+                  message: 'Username should only contain letters, numbers, underscores and dashes',
+                },
+              })}
             />
             <FormField
               label="First name"
               defaultValue={user.name}
               error={!!errors.name}
               helperText={errors.name?.message}
-              disabled={savingChanges}
+              disabled={loading}
               {...register('name', {
                 pattern: {
                   value: /^[A-Za-z ]+$/i,
@@ -249,7 +243,7 @@ export default function Page() {
               defaultValue={user.lastName}
               error={!!errors.lastname}
               helperText={errors.lastname?.message}
-              disabled={savingChanges}
+              disabled={loading}
               {...register('lastname', {
                 pattern: {
                   message: 'Last name should only contain letters',
@@ -262,7 +256,7 @@ export default function Page() {
               defaultValue={user.location}
               error={!!errors.location}
               helperText={errors.location?.message}
-              disabled={savingChanges}
+              disabled={loading}
               {...register('location', { required: 'Location is required' })}
             />
             <FormField
@@ -271,7 +265,7 @@ export default function Page() {
               defaultValue={user.avatar}
               error={!!errors.avatar}
               helperText={errors.avatar?.message || 'only urls from pinterest o unsplash are allowed'}
-              disabled={savingChanges}
+              disabled={loading}
               {...register('avatar', { required: 'Avatar is required' })}
               onChange={handleChangeAvatarUrl}
             />
@@ -287,7 +281,7 @@ export default function Page() {
           </div>
         )}
 
-        <Button color="primary" type="submit" loading={savingChanges} disabled={savingChanges}>
+        <Button color="primary" type="submit" loading={loading} disabled={loading} rounded>
           <span className={styles.submit_label}>Save Changes</span>
         </Button>
       </form>
