@@ -5,11 +5,12 @@ import { motion, AnimatePresence } from 'framer-motion'
 import type { AnimationProps } from 'framer-motion'
 
 import styles from './modal.module.css'
+import { useKeyPress } from 'utils/client/shared/hooks/useKeyPress'
 
 export type ModalProps = {
   children: ReactNode
-  open?: boolean
-  onClose?: () => void
+  open: boolean
+  onClose: () => void
 }
 
 const modalOverlayAnimations: AnimationProps = {
@@ -45,8 +46,13 @@ const modalContentAnimations: AnimationProps = {
   },
 }
 
+
 export default function Modal(props: ModalProps) {
   const { children, onClose, open } = props
+
+  useKeyPress('Escape', onClose, {
+    listening: open,
+  })
 
   useEffect(() => {
     if (open) {

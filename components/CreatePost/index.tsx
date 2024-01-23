@@ -125,7 +125,7 @@ export default function CreatePost({ onComplete, onCancel, open }: Props) {
   const largeContainer = currentStep === 'caption' || currentStep === 'filter'
 
   return (
-    <Modal open={open} onClose={handleCancel}>
+    <Modal open={!!open} onClose={handleCancel}>
       <SectionContainer
         title={title}
         showSteps={currentStep !== 'upload'}
