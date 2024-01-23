@@ -8,6 +8,19 @@ import { emojiMap } from './utils'
 import type { ThemeColor } from 'utils/client/shared/colors/theme'
 
 import styles from './toaster.module.css'
+import { useEffect, useRef } from 'react'
+
+type AlertToastOptions = {
+  theme?: ThemeColor
+  duration?: number
+}
+
+type ToastComponentProps = {
+  id: string
+  message: string
+  theme: ThemeColor
+  duration: number
+}
 
 const toastAnimation: AnimationProps = {
   initial: {
@@ -22,19 +35,59 @@ const toastAnimation: AnimationProps = {
   },
 }
 
-export default function ToastContainer() {
-  return <Toaster position="bottom-left"></Toaster>
-}
-export const alertToast = (message: string, theme: ThemeColor = 'warning') => {
-  return toast.custom((t) => (
-    <motion.aside {...toastAnimation} className={styles.container} data-theme={theme}>
+export function ToastComponent(props: ToastComponentProps) {
+  const { duration, id, message, theme } = props
+
+  const containerRef = useRef<HTMLElement>(null)
+
+  useEffect(() => {
+    const interval = 45
+
+    const container = containerRef.current
+
+    if (!container) return
+
+    let progress = 0
+
+    const intervalId = setInterval(() => {
+      progress += interval / duration
+      container.style.setProperty('--toast-progress-duration', `${progress * 100}%`)
+
+      if (progress >= 1) {
+        clearInterval(intervalId)
+      }
+    }, interval)
+
+    return () => {
+      clearInterval(intervalId)
+    }
+  }, [duration])
+
+  return (
+    <motion.aside {...toastAnimation} ref={containerRef} className={styles.container} data-theme={theme}>
       <picture className={styles.icon}>
         <img src={emojiMap[theme]} alt="alert" />
       </picture>
       <div className={styles.message}>{message}</div>
-      <button className={styles.close} onClick={() => toast.remove(t.id)}>
-        <CloseLineIcon />
+      <button className={styles.close} onClick={() => toast.remove(id)}>
+        <CloseLineIcon color="currentColor" />
       </button>
     </motion.aside>
-  ))
+  )
+}
+
+export const alertToast = (message: string, options: AlertToastOptions = {}) => {
+  const { theme = 'primary', duration = 4000 } = options
+  return toast.custom(
+    (t) => {
+      return <ToastComponent duration={duration} message={message} theme={theme} id={t.id} />
+    },
+    {
+      duration,
+    }
+  )
+}
+
+export default function ToastContainer() {
+  return <Toaster position="bottom-center"></Toaster>
 }

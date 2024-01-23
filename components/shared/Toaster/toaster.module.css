@@ -6,12 +6,31 @@
   max-width: 320px;
   background: var(--bg-content);
   border-radius: 0.5rem;
-  padding: 0.75rem;
+  padding: 0.75rem 0.75rem 1.205rem 0.75rem;
   height: 70px;
   overflow: hidden;
-  --toast-color: #333;
+  --toast-color: var(--primary);
   box-shadow: 0 0 2rem rgba(0, 0, 0, 0.05), 0 1px 1rem 0 rgba(0, 0, 0, 0.1);
-  border-left: 0.5rem solid var(--toast-color);
+
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    right: -100%;
+    width: 100%;
+    height: 0.5rem;
+    background: var(--toast-color);
+    transition: transform 0.3s ease-in-out;
+    transform: translateX(calc(var(--toast-progress-duration) * -1));
+    border-radius: 0.5rem;
+  }
+
+  &[data-theme='secondary'] {
+    --toast-color: var(--secondary);
+    box-shadow: 0 0 2rem color-mod(var(--secondary) a(0.15)), 0 1px 1rem 0 color-mod(var(--secondary) a(0.1));
+  }
 
   &[data-theme='success'] {
     --toast-color: var(--success);
@@ -33,6 +52,16 @@
     box-shadow: 0 0 2rem color-mod(var(--info) a(0.15)), 0 1px 1rem 0 color-mod(var(--info) a(0.1));
   }
 
+  &[data-theme='light'] {
+    --toast-color: var(--light);
+    box-shadow: 0 0 2rem color-mod(var(--light) a(0.15)), 0 1px 1rem 0 color-mod(var(--light) a(0.1));
+  }
+
+  &[data-theme='dark'] {
+    --toast-color: var(--dark);
+    box-shadow: 0 0 2rem color-mod(var(--dark) a(0.15)), 0 1px 1rem 0 color-mod(var(--dark) a(0.1));
+  }
+
   .icon {
     height: 100%;
     aspect-ratio: 1;
@@ -47,5 +76,8 @@
     max-width: 70%;
     color: var(--text);
     overflow: hidden;
+  }
+  .close {
+    color: var(--text);
   }
 }

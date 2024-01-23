@@ -20,18 +20,24 @@ export default function CreateStory(modalProps: Props) {
 
   const createStory = () => {
     if (!file) {
-      alertToast('Please select a photo', 'danger')
+      alertToast('Please select a photo', {
+        theme: 'danger',
+      })
       return
     }
     setIsLoading(true)
     addStory(file)
       .then(() => {
-        alertToast('Story created successfully', 'success')
+        alertToast('Story created successfully', {
+          theme: 'success',
+        })
         modalProps.onClose?.()
         reset()
       })
       .catch(() => {
-        alertToast('Something went wrong', 'danger')
+        alertToast('Something went wrong', {
+          theme: 'danger',
+        })
       })
       .finally(() => {
         setIsLoading(false)

@@ -36,10 +36,14 @@ export default function SavedList({ postId, onSaved }: Props) {
     savePost(listId, postId)
       .then(() => {
         onSaved?.()
-        alertToast('Post saved successfully', 'success')
+        alertToast('Post saved successfully', {
+          theme: 'success',
+        })
       })
       .catch(() => {
-        alertToast('Something went wrong', 'danger')
+        alertToast('Something went wrong', {
+          theme: 'danger',
+        })
       })
   }
 

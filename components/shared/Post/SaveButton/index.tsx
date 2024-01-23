@@ -36,7 +36,9 @@ export default function SaveButton({ isSaved, postId }: Props) {
   const handleClick = () => {
     if (!saved) {
       //TODO: save post in generic list
-      alertToast('Coming soon', 'info')
+      alertToast('Coming soon', {
+        theme: 'info',
+      })
       onSaved()
       return
     }
@@ -44,10 +46,14 @@ export default function SaveButton({ isSaved, postId }: Props) {
     removePostFromAllLists(postId)
       .then(() => {
         onRemove()
-        alertToast('Post removed successfully', 'success')
+        alertToast('Post removed successfully', {
+          theme: 'success',
+        })
       })
       .catch(() => {
-        alertToast('Something went wrong', 'danger')
+        alertToast('Something went wrong', {
+          theme: 'danger',
+        })
       })
   }
 

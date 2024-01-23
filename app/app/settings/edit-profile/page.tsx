@@ -108,7 +108,9 @@ export default function Page() {
 
     const hasChangedValues = changedValuesEntries.length > 0
     if (!hasChangedValues && !newAvatar) {
-      alertToast('Nothing to update', 'warning')
+      alertToast('Nothing to update', {
+        theme: 'warning',
+      })
       return
     }
 
@@ -127,11 +129,15 @@ export default function Page() {
     updateProfile(profileUpdate)
       .then((user) => {
         if (!user) {
-          alertToast('Something went wrong', 'danger')
+          alertToast('Something went wrong', {
+            theme: 'danger',
+          })
           return
         }
         removeAvatar()
-        alertToast('Profile updated', 'success')
+        alertToast('Profile updated', {
+          theme: 'success',
+        })
       })
       .catch((error) => {
         if (error instanceof InvalidEmailError) {
@@ -142,11 +148,11 @@ export default function Page() {
           setError('username', { type: 'custom', message: error.message })
           return
         }
-        alertToast('Something went wrong', 'danger')
+        alertToast('Something went wrong', {
+          theme: 'danger',
+        })
       })
   }
-
-
 
   return (
     <section>
